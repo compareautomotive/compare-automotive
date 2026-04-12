@@ -15,3 +15,10 @@
     "@vitejs/plugin-react": "^4.0.0"
   }
 }
+"scripts": {
+  "predev": "node fix-quotes.js",
+  "dev": "vite",
+  "prebuild": "node fix-quotes.js",
+  "build": "vite build",
+  "preview": "vite preview"
+}
