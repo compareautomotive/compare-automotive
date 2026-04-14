@@ -671,7 +671,7 @@ const [search,setSearch]=useState(””);
 const [modal,setModal]=useState(null);
 const filtered=jobs.filter(j=>j.plate.toLowerCase().includes(search.toLowerCase())||j.customer.toLowerCase().includes(search.toLowerCase())||j.service.toLowerCase().includes(search.toLowerCase()));
 const save=f=>{
-if(modal===“new”) setJobs(j=>[…j,{…f,id:nextId(j)}]);
+if(modal===“new”) setJobs(j=>[j,{f,id:nextId(j)}]);
 else setJobs(j=>j.map(x=>x.id===modal.id?{f,id:modal.id}:x));
 setModal(null);
 };
