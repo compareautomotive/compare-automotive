@@ -792,7 +792,7 @@ return (
 <td style={{fontFamily:“var(–mono)”,fontSize:12}}>£{i.parts||0}</td>
 <td style={{fontFamily:“var(–mono)”,fontWeight:700,color:“var(–orange)”}}>£{i.amount}</td>
 <td style={{fontFamily:“var(–mono)”,fontSize:11,color:“var(–muted)”}}>{i.date}</td>
-<td><span className={`badge ${i.paid?"badge-paid":"badge-unpaid"}`} style={{cursor:“pointer”}} onClick={()=>setInvoices(v=>v.map(x=>x.id===i.id?{…x,paid:!x.paid}:x))}>{i.paid?“Paid”:“Unpaid”}</span></td>
+<td><span className={`badge ${i.paid?"badge-paid":"badge-unpaid"}`} style={{cursor:“pointer”}} onClick={()=>setInvoices(v=>v.map(x=>x.id===i.id?{x,paid:!x.paid}:x))}>{i.paid?“Paid”:“Unpaid”}</span></td>
 <td><div style={{display:“flex”,gap:6}}>
 <button className=“btn btn-ghost btn-sm” onClick={()=>setModal(i)}>Edit</button>
 <button className=“btn btn-danger btn-sm” onClick={()=>setInvoices(v=>v.filter(x=>x.id!==i.id))}>✕</button>
@@ -990,7 +990,7 @@ if (!user) return (
 
 const isAdmin = user.role === “admin”;
 const nav = isAdmin ? ADMIN_NAV : CUSTOMER_NAV;
-const sections = […new Set(nav.map(n=>n.section))];
+const sections = [new Set(nav.map(n=>n.section))];
 const TITLES = { dashboard:“Dashboard”, jobs:“Job Cards”, vehicles:“Vehicles”, invoices:isAdmin?“Invoices”:“My Invoices”, home:“My Overview”, tracker:“Job Tracker”, booking:“Book a Service” };
 
 return (
