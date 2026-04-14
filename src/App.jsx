@@ -552,7 +552,7 @@ return (
 function VehicleModal({ vehicle, onClose, onSave }) {
 const e = { plate:””,make:””,model:””,year:2024,owner:””,phone:””,email:””,mileage:”” };
 const [f, setF] = useState(vehicle||e);
-const s=(k,v)=>setF(x=>({…x,[k]:v}));
+const s=(k,v)=>setF(x=>({x,[k]:v}));
 return (
 <div className=“overlay” onClick={e=>e.target===e.currentTarget&&onClose()}>
 <div className="modal">
