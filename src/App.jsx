@@ -514,7 +514,7 @@ return (
 function JobModal({ job, onClose, onSave }) {
 const e = { plate:””,customer:””,email:””,vehicle:””,service:””,tech:TECHS[0],status:“Waiting”,date:new Date().toISOString().slice(0,10),notes:””,amount:”” };
 const [f, setF] = useState(job||e);
-const s = (k,v)=>setF(x=>({…x,[k]:v}));
+const s = (k,v)=>setF(x=>({x,[k]:v}));
 return (
 <div className=“overlay” onClick={e=>e.target===e.currentTarget&&onClose()}>
 <div className="modal">
