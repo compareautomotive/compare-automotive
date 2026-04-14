@@ -459,7 +459,7 @@ const m = { “Waiting”:“badge-waiting”,“In Progress”:“badge-progres
 return <span className={`badge ${m[s]||"badge-waiting"}`}>{s}</span>;
 }
 
-function nextId(arr) { return arr.length ? Math.max(…arr.map(x=>x.id))+1 : 1; }
+function nextId(arr) { return arr.length ? Math.max(arr.map(x=>x.id))+1 : 1; }
 
 // ─── LOGIN ───────────────────────────────────────────────────────────
 function LoginScreen({ onLogin }) {
