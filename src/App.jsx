@@ -585,7 +585,7 @@ return (
 function InvoiceModal({ invoice, onClose, onSave }) {
 const e = { customer:””,plate:””,email:””,service:””,labour:””,parts:””,amount:””,paid:false,date:new Date().toISOString().slice(0,10) };
 const [f, setF] = useState(invoice||e);
-const s=(k,v)=>setF(x=>({…x,[k]:v}));
+const s=(k,v)=>setF(x=>({x,[k]:v}));
 const total = (parseFloat(f.labour)||0)+(parseFloat(f.parts)||0);
 return (
 <div className=“overlay” onClick={e=>e.target===e.currentTarget&&onClose()}>
