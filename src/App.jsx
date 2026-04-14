@@ -623,7 +623,7 @@ const active=jobs.filter(j=>j.status===“In Progress”).length;
 const waiting=jobs.filter(j=>j.status===“Waiting”).length;
 const rev=invoices.filter(i=>i.paid).reduce((s,i)=>s+i.amount,0);
 const out=invoices.filter(i=>!i.paid).reduce((s,i)=>s+i.amount,0);
-const recent=[…jobs].sort((a,b)=>b.id-a.id).slice(0,6);
+const recent=[jobs].sort((a,b)=>b.id-a.id).slice(0,6);
 return (
 <div>
 <div className="stats-grid">
@@ -672,7 +672,7 @@ const [modal,setModal]=useState(null);
 const filtered=jobs.filter(j=>j.plate.toLowerCase().includes(search.toLowerCase())||j.customer.toLowerCase().includes(search.toLowerCase())||j.service.toLowerCase().includes(search.toLowerCase()));
 const save=f=>{
 if(modal===“new”) setJobs(j=>[…j,{…f,id:nextId(j)}]);
-else setJobs(j=>j.map(x=>x.id===modal.id?{…f,id:modal.id}:x));
+else setJobs(j=>j.map(x=>x.id===modal.id?{f,id:modal.id}:x));
 setModal(null);
 };
 return (
@@ -718,7 +718,7 @@ const [search,setSearch]=useState(””);
 const [modal,setModal]=useState(null);
 const filtered=vehicles.filter(v=>v.plate.toLowerCase().includes(search.toLowerCase())||v.owner.toLowerCase().includes(search.toLowerCase())||v.make.toLowerCase().includes(search.toLowerCase()));
 const save=f=>{
-if(modal===“new”) setVehicles(v=>[…v,{…f,id:nextId(v)}]);
+if(modal===“new”) setVehicles(v=>[v,{f,id:nextId(v)}]);
 else setVehicles(v=>v.map(x=>x.id===modal.id?{f,id:modal.id}:x));
 setModal(null);
 };
@@ -726,7 +726,7 @@ return (
 <div>
 {(modal===“new”||(modal&&modal!==null))&&<VehicleModal vehicle={modal===“new”?null:modal} onClose={()=>setModal(null)} onSave={save} />}
 <div style={{display:“flex”,justifyContent:“space-between”,alignItems:“center”,marginBottom:16}}>
-<input className=“search” placeholder=“Search vehicles…” value={search} onChange={e=>setSearch(e.target.value)} style={{width:240}} />
+<input className=“search” placeholder=“Search vehicles” value={search} onChange={e=>setSearch(e.target.value)} style={{width:240}} />
 <button className=“btn btn-orange” onClick={()=>setModal(“new”)}>+ Add Vehicle</button>
 </div>
 {filtered.length===0?<div className="empty"><div className="empty-icon">🚗</div><p>No vehicles found.</p></div>
@@ -865,7 +865,7 @@ return (
 
 function CustomerInvoices({ user, invoices, setInvoices }) {
 const myInvoices = invoices.filter(i=>i.email===user.email);
-const pay = id => setInvoices(v=>v.map(x=>x.id===id?{…x,paid:true}:x));
+const pay = id => setInvoices(v=>v.map(x=>x.id===id?{x,paid:true}:x));
 return (
 <div>
 <div style={{marginBottom:16,fontFamily:“var(–mono)”,fontSize:11,color:“var(–muted)”,letterSpacing:2,textTransform:“uppercase”}}>Your Invoices</div>
