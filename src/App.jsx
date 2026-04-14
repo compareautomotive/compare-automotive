@@ -610,7 +610,7 @@ return (
 </div>
 <div className="modal-ft">
 <button className="btn btn-ghost" onClick={onClose}>Cancel</button>
-<button className=“btn btn-orange” onClick={()=>onSave({…f,amount:total,labour:parseFloat(f.labour)||0,parts:parseFloat(f.parts)||0})}>Save Invoice</button>
+<button className=“btn btn-orange” onClick={()=>onSave({f,amount:total,labour:parseFloat(f.labour)||0,parts:parseFloat(f.parts)||0})}>Save Invoice</button>
 </div>
 </div>
 </div>
@@ -682,7 +682,7 @@ return (
 <div className="table-head">
 <span className="table-head-title">Job Cards</span>
 <div style={{display:“flex”,gap:10}}>
-<input className=“search” placeholder=“Search jobs…” value={search} onChange={e=>setSearch(e.target.value)} />
+<input className=“search” placeholder=“Search jobs” value={search} onChange={e=>setSearch(e.target.value)} />
 <button className=“btn btn-orange” onClick={()=>setModal(“new”)}>+ New Job</button>
 </div>
 </div>
@@ -719,7 +719,7 @@ const [modal,setModal]=useState(null);
 const filtered=vehicles.filter(v=>v.plate.toLowerCase().includes(search.toLowerCase())||v.owner.toLowerCase().includes(search.toLowerCase())||v.make.toLowerCase().includes(search.toLowerCase()));
 const save=f=>{
 if(modal===“new”) setVehicles(v=>[…v,{…f,id:nextId(v)}]);
-else setVehicles(v=>v.map(x=>x.id===modal.id?{…f,id:modal.id}:x));
+else setVehicles(v=>v.map(x=>x.id===modal.id?{f,id:modal.id}:x));
 setModal(null);
 };
 return (
@@ -756,8 +756,8 @@ const [search,setSearch]=useState(””);
 const [modal,setModal]=useState(null);
 const filtered=invoices.filter(i=>i.customer.toLowerCase().includes(search.toLowerCase())||i.plate.toLowerCase().includes(search.toLowerCase()));
 const save=f=>{
-if(modal===“new”) setInvoices(v=>[…v,{…f,id:nextId(v)}]);
-else setInvoices(v=>v.map(x=>x.id===modal.id?{…f,id:modal.id}:x));
+if(modal===“new”) setInvoices(v=>[v,{f,id:nextId(v)}]);
+else setInvoices(v=>v.map(x=>x.id===modal.id?{f,id:modal.id}:x));
 setModal(null);
 };
 const total=filtered.reduce((s,i)=>s+i.amount,0);
@@ -774,7 +774,7 @@ return (
 <div className="table-head">
 <span className="table-head-title">Invoices</span>
 <div style={{display:“flex”,gap:10}}>
-<input className=“search” placeholder=“Search…” value={search} onChange={e=>setSearch(e.target.value)} />
+<input className=“search” placeholder=“Search” value={search} onChange={e=>setSearch(e.target.value)} />
 <button className=“btn btn-orange” onClick={()=>setModal(“new”)}>+ New Invoice</button>
 </div>
 </div>
