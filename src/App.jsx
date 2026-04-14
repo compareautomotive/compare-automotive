@@ -542,7 +542,7 @@ return (
 </div>
 <div className="modal-ft">
 <button className="btn btn-ghost" onClick={onClose}>Cancel</button>
-<button className=“btn btn-orange” onClick={()=>onSave({…f,amount:parseFloat(f.amount)||0})}>Save Job</button>
+<button className=“btn btn-orange” onClick={()=>onSave({f,amount:parseFloat(f.amount)||0})}>Save Job</button>
 </div>
 </div>
 </div>
