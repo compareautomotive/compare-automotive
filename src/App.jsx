@@ -985,4 +985,5 @@ return (
     <div className={'toast' + (toast ? ' show' : '')}>Saved</div>
   </div>
 </div>
-)
+);
+}
