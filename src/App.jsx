@@ -1,4 +1,4 @@
-I import { useState } from ‘react’;
+import { useState } from ‘react’;
 
 const CSS = `
 
