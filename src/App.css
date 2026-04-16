@@ -1,0 +1,137 @@
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Barlow:wght@400;500;600;700&display=swap');
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #0a0a0a;
+  --surface: #141414;
+  --surface2: #1e1e1e;
+  --border: #2a2a2a;
+  --orange: #e8570a;
+  --orange2: #ff6b1a;
+  --orange-dim: rgba(232,87,10,0.12);
+  --text: #ffffff;
+  --muted: #888;
+  --muted2: #555;
+  --green: #22c55e;
+  --blue: #3b82f6;
+  --red: #ef4444;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Barlow', sans-serif;
+  min-height: 100vh;
+}
+
+/* LOGIN /
+.login-screen {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(ellipse at 30% 50%, rgba(232,87,10,0.18), transparent 60%), var(--bg);
+  padding: 16px;
+}
+
+.login-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--orange);
+  border-radius: 8px;
+  padding: 32px 24px;
+  width: 100%;
+  max-width: 400px;
+}
+
+.brand {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 32px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.brand span { color: var(--orange); }
+
+/ BUTTONS /
+.btn {
+  padding: 11px 16px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  font-family: 'Barlow', sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.btn-or { background: var(--orange); color: #fff; }
+.btn-dn { background: var(--red); color: #fff; }
+.btn-gn { background: var(--green); color: #000; }
+
+/ SIDEBAR /
+.sb {
+  width: 220px;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  position: fixed;
+  height: 100%;
+}
+
+.sb-brand {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.sb-brand span { color: var(--orange); }
+
+/ MAIN /
+.main {
+  margin-left: 220px;
+  padding: 20px;
+}
+
+/ CARDS /
+.sc {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--orange);
+  padding: 16px;
+  border-radius: 6px;
+}
+
+.sval {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--orange);
+}
+
+/ TABLE /
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th {
+  font-size: 10px;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+td {
+  padding: 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+/ MOBILE /
+@media (max-width: 768px) {
+  .sb { display: none; }
+  .main { margin-left: 0; }
+}
+
+/ SCROLLBAR */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-thumb { background: var(--border); }
