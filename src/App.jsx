@@ -861,7 +861,7 @@ return (
 );
 }
 
-export default function App() {
+export function() {
 var [user, setUser] = useState(null);
 var [tab, setTab] = useState(‘dash’);
 var [menu, setMenu] = useState(false);
