@@ -135,6 +135,4 @@ td {
 / SCROLLBAR */
 ::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-thumb { background: var(--border); }
-body {
-  background: red !important;
-}
+
