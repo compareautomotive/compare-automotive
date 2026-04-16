@@ -1,5 +1,29 @@
 import './App.css';
 
+function App() {
+  return (
+    <div className="login-screen">
+      <div className="login-card">
+        <div className="brand">
+          COMPARE <span>AUTOMOTIVE</span>
+        </div>
+
+        <br />
+
+        <button className="btn btn-or">Orange Button</button>
+
+        <br /><br />
+
+        <div className="sc">
+          <div className="sval">£12,450</div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default App;
+
 const CSS = `
 
 - { box-sizing: border-box; margin: 0; padding: 0; }
