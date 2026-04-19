@@ -1438,8 +1438,8 @@
       <div class="page active" id="page-dashboard">
         <div class="page-header">
           <div>
-            <div class="page-header-title">Good morning, John &#128075;</div>
-            <div class="page-header-sub">Here's what's happening at Speedy Tyres today  -  Wednesday 12 April 2026</div>
+            <div class="page-header-title" id="dashGreeting">Good morning &#128075;</div>
+            <div class="page-header-sub">Here's what's happening at your garage today</div>
           </div>
           <div class="page-header-actions">
             <button class="btn btn-outline btn-sm">Export Report</button>
@@ -1453,7 +1453,7 @@
               <svg width="18" height="18" viewBox="0 0 24 24" fill="var(--ca-red)"><path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/></svg>
             </div>
             <div class="stat-label">Today's Bookings</div>
-            <div class="stat-value" id="statTodayBookings">14</div>
+            <div class="stat-value" id="statTodayBookings">-</div>
             <div class="stat-change up">&#8593; 3 more than yesterday</div>
           </div>
           <div class="stat-card green">
@@ -1461,7 +1461,7 @@
               <svg width="18" height="18" viewBox="0 0 24 24" fill="var(--ca-success)"><path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/></svg>
             </div>
             <div class="stat-label">Revenue This Week</div>
-            <div class="stat-value" id="statWeekRevenue">&pound;0.00</div>
+            <div class="stat-value" id="statWeekRevenue">-</div>
             <div class="stat-change up">&#8593; 12% vs last week</div>
           </div>
           <div class="stat-card amber">
@@ -1469,7 +1469,7 @@
               <svg width="18" height="18" viewBox="0 0 24 24" fill="var(--ca-warning)"><path d="M22.7 19l-9.1-9.1c.9-2.3.4-5-1.5-6.9-2-2-5-2.4-7.4-1.3L9 6 6 9 1.6 4.7C.4 7.1.9 10.1 2.9 12.1c1.9 1.9 4.6 2.4 6.9 1.5l9.1 9.1c.4.4 1 .4 1.4 0l2.3-2.3c.5-.4.5-1.1.1-1.4z"/></svg>
             </div>
             <div class="stat-label">Jobs In Progress</div>
-            <div class="stat-value" id="statJobsInProgress">6</div>
+            <div class="stat-value" id="statJobsInProgress">-</div>
             <div class="stat-change">2 awaiting parts</div>
           </div>
           <div class="stat-card blue">
@@ -1477,7 +1477,7 @@
               <svg width="18" height="18" viewBox="0 0 24 24" fill="var(--ca-info)"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
             </div>
             <div class="stat-label">MOTs Due This Month</div>
-            <div class="stat-value">38</div>
+            <div class="stat-value" id="statMotsDue">-</div>
             <div class="stat-change down">&#8595; 12 still unbooked</div>
           </div>
         </div>
@@ -1500,44 +1500,7 @@
                   <th>Status</th>
                 </tr>
               </thead>
-              <tbody id="todaysBookingsTbody">
-                <tr>
-                  <td><strong>08:30</strong></td>
-                  <td><div>Sarah Thompson</div><span class="vehicle-reg">AB21 XYZ</span></td>
-                  <td>MOT Test</td>
-                  <td><span class="badge badge-success">Completed</span></td>
-                </tr>
-                <tr>
-                  <td><strong>09:15</strong></td>
-                  <td><div>Mark Wilson</div><span class="vehicle-reg">LD68 OPQ</span></td>
-                  <td>Full Service</td>
-                  <td><span class="badge badge-warning">In Progress</span></td>
-                </tr>
-                <tr>
-                  <td><strong>10:00</strong></td>
-                  <td><div>Emma Clarke</div><span class="vehicle-reg">MN19 RST</span></td>
-                  <td>Tyre Replacement</td>
-                  <td><span class="badge badge-warning">In Progress</span></td>
-                </tr>
-                <tr>
-                  <td><strong>11:30</strong></td>
-                  <td><div>David Patel</div><span class="vehicle-reg">SV22 UVW</span></td>
-                  <td>Brake Inspection</td>
-                  <td><span class="badge badge-muted">Waiting</span></td>
-                </tr>
-                <tr>
-                  <td><strong>13:00</strong></td>
-                  <td><div>Lisa Johnson</div><span class="vehicle-reg">YT71 FGH</span></td>
-                  <td>MOT + Service</td>
-                  <td><span class="badge badge-muted">Waiting</span></td>
-                </tr>
-                <tr>
-                  <td><strong>14:30</strong></td>
-                  <td><div>Paul Matthews</div><span class="vehicle-reg">CE20 IJK</span></td>
-                  <td>Cambelt Change</td>
-                  <td><span class="badge badge-navy">Booked</span></td>
-                </tr>
-              </tbody>
+              <tbody id="todaysBookingsTbody"><tr><td colspan="4" style="text-align:center;color:var(--ca-text-muted);padding:20px;">Loading...</td></tr></tbody>
             </table>
           </div>
 
@@ -1547,24 +1510,7 @@
                 Recent Invoices
                 <button class="btn btn-primary btn-xs" onclick="navigate('invoices', document.querySelector('[onclick*=invoices]'))">View All</button>
               </div>
-              <div id="dashInvoiceList" style="display:flex;flex-direction:column;gap:0;">
-                <div class="flex-between" style="padding:10px 0;border-bottom:1px solid var(--ca-border);font-size:13px;">
-                  <div><strong>INV-0842</strong> &middot; Sarah Thompson</div>
-                  <div style="display:flex;align-items:center;gap:8px;"><strong>&pound;54.85</strong><span class="badge badge-success">Paid</span></div>
-                </div>
-                <div class="flex-between" style="padding:10px 0;border-bottom:1px solid var(--ca-border);font-size:13px;">
-                  <div><strong>INV-0841</strong> &middot; Marcus Green</div>
-                  <div style="display:flex;align-items:center;gap:8px;"><strong>&pound;234.00</strong><span class="badge badge-success">Paid</span></div>
-                </div>
-                <div class="flex-between" style="padding:10px 0;border-bottom:1px solid var(--ca-border);font-size:13px;">
-                  <div><strong>INV-0840</strong> &middot; Frances Hunt</div>
-                  <div style="display:flex;align-items:center;gap:8px;"><strong>&pound;189.00</strong><span class="badge badge-warning">Pending</span></div>
-                </div>
-                <div class="flex-between" style="padding:10px 0;font-size:13px;">
-                  <div><strong>INV-0838</strong> &middot; Gordon Ramsay</div>
-                  <div style="display:flex;align-items:center;gap:8px;"><strong>&pound;480.00</strong><span class="badge badge-danger">Overdue</span></div>
-                </div>
-              </div>
+              <div id="dashInvoiceList" style="display:flex;flex-direction:column;gap:0;"><div style="color:var(--ca-text-muted);font-size:13px;padding:12px 0;">Loading invoices...</div></div>
             </div>
 
             <div class="info-card">
@@ -1614,44 +1560,7 @@
             <thead>
               <tr><th>Invoice</th><th>Date</th><th>Customer</th><th>Vehicle</th><th>Service</th><th>Amount</th><th>Status</th><th>Actions</th></tr>
             </thead>
-            <tbody>
-              <tr>
-                <td><strong>INV-0842</strong></td><td>12 Apr 2026</td><td>Sarah Thompson</td>
-                <td><span class="vehicle-reg">AB21 XYZ</span></td><td>MOT Test</td>
-                <td><strong>&pound;54.85</strong></td><td><span class="badge badge-success">Paid</span></td>
-                <td><div style="display:flex;gap:4px;">
-                  <button class="btn btn-ghost btn-xs" onclick="printInvoice('INV-0842','Sarah Thompson','AB21 XYZ','MOT Test','54.85','Paid')">Print</button>
-                  <button class="btn btn-outline btn-xs" onclick="sendInvoice('INV-0842','Sarah Thompson')">Send</button>
-                </div></td>
-              </tr>
-              <tr>
-                <td><strong>INV-0841</strong></td><td>11 Apr 2026</td><td>Marcus Green</td>
-                <td><span class="vehicle-reg">RT20 BCD</span></td><td>Diagnostics</td>
-                <td><strong>&pound;234.00</strong></td><td><span class="badge badge-success">Paid</span></td>
-                <td><div style="display:flex;gap:4px;">
-                  <button class="btn btn-ghost btn-xs" onclick="printInvoice('INV-0841','Marcus Green','RT20 BCD','Diagnostics','234.00','Paid')">Print</button>
-                  <button class="btn btn-outline btn-xs" onclick="sendInvoice('INV-0841','Marcus Green')">Send</button>
-                </div></td>
-              </tr>
-              <tr>
-                <td><strong>INV-0840</strong></td><td>10 Apr 2026</td><td>Frances Hunt</td>
-                <td><span class="vehicle-reg">RT20 BCD</span></td><td>Full Service</td>
-                <td><strong>&pound;189.00</strong></td><td><span class="badge badge-warning">Pending</span></td>
-                <td><div style="display:flex;gap:4px;">
-                  <button class="btn btn-ghost btn-xs" onclick="printInvoice('INV-0840','Frances Hunt','RT20 BCD','Full Service','189.00','Pending')">Print</button>
-                  <button class="btn btn-primary btn-xs" onclick="sendInvoice('INV-0840','Frances Hunt')">Send</button>
-                </div></td>
-              </tr>
-              <tr>
-                <td><strong>INV-0838</strong></td><td>5 Apr 2026</td><td>Gordon Ramsay</td>
-                <td><span class="vehicle-reg">BF19 EFG</span></td><td>MOT + Repairs</td>
-                <td><strong>&pound;480.00</strong></td><td><span class="badge badge-danger">Overdue</span></td>
-                <td><div style="display:flex;gap:4px;">
-                  <button class="btn btn-ghost btn-xs" onclick="printInvoice('INV-0838','Gordon Ramsay','BF19 EFG','MOT + Repairs','480.00','Overdue')">Print</button>
-                  <button class="btn btn-danger btn-xs" onclick="sendInvoice('INV-0838','Gordon Ramsay')">Chase</button>
-                </div></td>
-              </tr>
-            </tbody>
+            <tbody id="dashInvoiceTableBody"><tr><td colspan="8" style="text-align:center;color:var(--ca-text-muted);padding:20px;">Loading...</td></tr></tbody>
           </table>
         </div>
       </div>
@@ -1662,7 +1571,7 @@
         <div class="page-header">
           <div>
             <div class="page-header-title">Schedule</div>
-            <div class="page-header-sub">Weekly booking calendar  -  w/c 7 April 2026</div>
+            <div class="page-header-sub">Weekly booking calendar</div>
           </div>
           <div class="page-header-actions">
             <button class="btn btn-outline btn-sm">&larr; Prev Week</button>
@@ -1676,25 +1585,25 @@
           <span style="display:inline-flex;align-items:center;gap:6px;font-size:12px;"><span style="width:10px;height:10px;border-radius:2px;background:var(--ca-navy);border:1px solid rgba(245,158,11,0.3);display:inline-block;"></span>Repair</span>
           <span style="display:inline-flex;align-items:center;gap:6px;font-size:12px;"><span style="width:10px;height:10px;border-radius:2px;background:#E3EFF8;border:1px solid rgba(59,130,246,0.3);display:inline-block;"></span>Other</span>
         </div>
-        <div class="schedule-grid">
-          <div class="schedule-col-header">Mon 7</div>
-          <div class="schedule-col-header">Tue 8</div>
-          <div class="schedule-col-header">Wed 9</div>
-          <div class="schedule-col-header">Thu 10</div>
-          <div class="schedule-col-header">Fri 11</div>
-          <div class="schedule-col-header">Sat 12</div>
-          <div class="schedule-col-header">Sun 13</div>
-          <div class="schedule-cell"><div class="schedule-cell-date">MON</div><div class="schedule-event mot">09:00 MOT  -  Brown</div><div class="schedule-event service">10:30 Service  -  Hill</div><div class="schedule-event repair">13:00 Brakes  -  Lee</div></div>
-          <div class="schedule-cell"><div class="schedule-cell-date">TUE</div><div class="schedule-event mot">08:30 MOT  -  Evans</div><div class="schedule-event service">11:00 Full Svc  -  Ford</div></div>
-          <div class="schedule-cell today"><div class="schedule-cell-date">WED &#9679;</div><div class="schedule-event mot">08:30 MOT  -  Thompson</div><div class="schedule-event service">09:15 Svc  -  Wilson</div><div class="schedule-event repair">10:00 Tyres  -  Clarke</div><div class="schedule-event repair">11:30 Brakes  -  Patel</div></div>
-          <div class="schedule-cell"><div class="schedule-cell-date">THU</div><div class="schedule-event service">09:00 Interim  -  King</div><div class="schedule-event mot">10:30 MOT  -  Nash</div><div class="schedule-event service">14:00 Major Svc  -  Moss</div></div>
-          <div class="schedule-cell"><div class="schedule-cell-date">FRI</div><div class="schedule-event mot">09:00 MOT  -  Yates</div><div class="schedule-event repair">11:00 Exhaust  -  Dean</div></div>
-          <div class="schedule-cell"><div class="schedule-cell-date">SAT</div><div class="schedule-event mot">09:30 MOT  -  Hunt</div><div class="schedule-event service">11:00 Service  -  Gray</div></div>
-          <div class="schedule-cell"><div class="schedule-cell-date">SUN</div><div style="color:var(--ca-text-light);font-size:11px;padding-top:4px;">Closed</div></div>
+        <div id="scheduleGrid" class="schedule-grid">
+          <div class="schedule-col-header" id="schHdr0">Mon</div>
+          <div class="schedule-col-header" id="schHdr1">Tue</div>
+          <div class="schedule-col-header" id="schHdr2">Wed</div>
+          <div class="schedule-col-header" id="schHdr3">Thu</div>
+          <div class="schedule-col-header" id="schHdr4">Fri</div>
+          <div class="schedule-col-header" id="schHdr5">Sat</div>
+          <div class="schedule-col-header" id="schHdr6">Sun</div>
+          <div class="schedule-cell" id="schCell0"><div class="schedule-cell-date" id="schDate0"></div></div>
+          <div class="schedule-cell" id="schCell1"><div class="schedule-cell-date" id="schDate1"></div></div>
+          <div class="schedule-cell" id="schCell2"><div class="schedule-cell-date" id="schDate2"></div></div>
+          <div class="schedule-cell" id="schCell3"><div class="schedule-cell-date" id="schDate3"></div></div>
+          <div class="schedule-cell" id="schCell4"><div class="schedule-cell-date" id="schDate4"></div></div>
+          <div class="schedule-cell" id="schCell5"><div class="schedule-cell-date" id="schDate5"></div></div>
+          <div class="schedule-cell" id="schCell6"><div class="schedule-cell-date" id="schDate6"></div></div>
         </div>
       </div>
 
-      <!-- == BOOKINGS == -->
+      <!-- == BOOKINGS<!-- == BOOKINGS == -->
       <div class="page" id="page-bookings">
         <button class="back-btn" onclick="navigate('dashboard', document.querySelector('.nav-item'))"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg> Back to Dashboard</button>
         <div class="page-header">
@@ -1703,15 +1612,15 @@
             <div class="page-header-sub">All upcoming and recent bookings</div>
           </div>
           <div class="page-header-actions">
-            <button class="btn btn-outline btn-sm">Export CSV</button>
+            <button class="btn btn-outline btn-sm" onclick="exportBookingsCSV()">Export CSV</button>
             <button class="btn btn-primary btn-sm" onclick="openNewBookingModal()">+ New Booking</button>
           </div>
         </div>
         <div class="filter-bar">
           <select><option>All Services</option><option>MOT</option><option>Full Service</option><option>Interim Service</option><option>Tyre Replacement</option><option>Brakes</option><option>Diagnostics</option></select>
           <select><option>All Statuses</option><option>Booked</option><option>In Progress</option><option>Completed</option><option>Cancelled</option></select>
-          <input type="date" value="2026-04-12">
-          <input type="text" placeholder="Search reg or name..." style="width:200px;">
+          <input type="date" id="bookingDateFilter" onchange="filterBookingsByDate()">
+          <input type="text" id="bookingSearch" placeholder="Search reg or name..." style="width:200px;" oninput="filterBookingsSearch()">
         </div>
         <div class="table-card">
           <table>
@@ -1728,16 +1637,7 @@
                 <th></th>
               </tr>
             </thead>
-            <tbody id="allBookingsTbody">
-              <tr><td><strong>#BK-1042</strong></td><td>12 Apr &middot; 08:30</td><td>Sarah Thompson</td><td><span class="vehicle-reg">AB21 XYZ</span></td><td>MOT Test</td><td>Mike Harris</td><td>&pound;54.85</td><td><span class="badge badge-success">Completed</span></td><td><button class="btn btn-ghost btn-xs">View</button></td></tr>
-              <tr><td><strong>#BK-1041</strong></td><td>12 Apr &middot; 09:15</td><td>Mark Wilson</td><td><span class="vehicle-reg">LD68 OPQ</span></td><td>Full Service</td><td>Jake Lewis</td><td>&pound;189.00</td><td><span class="badge badge-warning">In Progress</span></td><td><button class="btn btn-ghost btn-xs">View</button></td></tr>
-              <tr><td><strong>#BK-1040</strong></td><td>12 Apr &middot; 10:00</td><td>Emma Clarke</td><td><span class="vehicle-reg">MN19 RST</span></td><td>Tyre Replacement &times;4</td><td>Sam Patel</td><td>&pound;340.00</td><td><span class="badge badge-warning">In Progress</span></td><td><button class="btn btn-ghost btn-xs">View</button></td></tr>
-              <tr><td><strong>#BK-1039</strong></td><td>12 Apr &middot; 11:30</td><td>David Patel</td><td><span class="vehicle-reg">SV22 UVW</span></td><td>Brake Inspection</td><td>Mike Harris</td><td>&pound;45.00</td><td><span class="badge badge-muted">Waiting</span></td><td><button class="btn btn-ghost btn-xs">View</button></td></tr>
-              <tr><td><strong>#BK-1038</strong></td><td>12 Apr &middot; 13:00</td><td>Lisa Johnson</td><td><span class="vehicle-reg">YT71 FGH</span></td><td>MOT + Full Service</td><td>Jake Lewis</td><td>&pound;229.00</td><td><span class="badge badge-navy">Booked</span></td><td><button class="btn btn-ghost btn-xs">View</button></td></tr>
-              <tr><td><strong>#BK-1037</strong></td><td>12 Apr &middot; 14:30</td><td>Paul Matthews</td><td><span class="vehicle-reg">CE20 IJK</span></td><td>Cambelt Change</td><td>Sam Patel</td><td>&pound;380.00</td><td><span class="badge badge-navy">Booked</span></td><td><button class="btn btn-ghost btn-xs">View</button></td></tr>
-              <tr><td><strong>#BK-1036</strong></td><td>11 Apr &middot; 09:00</td><td>Frances Hunt</td><td><span class="vehicle-reg">RT20 BCD</span></td><td>Diagnostics</td><td>Mike Harris</td><td>&pound;75.00</td><td><span class="badge badge-success">Completed</span></td><td><button class="btn btn-ghost btn-xs">View</button></td></tr>
-              <tr><td><strong>#BK-1035</strong></td><td>11 Apr &middot; 11:00</td><td>Gordon Ramsay</td><td><span class="vehicle-reg">BF19 EFG</span></td><td>MOT Test</td><td>Jake Lewis</td><td>&pound;54.85</td><td><span class="badge badge-danger">Failed</span></td><td><button class="btn btn-ghost btn-xs">View</button></td></tr>
-            </tbody>
+            <tbody id="allBookingsTbody"><tr><td colspan="9" style="text-align:center;color:var(--ca-text-muted);padding:20px;">Loading...</td></tr></tbody>
           </table>
         </div>
       </div>
@@ -1751,334 +1651,72 @@
             <div class="page-header-sub">Live workshop job status</div>
           </div>
           <div class="page-header-actions">
-            <button class="btn btn-primary btn-sm">+ New Job Card</button>
+            <button class="btn btn-primary btn-sm" onclick="openNewBookingModal()">+ New Job Card</button>
           </div>
         </div>
-        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;">
+        <div id="jobsBoard" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;">
           <div>
-            <div style="font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;color:var(--ca-text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;padding:0 4px;">Waiting &middot; 2</div>
-            <div style="display:flex;flex-direction:column;gap:10px;">
-              <div class="info-card" style="border-top:3px solid var(--ca-silver-mid);">
-                <div class="flex-between mb-16" style="margin-bottom:10px;">
-                  <strong style="font-size:13px;">#BK-1039</strong>
-                  <span class="vehicle-reg">SV22 UVW</span>
-                </div>
-                <div style="font-size:14px;font-weight:600;color:var(--ca-text);margin-bottom:4px;">Brake Inspection</div>
-                <div style="font-size:12px;color:var(--ca-text-muted);margin-bottom:10px;">David Patel &middot; Bay 3</div>
-                <div style="font-size:12px;color:var(--ca-text-muted);margin-bottom:12px;">Booked: 11:30 &middot; Assigned: Mike Harris</div>
-                <button class="btn btn-secondary btn-xs" style="width:100%;">Start Job</button>
-              </div>
-              <div class="info-card" style="border-top:3px solid var(--ca-silver-mid);">
-                <div class="flex-between mb-16" style="margin-bottom:10px;">
-                  <strong style="font-size:13px;">#BK-1038</strong>
-                  <span class="vehicle-reg">YT71 FGH</span>
-                </div>
-                <div style="font-size:14px;font-weight:600;color:var(--ca-text);margin-bottom:4px;">MOT + Full Service</div>
-                <div style="font-size:12px;color:var(--ca-text-muted);margin-bottom:10px;">Lisa Johnson &middot; Bay 1</div>
-                <div style="font-size:12px;color:var(--ca-text-muted);margin-bottom:12px;">Booked: 13:00 &middot; Assigned: Jake Lewis</div>
-                <button class="btn btn-secondary btn-xs" style="width:100%;">Start Job</button>
-              </div>
+            <div style="font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;color:var(--ca-text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;padding:0 4px;">Waiting</div>
+            <div id="jobsWaiting" style="display:flex;flex-direction:column;gap:10px;">
+              <div class="info-card" style="text-align:center;color:var(--ca-text-muted);font-size:13px;padding:20px;">Loading...</div>
             </div>
           </div>
           <div>
-            <div style="font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;color:var(--ca-warning);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;padding:0 4px;">In Progress &middot; 2</div>
-            <div style="display:flex;flex-direction:column;gap:10px;">
-              <div class="info-card" style="border-top:3px solid #E59500;">
-                <div class="flex-between mb-16" style="margin-bottom:10px;">
-                  <strong style="font-size:13px;">#BK-1041</strong>
-                  <span class="vehicle-reg">LD68 OPQ</span>
-                </div>
-                <div style="font-size:14px;font-weight:600;color:var(--ca-text);margin-bottom:4px;">Full Service</div>
-                <div style="font-size:12px;color:var(--ca-text-muted);margin-bottom:6px;">Mark Wilson &middot; Bay 2</div>
-                <div style="font-size:12px;color:var(--ca-text-muted);margin-bottom:8px;">Started: 09:20 &middot; Jake Lewis</div>
-                <div style="font-size:11px;color:var(--ca-text-muted);margin-bottom:4px;">Progress</div>
-                <div class="progress-bar mb-16" style="margin-bottom:10px;"><div class="progress-fill amber" style="width:60%"></div></div>
-                <div style="font-size:11px;color:var(--ca-text-muted);">&#9888; Awaiting air filter  -  ordered</div>
-                <button class="btn btn-ghost btn-xs mt-16" style="width:100%;margin-top:10px;">Complete Job</button>
-              </div>
-              <div class="info-card" style="border-top:3px solid #E59500;">
-                <div class="flex-between mb-16" style="margin-bottom:10px;">
-                  <strong style="font-size:13px;">#BK-1040</strong>
-                  <span class="vehicle-reg">MN19 RST</span>
-                </div>
-                <div style="font-size:14px;font-weight:600;color:var(--ca-text);margin-bottom:4px;">Tyre Replacement &times;4</div>
-                <div style="font-size:12px;color:var(--ca-text-muted);margin-bottom:6px;">Emma Clarke &middot; Bay 3</div>
-                <div style="font-size:12px;color:var(--ca-text-muted);margin-bottom:8px;">Started: 10:05 &middot; Sam Patel</div>
-                <div style="font-size:11px;color:var(--ca-text-muted);margin-bottom:4px;">Progress</div>
-                <div class="progress-bar mb-16" style="margin-bottom:10px;"><div class="progress-fill amber" style="width:75%"></div></div>
-                <button class="btn btn-ghost btn-xs mt-16" style="width:100%;margin-top:10px;">Complete Job</button>
-              </div>
+            <div style="font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;color:var(--ca-warning);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;padding:0 4px;">In Progress</div>
+            <div id="jobsInProgress" style="display:flex;flex-direction:column;gap:10px;">
+              <div class="info-card" style="text-align:center;color:var(--ca-text-muted);font-size:13px;padding:20px;">Loading...</div>
             </div>
           </div>
           <div>
-            <div style="font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;color:var(--ca-success);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;padding:0 4px;">Completed Today &middot; 1</div>
-            <div style="display:flex;flex-direction:column;gap:10px;">
-              <div class="info-card" style="border-top:3px solid var(--ca-success);">
-                <div class="flex-between mb-16" style="margin-bottom:10px;">
-                  <strong style="font-size:13px;">#BK-1042</strong>
-                  <span class="vehicle-reg">AB21 XYZ</span>
-                </div>
-                <div style="font-size:14px;font-weight:600;color:var(--ca-text);margin-bottom:4px;">MOT Test</div>
-                <div style="font-size:12px;color:var(--ca-text-muted);margin-bottom:6px;">Sarah Thompson &middot; Bay 1</div>
-                <div style="font-size:12px;color:var(--ca-text-muted);margin-bottom:6px;">Completed: 09:02 &middot; Mike Harris</div>
-                <span class="badge badge-success">PASS</span>
-                <div style="margin-top:10px;"><button class="btn btn-outline btn-xs" style="width:100%;">Print Certificate</button></div>
-              </div>
+            <div style="font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;color:var(--ca-success);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;padding:0 4px;">Completed Today</div>
+            <div id="jobsCompleted" style="display:flex;flex-direction:column;gap:10px;">
+              <div class="info-card" style="text-align:center;color:var(--ca-text-muted);font-size:13px;padding:20px;">Loading...</div>
             </div>
           </div>
         </div>
       </div>
-
-
       <!-- == BAYS == -->
       <div class="page" id="page-bays">
         <button class="back-btn" onclick="navigate('dashboard', document.querySelector('.nav-item'))"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg> Back to Dashboard</button>
         <div class="page-header">
           <div>
-            <div class="page-header-title">Bay Status</div>
-            <div class="page-header-sub">Live view of all workshop bays  -  read only, managed by technicians</div>
+            <div class="page-header-title">Bay Management</div>
+            <div class="page-header-sub">Manage and update all workshop bays in real time</div>
           </div>
           <div class="page-header-actions">
-            <div style="display:flex;align-items:center;gap:8px;padding:6px 14px;background:rgba(232,87,10,0.1);border:1px solid rgba(232,87,10,0.3);border-radius:8px;">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="var(--ca-red)"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
-              <span style="font-size:12px;color:var(--ca-red);font-weight:600;">View Only  -  Bay assignments are locked</span>
-            </div>
+            <button class="btn btn-primary btn-sm" onclick="openAddBayModal()">+ Add Bay</button>
           </div>
-        </div>
-
-        <div class="bay-locked-notice" style="margin-bottom:20px;">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
-          Bay assignments are managed automatically by the booking system. Contact your system administrator to make manual changes.
         </div>
 
         <div class="stats-grid" style="grid-template-columns:repeat(4,1fr);margin-bottom:24px;">
-          <div class="stat-card">
-            <div class="stat-label">Total Bays</div>
-            <div class="stat-value">4</div>
-            <div class="stat-change">Workshop capacity</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-label">Occupied</div>
-            <div class="stat-value" style="color:var(--ca-danger);">2</div>
-            <div class="stat-change down">Bays 1 &amp; 2 in use</div>
-          </div>
-          <div class="stat-card green">
-            <div class="stat-label">Available</div>
-            <div class="stat-value" style="color:var(--ca-success);">2</div>
-            <div class="stat-change up">Bays 3 &amp; 4 free</div>
-          </div>
-          <div class="stat-card amber">
-            <div class="stat-label">Utilisation</div>
-            <div class="stat-value">50%</div>
-            <div class="stat-change">Today so far</div>
-          </div>
+          <div class="stat-card"><div class="stat-label">Total Bays</div><div class="stat-value" id="bayStatTotal">-</div></div>
+          <div class="stat-card"><div class="stat-label">Occupied</div><div class="stat-value" id="bayStatOccupied" style="color:var(--ca-danger);">-</div></div>
+          <div class="stat-card green"><div class="stat-label">Available</div><div class="stat-value" id="bayStatAvailable" style="color:var(--ca-success);">-</div></div>
+          <div class="stat-card amber"><div class="stat-label">Utilisation</div><div class="stat-value" id="bayStatUtil">-</div></div>
         </div>
 
-        <div class="bay-grid">
-
-          <!-- BAY 1 -->
-          <div class="bay-card bay-occupied">
-            <div class="bay-card-header">
-              <div>
-                <div class="bay-card-title">Bay 1</div>
-                <div class="bay-card-type">MOT Bay</div>
-              </div>
-              <span class="badge badge-danger" style="font-size:12px;padding:5px 12px;">
-                <span class="bay-status-dot" style="background:var(--ca-danger);"></span>Occupied
-              </span>
-            </div>
-            <div class="bay-card-body">
-              <div class="bay-info-row">
-                <span class="bay-info-label">Current Job</span>
-                <span class="bay-info-value">#BK-1041  -  Full Service</span>
-              </div>
-              <div class="bay-info-row">
-                <span class="bay-info-label">Customer</span>
-                <span class="bay-info-value">Mark Wilson</span>
-              </div>
-              <div class="bay-info-row">
-                <span class="bay-info-label">Vehicle</span>
-                <span class="bay-info-value"><span class="vehicle-reg" style="font-size:12px;">LD68 OPQ</span></span>
-              </div>
-              <div class="bay-info-row">
-                <span class="bay-info-label">Technician</span>
-                <span class="bay-info-value">Jake Lewis</span>
-              </div>
-              <div class="bay-info-row">
-                <span class="bay-info-label">Started</span>
-                <span class="bay-info-value">09:20</span>
-              </div>
-              <div class="bay-info-row">
-                <span class="bay-info-label">Est. Finish</span>
-                <span class="bay-info-value">12:00</span>
-              </div>
-              <div style="margin-top:12px;">
-                <div style="font-size:11px;color:var(--ca-text-muted);margin-bottom:5px;">Job Progress</div>
-                <div class="progress-bar"><div class="progress-fill" style="width:60%;background:var(--ca-warning);"></div></div>
-                <div style="font-size:11px;color:var(--ca-text-muted);margin-top:4px;">&#9888; Awaiting air filter  -  ordered</div>
-              </div>
-              <div class="bay-locked-notice" style="margin-top:12px;">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
-                Bay assignment locked  -  cannot be edited
-              </div>
-            </div>
-          </div>
-
-          <!-- BAY 2 -->
-          <div class="bay-card bay-progress">
-            <div class="bay-card-header">
-              <div>
-                <div class="bay-card-title">Bay 2</div>
-                <div class="bay-card-type">Tyres &amp; Brakes</div>
-              </div>
-              <span class="badge badge-warning" style="font-size:12px;padding:5px 12px;">
-                <span class="bay-status-dot" style="background:var(--ca-warning);"></span>In Progress
-              </span>
-            </div>
-            <div class="bay-card-body">
-              <div class="bay-info-row">
-                <span class="bay-info-label">Current Job</span>
-                <span class="bay-info-value">#BK-1040  -  Tyre Replacement</span>
-              </div>
-              <div class="bay-info-row">
-                <span class="bay-info-label">Customer</span>
-                <span class="bay-info-value">Emma Clarke</span>
-              </div>
-              <div class="bay-info-row">
-                <span class="bay-info-label">Vehicle</span>
-                <span class="bay-info-value"><span class="vehicle-reg" style="font-size:12px;">MN19 RST</span></span>
-              </div>
-              <div class="bay-info-row">
-                <span class="bay-info-label">Technician</span>
-                <span class="bay-info-value">Sam Patel</span>
-              </div>
-              <div class="bay-info-row">
-                <span class="bay-info-label">Started</span>
-                <span class="bay-info-value">10:05</span>
-              </div>
-              <div class="bay-info-row">
-                <span class="bay-info-label">Est. Finish</span>
-                <span class="bay-info-value">11:30</span>
-              </div>
-              <div style="margin-top:12px;">
-                <div style="font-size:11px;color:var(--ca-text-muted);margin-bottom:5px;">Job Progress</div>
-                <div class="progress-bar"><div class="progress-fill" style="width:75%;background:var(--ca-warning);"></div></div>
-              </div>
-              <div class="bay-locked-notice" style="margin-top:12px;">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
-                Bay assignment locked  -  cannot be edited
-              </div>
-            </div>
-          </div>
-
-          <!-- BAY 3 -->
-          <div class="bay-card bay-available">
-            <div class="bay-card-header">
-              <div>
-                <div class="bay-card-title">Bay 3</div>
-                <div class="bay-card-type">General Servicing</div>
-              </div>
-              <span class="badge badge-success" style="font-size:12px;padding:5px 12px;">
-                <span class="bay-status-dot" style="background:var(--ca-success);"></span>Available
-              </span>
-            </div>
-            <div class="bay-card-body">
-              <div class="bay-info-row">
-                <span class="bay-info-label">Current Job</span>
-                <span class="bay-info-value" style="color:var(--ca-text-muted);">None  -  Bay clear</span>
-              </div>
-              <div class="bay-info-row">
-                <span class="bay-info-label">Last Completed</span>
-                <span class="bay-info-value">MOT  -  AB21 XYZ</span>
-              </div>
-              <div class="bay-info-row">
-                <span class="bay-info-label">Completed At</span>
-                <span class="bay-info-value">09:02 today</span>
-              </div>
-              <div class="bay-info-row">
-                <span class="bay-info-label">Next Booking</span>
-                <span class="bay-info-value">11:30  -  Brake Inspection</span>
-              </div>
-              <div class="bay-info-row">
-                <span class="bay-info-label">Assigned Tech</span>
-                <span class="bay-info-value" style="color:var(--ca-text-muted);">Unassigned</span>
-              </div>
-              <div style="margin-top:12px;padding:10px;background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.2);border-radius:8px;font-size:12px;color:var(--ca-success);">
-                Ready for next job at 11:30
-              </div>
-              <div class="bay-locked-notice" style="margin-top:10px;">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
-                Bay assignment locked  -  cannot be edited
-              </div>
-            </div>
-          </div>
-
-          <!-- BAY 4 -->
-          <div class="bay-card bay-available">
-            <div class="bay-card-header">
-              <div>
-                <div class="bay-card-title">Bay 4</div>
-                <div class="bay-card-type">Diagnostics</div>
-              </div>
-              <span class="badge badge-success" style="font-size:12px;padding:5px 12px;">
-                <span class="bay-status-dot" style="background:var(--ca-success);"></span>Available
-              </span>
-            </div>
-            <div class="bay-card-body">
-              <div class="bay-info-row">
-                <span class="bay-info-label">Current Job</span>
-                <span class="bay-info-value" style="color:var(--ca-text-muted);">None  -  Bay clear</span>
-              </div>
-              <div class="bay-info-row">
-                <span class="bay-info-label">Last Completed</span>
-                <span class="bay-info-value">Diagnostics  -  RT20 BCD</span>
-              </div>
-              <div class="bay-info-row">
-                <span class="bay-info-label">Completed At</span>
-                <span class="bay-info-value">Yesterday 17:00</span>
-              </div>
-              <div class="bay-info-row">
-                <span class="bay-info-label">Next Booking</span>
-                <span class="bay-info-value">13:00  -  MOT + Full Service</span>
-              </div>
-              <div class="bay-info-row">
-                <span class="bay-info-label">Assigned Tech</span>
-                <span class="bay-info-value" style="color:var(--ca-text-muted);">Unassigned</span>
-              </div>
-              <div style="margin-top:12px;padding:10px;background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.2);border-radius:8px;font-size:12px;color:var(--ca-success);">
-                Ready for next job at 13:00
-              </div>
-              <div class="bay-locked-notice" style="margin-top:10px;">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
-                Bay assignment locked  -  cannot be edited
-              </div>
-            </div>
-          </div>
-
+        <div id="baysGrid" class="bay-grid">
+          <div class="info-card" style="grid-column:span 2;text-align:center;color:var(--ca-text-muted);padding:32px;">Loading bays...</div>
         </div>
 
         <div class="table-card">
           <div class="table-header">
             <div>
               <div class="table-title">Today's Bay Schedule</div>
-              <div class="table-subtitle">All jobs assigned to bays  -  view only</div>
+              <div class="table-subtitle">All jobs assigned across all bays today</div>
             </div>
           </div>
           <table>
             <thead>
-              <tr><th>Time</th><th>Bay</th><th>Job Ref</th><th>Customer</th><th>Vehicle</th><th>Service</th><th>Technician</th><th>Status</th></tr>
+              <tr><th>Time</th><th>Bay</th><th>Customer</th><th>Vehicle</th><th>Service</th><th>Technician</th><th>Status</th><th>Actions</th></tr>
             </thead>
-            <tbody>
-              <tr><td>08:30</td><td><strong>Bay 3</strong></td><td>#BK-1042</td><td>Sarah Thompson</td><td><span class="vehicle-reg">AB21 XYZ</span></td><td>MOT Test</td><td>Mike Harris</td><td><span class="badge badge-success">Completed</span></td></tr>
-              <tr><td>09:15</td><td><strong>Bay 1</strong></td><td>#BK-1041</td><td>Mark Wilson</td><td><span class="vehicle-reg">LD68 OPQ</span></td><td>Full Service</td><td>Jake Lewis</td><td><span class="badge badge-warning">In Progress</span></td></tr>
-              <tr><td>10:00</td><td><strong>Bay 2</strong></td><td>#BK-1040</td><td>Emma Clarke</td><td><span class="vehicle-reg">MN19 RST</span></td><td>Tyre Replacement</td><td>Sam Patel</td><td><span class="badge badge-warning">In Progress</span></td></tr>
-              <tr><td>11:30</td><td><strong>Bay 3</strong></td><td>#BK-1039</td><td>David Patel</td><td><span class="vehicle-reg">SV22 UVW</span></td><td>Brake Inspection</td><td>Mike Harris</td><td><span class="badge badge-muted">Waiting</span></td></tr>
-              <tr><td>13:00</td><td><strong>Bay 4</strong></td><td>#BK-1038</td><td>Lisa Johnson</td><td><span class="vehicle-reg">YT71 FGH</span></td><td>MOT + Full Service</td><td>Jake Lewis</td><td><span class="badge badge-navy">Booked</span></td></tr>
-              <tr><td>14:30</td><td><strong>Bay 1</strong></td><td>#BK-1037</td><td>Paul Matthews</td><td><span class="vehicle-reg">CE20 IJK</span></td><td>Cambelt Change</td><td>Sam Patel</td><td><span class="badge badge-navy">Booked</span></td></tr>
+            <tbody id="bayScheduleTbody">
+              <tr><td colspan="8" style="text-align:center;color:var(--ca-text-muted);padding:20px;">Loading...</td></tr>
             </tbody>
           </table>
         </div>
       </div>
+
 
       <!-- == VEHICLES == -->
       <div class="page" id="page-vehicles">
@@ -2089,7 +1727,7 @@
             <div class="page-header-sub">All vehicles registered with the garage</div>
           </div>
           <div class="page-header-actions">
-            <button class="btn btn-primary btn-sm">+ Add Vehicle</button>
+            <button class="btn btn-primary btn-sm" onclick="openAddVehicleModal()">+ Add Vehicle</button>
           </div>
         </div>
         <div class="filter-bar">
@@ -2101,15 +1739,7 @@
             <thead>
               <tr><th>Registration</th><th>Make / Model</th><th>Year</th><th>Colour</th><th>Owner</th><th>MOT Expiry</th><th>Last Visit</th><th>History</th></tr>
             </thead>
-            <tbody id="vehiclesTbody">
-              <tr><td><span class="vehicle-reg">AB21 XYZ</span></td><td><strong>Ford Focus</strong> 1.0 EcoBoost</td><td>2021</td><td>Blue</td><td>Sarah Thompson</td><td><span class="badge badge-success">Apr 2027</span></td><td>12 Apr 2026</td><td><button class="btn btn-ghost btn-xs">View</button></td></tr>
-              <tr><td><span class="vehicle-reg">LD68 OPQ</span></td><td><strong>Vauxhall Astra</strong> 1.4T</td><td>2018</td><td>White</td><td>Mark Wilson</td><td><span class="badge badge-warning">Jun 2026</span></td><td>12 Apr 2026</td><td><button class="btn btn-ghost btn-xs">View</button></td></tr>
-              <tr><td><span class="vehicle-reg">MN19 RST</span></td><td><strong>Toyota Corolla</strong> 1.8 Hybrid</td><td>2019</td><td>Silver</td><td>Emma Clarke</td><td><span class="badge badge-danger">May 2026</span></td><td>12 Apr 2026</td><td><button class="btn btn-ghost btn-xs">View</button></td></tr>
-              <tr><td><span class="vehicle-reg">SV22 UVW</span></td><td><strong>BMW 3 Series</strong> 2.0d</td><td>2022</td><td>Black</td><td>David Patel</td><td><span class="badge badge-success">Oct 2027</span></td><td>12 Apr 2026</td><td><button class="btn btn-ghost btn-xs">View</button></td></tr>
-              <tr><td><span class="vehicle-reg">YT71 FGH</span></td><td><strong>VW Golf</strong> 1.6 TDI</td><td>2021</td><td>Grey</td><td>Lisa Johnson</td><td><span class="badge badge-warning">Jul 2026</span></td><td>12 Apr 2026</td><td><button class="btn btn-ghost btn-xs">View</button></td></tr>
-              <tr><td><span class="vehicle-reg">CE20 IJK</span></td><td><strong>Nissan Qashqai</strong> 1.5 dCi</td><td>2020</td><td>Red</td><td>Paul Matthews</td><td><span class="badge badge-success">Nov 2026</span></td><td>12 Apr 2026</td><td><button class="btn btn-ghost btn-xs">View</button></td></tr>
-              <tr><td><span class="vehicle-reg">BK67 LMN</span></td><td><strong>Ford Fiesta</strong> 1.0</td><td>2017</td><td>Orange</td><td>James Hartley</td><td><span class="badge badge-danger">20 Apr 2026</span></td><td>14 Feb 2026</td><td><button class="btn btn-ghost btn-xs">View</button></td></tr>
-            </tbody>
+            <tbody id="vehiclesTbody"><tr><td colspan="8" style="text-align:center;color:var(--ca-text-muted);padding:20px;">Loading...</td></tr></tbody>
           </table>
         </div>
       </div>
@@ -2120,11 +1750,11 @@
         <div class="page-header">
           <div>
             <div class="page-header-title">Customers</div>
-            <div class="page-header-sub">All registered customers  -  284 total</div>
+            <div class="page-header-sub">All registered customers</div>
           </div>
           <div class="page-header-actions">
             <button class="btn btn-outline btn-sm">Import CSV</button>
-            <button class="btn btn-primary btn-sm">+ New Customer</button>
+            <button class="btn btn-primary btn-sm" onclick="openNewCustomerModal()">+ New Customer</button>
           </div>
         </div>
         <div class="filter-bar">
@@ -2136,48 +1766,7 @@
             <thead>
               <tr><th>Customer</th><th>Contact</th><th>Vehicles</th><th>Total Visits</th><th>Total Spend</th><th>Last Visit</th><th>MOT Due</th><th></th></tr>
             </thead>
-            <tbody id="customersTbody">
-              <tr>
-                <td><div style="display:flex;align-items:center;gap:10px;"><div class="user-avatar" style="width:30px;height:30px;font-size:11px;">ST</div><div><div class="fw-600">Sarah Thompson</div></div></div></td>
-                <td><div style="font-size:12px;">sarah.t@email.com</div><div style="font-size:12px;color:var(--ca-text-muted);">07700 123456</div></td>
-                <td>1 vehicle</td>
-                <td>8 visits</td>
-                <td><strong>&pound;640</strong></td>
-                <td>12 Apr 2026</td>
-                <td><span class="badge badge-success">Apr 2027</span></td>
-                <td><button class="btn btn-ghost btn-xs">View</button></td>
-              </tr>
-              <tr>
-                <td><div style="display:flex;align-items:center;gap:10px;"><div class="user-avatar" style="width:30px;height:30px;font-size:11px;background:#0C5FA5;">MW</div><div><div class="fw-600">Mark Wilson</div></div></div></td>
-                <td><div style="font-size:12px;">m.wilson@gmail.com</div><div style="font-size:12px;color:var(--ca-text-muted);">07711 654321</div></td>
-                <td>2 vehicles</td>
-                <td>12 visits</td>
-                <td><strong>&pound;1,240</strong></td>
-                <td>12 Apr 2026</td>
-                <td><span class="badge badge-warning">Jun 2026</span></td>
-                <td><button class="btn btn-ghost btn-xs">View</button></td>
-              </tr>
-              <tr>
-                <td><div style="display:flex;align-items:center;gap:10px;"><div class="user-avatar" style="width:30px;height:30px;font-size:11px;background:#127C3B;">JH</div><div><div class="fw-600">James Hartley</div></div></div></td>
-                <td><div style="font-size:12px;">james.h@outlook.com</div><div style="font-size:12px;color:var(--ca-text-muted);">07722 987654</div></td>
-                <td>1 vehicle</td>
-                <td>4 visits</td>
-                <td><strong>&pound;380</strong></td>
-                <td>14 Feb 2026</td>
-                <td><span class="badge badge-danger">20 Apr 2026</span></td>
-                <td><button class="btn btn-ghost btn-xs">View</button></td>
-              </tr>
-              <tr>
-                <td><div style="display:flex;align-items:center;gap:10px;"><div class="user-avatar" style="width:30px;height:30px;font-size:11px;background:#884AB7;">EC</div><div><div class="fw-600">Emma Clarke</div></div></div></td>
-                <td><div style="font-size:12px;">emma.c@icloud.com</div><div style="font-size:12px;color:var(--ca-text-muted);">07733 246810</div></td>
-                <td>1 vehicle</td>
-                <td>6 visits</td>
-                <td><strong>&pound;820</strong></td>
-                <td>12 Apr 2026</td>
-                <td><span class="badge badge-danger">May 2026</span></td>
-                <td><button class="btn btn-ghost btn-xs">View</button></td>
-              </tr>
-            </tbody>
+            <tbody id="customersTbody"><tr><td colspan="8" style="text-align:center;color:var(--ca-text-muted);padding:20px;">Loading...</td></tr></tbody>
           </table>
         </div>
       </div>
@@ -2200,18 +1789,18 @@
         <div class="stats-grid" style="grid-template-columns:repeat(3,1fr);">
           <div class="stat-card green">
             <div class="stat-label">Paid This Month</div>
-            <div class="stat-value">&pound;12,480</div>
-            <div class="stat-change up">&#8593; 32 invoices settled</div>
+            <div class="stat-value" id="invPaidTotal">-</div>
+            <div class="stat-change" id="invPaidCount">Loading...</div>
           </div>
           <div class="stat-card amber">
             <div class="stat-label">Outstanding</div>
-            <div class="stat-value">&pound;2,340</div>
-            <div class="stat-change">7 invoices pending</div>
+            <div class="stat-value" id="invPendingTotal">-</div>
+            <div class="stat-change" id="invPendingCount">Loading...</div>
           </div>
           <div class="stat-card">
             <div class="stat-label">Overdue</div>
-            <div class="stat-value">&pound;780</div>
-            <div class="stat-change down">&#8595; 3 invoices overdue</div>
+            <div class="stat-value" id="invOverdueTotal">-</div>
+            <div class="stat-change down" id="invOverdueCount">Loading...</div>
           </div>
         </div>
 
@@ -2242,68 +1831,7 @@
                 <th>Actions</th>
               </tr>
             </thead>
-            <tbody id="invoiceTableBody">
-              <tr data-status="Paid" data-month="2026-04" data-search="inv-0842 sarah thompson ab21 xyz mot test">
-                <td><strong>INV-0842</strong></td><td>12 Apr 2026</td><td>Sarah Thompson</td>
-                <td><span class="vehicle-reg">AB21 XYZ</span></td><td>MOT Test</td>
-                <td>&pound;45.71</td><td>&pound;9.14</td><td><strong>&pound;54.85</strong></td>
-                <td><span class="badge badge-success">Paid</span></td>
-                <td><div style="display:flex;gap:4px;">
-                  <button class="btn btn-ghost btn-xs" onclick="printInvoice('INV-0842','Sarah Thompson','AB21 XYZ','MOT Test','45.71','9.14','54.85','Paid','12 Apr 2026')">Print</button>
-                  <button class="btn btn-outline btn-xs" onclick="sendInvoice('INV-0842','Sarah Thompson','sarah.t@email.com')">Send</button>
-                </div></td>
-              </tr>
-              <tr data-status="Paid" data-month="2026-04" data-search="inv-0841 marcus green rt20 bcd diagnostics">
-                <td><strong>INV-0841</strong></td><td>11 Apr 2026</td><td>Marcus Green</td>
-                <td><span class="vehicle-reg">RT20 BCD</span></td><td>Diagnostics</td>
-                <td>&pound;195.00</td><td>&pound;39.00</td><td><strong>&pound;234.00</strong></td>
-                <td><span class="badge badge-success">Paid</span></td>
-                <td><div style="display:flex;gap:4px;">
-                  <button class="btn btn-ghost btn-xs" onclick="printInvoice('INV-0841','Marcus Green','RT20 BCD','Diagnostics','195.00','39.00','234.00','Paid','11 Apr 2026')">Print</button>
-                  <button class="btn btn-outline btn-xs" onclick="sendInvoice('INV-0841','Marcus Green','m.green@email.com')">Send</button>
-                </div></td>
-              </tr>
-              <tr data-status="Pending" data-month="2026-04" data-search="inv-0840 frances hunt rt20 bcd full service">
-                <td><strong>INV-0840</strong></td><td>10 Apr 2026</td><td>Frances Hunt</td>
-                <td><span class="vehicle-reg">RT20 BCD</span></td><td>Full Service</td>
-                <td>&pound;157.50</td><td>&pound;31.50</td><td><strong>&pound;189.00</strong></td>
-                <td><span class="badge badge-warning">Pending</span></td>
-                <td><div style="display:flex;gap:4px;">
-                  <button class="btn btn-ghost btn-xs" onclick="printInvoice('INV-0840','Frances Hunt','RT20 BCD','Full Service','157.50','31.50','189.00','Pending','10 Apr 2026')">Print</button>
-                  <button class="btn btn-primary btn-xs" onclick="sendInvoice('INV-0840','Frances Hunt','f.hunt@email.com')">Send</button>
-                </div></td>
-              </tr>
-              <tr data-status="Overdue" data-month="2026-04" data-search="inv-0838 gordon ramsay bf19 efg mot repairs">
-                <td><strong>INV-0838</strong></td><td>5 Apr 2026</td><td>Gordon Ramsay</td>
-                <td><span class="vehicle-reg">BF19 EFG</span></td><td>MOT + Repairs</td>
-                <td>&pound;400.00</td><td>&pound;80.00</td><td><strong>&pound;480.00</strong></td>
-                <td><span class="badge badge-danger">Overdue</span></td>
-                <td><div style="display:flex;gap:4px;">
-                  <button class="btn btn-ghost btn-xs" onclick="printInvoice('INV-0838','Gordon Ramsay','BF19 EFG','MOT + Repairs','400.00','80.00','480.00','Overdue','5 Apr 2026')">Print</button>
-                  <button class="btn btn-danger btn-xs" onclick="sendInvoice('INV-0838','Gordon Ramsay','g.ramsay@email.com')">Chase</button>
-                </div></td>
-              </tr>
-              <tr data-status="Paid" data-month="2026-03" data-search="inv-0831 mark wilson ld68 opq interim service">
-                <td><strong>INV-0831</strong></td><td>28 Mar 2026</td><td>Mark Wilson</td>
-                <td><span class="vehicle-reg">LD68 OPQ</span></td><td>Interim Service</td>
-                <td>&pound;99.17</td><td>&pound;19.83</td><td><strong>&pound;119.00</strong></td>
-                <td><span class="badge badge-success">Paid</span></td>
-                <td><div style="display:flex;gap:4px;">
-                  <button class="btn btn-ghost btn-xs" onclick="printInvoice('INV-0831','Mark Wilson','LD68 OPQ','Interim Service','99.17','19.83','119.00','Paid','28 Mar 2026')">Print</button>
-                  <button class="btn btn-outline btn-xs" onclick="sendInvoice('INV-0831','Mark Wilson','m.wilson@gmail.com')">Send</button>
-                </div></td>
-              </tr>
-              <tr data-status="Pending" data-month="2026-03" data-search="inv-0829 emma clarke mn19 rst tyre replacement">
-                <td><strong>INV-0829</strong></td><td>25 Mar 2026</td><td>Emma Clarke</td>
-                <td><span class="vehicle-reg">MN19 RST</span></td><td>Tyre Replacement x4</td>
-                <td>&pound;283.33</td><td>&pound;56.67</td><td><strong>&pound;340.00</strong></td>
-                <td><span class="badge badge-warning">Pending</span></td>
-                <td><div style="display:flex;gap:4px;">
-                  <button class="btn btn-ghost btn-xs" onclick="printInvoice('INV-0829','Emma Clarke','MN19 RST','Tyre Replacement x4','283.33','56.67','340.00','Pending','25 Mar 2026')">Print</button>
-                  <button class="btn btn-primary btn-xs" onclick="sendInvoice('INV-0829','Emma Clarke','emma.c@icloud.com')">Send</button>
-                </div></td>
-              </tr>
-            </tbody>
+            <tbody id="invoiceTableBody"><tr><td colspan="10" style="text-align:center;color:var(--ca-text-muted);padding:20px;">Loading...</td></tr></tbody>
           </table>
         </div>
       </div>
@@ -2323,9 +1851,9 @@
           </div>
         </div>
         <div class="stats-grid">
-          <div class="stat-card"><div class="stat-label">Total Revenue</div><div class="stat-value">&pound;18,420</div><div class="stat-change up">&#8593; 14% vs last month</div></div>
-          <div class="stat-card green"><div class="stat-label">MOT Pass Rate</div><div class="stat-value">91%</div><div class="stat-change up">&#8593; 3% vs last month</div></div>
-          <div class="stat-card amber"><div class="stat-label">Avg Job Value</div><div class="stat-value">&pound;163</div><div class="stat-change up">&#8593; &pound;12 vs last month</div></div>
+          <div class="stat-card"><div class="stat-label">Total Revenue</div><div class="stat-value" id="rptRevenue">-</div><div class="stat-change up">&#8593; 14% vs last month</div></div>
+          <div class="stat-card green"><div class="stat-label">MOT Pass Rate</div><div class="stat-value" id="rptMotPass">-</div><div class="stat-change up">&#8593; 3% vs last month</div></div>
+          <div class="stat-card amber"><div class="stat-label">Avg Job Value</div><div class="stat-value" id="rptAvgJob">-</div><div class="stat-change up">&#8593; &pound;12 vs last month</div></div>
           <div class="stat-card blue"><div class="stat-label">Customer Rating</div><div class="stat-value">4.8&#9733;</div><div class="stat-change up">48 reviews this month</div></div>
         </div>
         <div class="grid-2">
@@ -2344,11 +1872,7 @@
             <div class="table-header"><div class="table-title">Top Performing Technicians</div></div>
             <table>
               <thead><tr><th>Technician</th><th>Jobs</th><th>Revenue</th><th>Rating</th></tr></thead>
-              <tbody>
-                <tr><td><div style="display:flex;align-items:center;gap:8px;"><div class="user-avatar" style="width:26px;height:26px;font-size:10px;">MH</div>Mike Harris</div></td><td>42</td><td>&pound;6,840</td><td>4.9&#9733;</td></tr>
-                <tr><td><div style="display:flex;align-items:center;gap:8px;"><div class="user-avatar" style="width:26px;height:26px;font-size:10px;background:#0C5FA5;">JL</div>Jake Lewis</div></td><td>38</td><td>&pound;6,120</td><td>4.8&#9733;</td></tr>
-                <tr><td><div style="display:flex;align-items:center;gap:8px;"><div class="user-avatar" style="width:26px;height:26px;font-size:10px;background:#127C3B;">SP</div>Sam Patel</div></td><td>33</td><td>&pound;5,460</td><td>4.7&#9733;</td></tr>
-              </tbody>
+              <tbody id="rptTechTbody"><tr><td colspan="4" style="text-align:center;color:var(--ca-text-muted);padding:20px;">Loading...</td></tr></tbody>
             </table>
           </div>
         </div>
@@ -2373,14 +1897,14 @@
           <div class="grid-2">
             <div class="info-card">
               <div class="info-card-title">Garage Details</div>
-              <div class="form-group"><label>Garage Name</label><input type="text" value="Speedy Tyres Manchester"></div>
-              <div class="form-group"><label>Address</label><input type="text" value="14 Station Road, Manchester, M1 4AB"></div>
+              <div class="form-group"><label>Garage Name</label><input type="text" id="settGarageName" value=""></div>
+              <div class="form-group"><label>Address</label><input type="text" id="settAddress" value=""></div>
               <div class="form-row">
-                <div class="form-group"><label>Phone</label><input type="text" value="0161 234 5678"></div>
-                <div class="form-group"><label>Email</label><input type="email" value="info@speedytyres.co.uk"></div>
+                <div class="form-group"><label>Phone</label><input type="text" id="settPhone" value=""></div>
+                <div class="form-group"><label>Email</label><input type="email" id="settEmail" value=""></div>
               </div>
-              <div class="form-group"><label>Compare Automotive Profile URL</label><input type="text" value="compareautomotive.co.uk/garages/speedy-tyres-manchester"></div>
-              <button class="btn btn-primary btn-sm">Save Changes</button>
+              <div class="form-group"><label>Compare Automotive Profile URL</label><input type="text" id="settUrl" value=""></div>
+              <button class="btn btn-primary btn-sm" onclick="saveGarageSettings()">Save Changes</button>
             </div>
             <div class="info-card">
               <div class="info-card-title">Opening Hours</div>
@@ -2390,7 +1914,7 @@
                 <div class="flex-between" style="font-size:13px;"><span>Sunday</span><input type="text" value="Closed" style="width:120px;height:32px;border:1.5px solid var(--ca-border);border-radius:6px;padding:0 10px;font-size:13px;font-family:'Inter',sans-serif;text-align:center;background:var(--ca-navy);color:var(--ca-text);"></div>
               </div>
               <div class="form-group mt-16" style="margin-top:16px;"><label>Number of Bays</label><input type="number" value="4" style="width:80px;background:var(--ca-navy);color:var(--ca-text);border:1px solid var(--ca-border);"></div>
-              <button class="btn btn-primary btn-sm">Save Hours</button>
+              <button class="btn btn-primary btn-sm" onclick="saveGarageSettings()">Save Hours</button>
             </div>
           </div>
         </div>
@@ -2402,13 +1926,7 @@
             </div>
             <table>
               <thead><tr><th>Name</th><th>Role</th><th>Email</th><th>Last Login</th><th>Status</th><th></th></tr></thead>
-              <tbody>
-                <tr><td><div style="display:flex;align-items:center;gap:8px;"><div class="user-avatar" style="width:28px;height:28px;font-size:10px;">JD</div>John Davies</div></td><td>Manager</td><td>john.d@speedytyres.co.uk</td><td>Today 08:15</td><td><span class="badge badge-success">Active</span></td><td><button class="btn btn-ghost btn-xs">Edit</button></td></tr>
-                <tr><td><div style="display:flex;align-items:center;gap:8px;"><div class="user-avatar" style="width:28px;height:28px;font-size:10px;background:#0C5FA5;">MH</div>Mike Harris</div></td><td>Technician</td><td>mike.h@speedytyres.co.uk</td><td>Today 08:30</td><td><span class="badge badge-success">Active</span></td><td><button class="btn btn-ghost btn-xs">Edit</button></td></tr>
-                <tr><td><div style="display:flex;align-items:center;gap:8px;"><div class="user-avatar" style="width:28px;height:28px;font-size:10px;background:#127C3B;">JL</div>Jake Lewis</div></td><td>Technician</td><td>jake.l@speedytyres.co.uk</td><td>Today 09:00</td><td><span class="badge badge-success">Active</span></td><td><button class="btn btn-ghost btn-xs">Edit</button></td></tr>
-                <tr><td><div style="display:flex;align-items:center;gap:8px;"><div class="user-avatar" style="width:28px;height:28px;font-size:10px;background:#884AB7;">SP</div>Sam Patel</div></td><td>Technician</td><td>sam.p@speedytyres.co.uk</td><td>Today 09:15</td><td><span class="badge badge-success">Active</span></td><td><button class="btn btn-ghost btn-xs">Edit</button></td></tr>
-                <tr><td><div style="display:flex;align-items:center;gap:8px;"><div class="user-avatar" style="width:28px;height:28px;font-size:10px;background:#E59500;color:white;">RB</div>Rachel Brown</div></td><td>Reception</td><td>rachel.b@speedytyres.co.uk</td><td>Yesterday</td><td><span class="badge badge-success">Active</span></td><td><button class="btn btn-ghost btn-xs">Edit</button></td></tr>
-              </tbody>
+              <tbody id="teamTbody"><tr><td colspan="6" style="text-align:center;color:var(--ca-text-muted);padding:20px;">Loading team members...</td></tr></tbody>
             </table>
           </div>
         </div>
@@ -2448,6 +1966,98 @@
     </div>
   </main>
 </div>
+
+<!-- ===============================================
+     ADD BAY MODAL
+=============================================== -->
+<div class="modal-overlay" id="addBayModal">
+  <div class="modal" style="max-width:480px;">
+    <div class="modal-header">
+      <div><div class="modal-title" id="addBayModalTitle">Add Bay</div></div>
+      <button class="modal-close" onclick="closeModal('addBayModal')">&#10005;</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="editBayId" value="">
+      <div class="form-group"><label>Bay Name</label><input type="text" id="bayName" placeholder="e.g. Bay 1"></div>
+      <div class="form-group"><label>Bay Type</label>
+        <select id="bayType">
+          <option>MOT Bay</option><option>General Servicing</option><option>Tyres &amp; Brakes</option>
+          <option>Diagnostics</option><option>Bodywork</option><option>Electric / EV</option><option>Other</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Status</label>
+        <select id="bayStatus">
+          <option value="Available">Available</option>
+          <option value="Occupied">Occupied</option>
+          <option value="In Progress">In Progress</option>
+          <option value="Out of Service">Out of Service</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Current Job / Notes</label><input type="text" id="bayNotes" placeholder="e.g. Full Service - Mark Wilson"></div>
+      <div class="form-group"><label>Assigned Technician</label><input type="text" id="bayTech" placeholder="e.g. Mike Harris"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('addBayModal')">Cancel</button>
+      <button class="btn btn-danger btn-sm" id="deleteBayBtn" style="display:none;" onclick="deleteCurrentBay()">Delete Bay</button>
+      <button class="btn btn-primary" onclick="saveBay()">Save Bay</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===============================================
+     NEW CUSTOMER MODAL
+=============================================== -->
+<div class="modal-overlay" id="newCustomerModal">
+  <div class="modal" style="max-width:480px;">
+    <div class="modal-header">
+      <div><div class="modal-title">Add New Customer</div></div>
+      <button class="modal-close" onclick="closeModal('newCustomerModal')">&#10005;</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-row">
+        <div class="form-group"><label>Full Name</label><input type="text" id="nc_name" placeholder="e.g. Jane Smith"></div>
+        <div class="form-group"><label>Phone</label><input type="tel" id="nc_phone" placeholder="07700 000000"></div>
+      </div>
+      <div class="form-group"><label>Email Address</label><input type="email" id="nc_email" placeholder="jane@email.com"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('newCustomerModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveNewCustomer()">Add Customer</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===============================================
+     ADD VEHICLE MODAL
+=============================================== -->
+<div class="modal-overlay" id="addVehicleModal">
+  <div class="modal" style="max-width:520px;">
+    <div class="modal-header">
+      <div><div class="modal-title">Add Vehicle</div></div>
+      <button class="modal-close" onclick="closeModal('addVehicleModal')">&#10005;</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-row">
+        <div class="form-group"><label>Registration</label><input type="text" id="veh_reg" placeholder="AB21 XYZ" style="text-transform:uppercase;font-weight:700;letter-spacing:1px;"></div>
+        <div class="form-group"><label>Year</label><input type="number" id="veh_year" placeholder="2021"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Make</label><input type="text" id="veh_make" placeholder="Ford"></div>
+        <div class="form-group"><label>Model</label><input type="text" id="veh_model" placeholder="Focus"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Colour</label><input type="text" id="veh_colour" placeholder="Blue"></div>
+        <div class="form-group"><label>MOT Expiry</label><input type="date" id="veh_mot"></div>
+      </div>
+      <div class="form-group"><label>Owner Name</label><input type="text" id="veh_owner" placeholder="Customer name (optional)"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('addVehicleModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveVehicle()">Add Vehicle</button>
+    </div>
+  </div>
+</div>
+
 
 <!-- ===============================================
      CREATE INVOICE MODAL
@@ -2687,78 +2297,65 @@ Speedy Tyres Team</textarea>
 </div>
 
 <script>
-  // ============================================================
-  // SUPABASE SETUP
-  // ============================================================
-  const SUPA_URL = 'https://broizygakhfmnkkgvhek.supabase.co';
-  const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJyb2l6eWdha2hmbW5ra2d2aGVrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY1NTMxMjgsImV4cCI6MjA5MjEyOTEyOH0.K1vnDbHVbmr24yhnNtjHjqDyHr6hTbrEfY1MHpTlCNk';
-  const { createClient } = supabase;
-  const db = createClient(SUPA_URL, SUPA_KEY);
+  var SUPA_URL = 'https://broizygakhfmnkkgvhek.supabase.co';
+  var SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJyb2l6eWdha2hmbW5ra2d2aGVrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY1NTMxMjgsImV4cCI6MjA5MjEyOTEyOH0.K1vnDbHVbmr24yhnNtjHjqDyHr6hTbrEfY1MHpTlCNk';
+  var db = supabase.createClient(SUPA_URL, SUPA_KEY);
+  var currentUser = null;
+  var invoiceCounter = 1001;
+  var scheduleWeekOffset = 0;
+  var allBookingsCache = [];
+  var currentEditBayId = null;
 
-  let currentUser = null;
-  let currentGarage = null;
-  let invoiceCounter = 843;
-
-  // ============================================================
-  // AUTH - LOGIN / LOGOUT
-  // ============================================================
   async function handleLogin() {
     var email = document.getElementById('loginEmail').value.trim();
     var pass = document.getElementById('loginPass').value;
     var btn = document.getElementById('loginBtn');
-    var btnText = document.getElementById('loginBtnText');
     var errBox = document.getElementById('loginError');
-
-    if (!email || !pass) {
-      showLoginError('Please enter your email and password.');
-      return;
-    }
-
-    btnText.textContent = 'Signing in...';
+    if (!email || !pass) { showLoginError('Please enter your email and password.'); return; }
+    document.getElementById('loginBtnText').textContent = 'Signing in...';
     btn.disabled = true;
     errBox.style.display = 'none';
-
     var result = await db.auth.signInWithPassword({ email: email, password: pass });
-
     if (result.error) {
-      showLoginError(result.error.message || 'Invalid email or password. Please try again.');
-      btnText.textContent = 'Sign In to Portal';
+      showLoginError(result.error.message || 'Invalid email or password.');
+      document.getElementById('loginBtnText').textContent = 'Sign In to Portal';
       btn.disabled = false;
       return;
     }
-
     currentUser = result.data.user;
-    await loadUserProfile(currentUser);
+    await enterApp();
   }
 
   function showLoginError(msg) {
-    var errBox = document.getElementById('loginError');
-    errBox.textContent = msg;
-    errBox.style.display = 'block';
+    var e = document.getElementById('loginError');
+    e.textContent = msg;
+    e.style.display = 'block';
   }
 
-  async function loadUserProfile(user) {
-    var name = user.user_metadata && user.user_metadata.full_name ? user.user_metadata.full_name : user.email;
-    var role = user.user_metadata && user.user_metadata.role ? user.user_metadata.role : 'Garage User';
-    var initials = name.split(' ').map(function(w){ return w[0]; }).join('').toUpperCase().slice(0,2);
-
+  async function enterApp() {
+    var meta = currentUser.user_metadata || {};
+    var name = meta.full_name || currentUser.email;
+    var role = meta.role || 'Garage User';
+    var initials = name.split(' ').map(function(w){ return w[0] || ''; }).join('').toUpperCase().slice(0,2);
     document.getElementById('sidebarUserName').textContent = name;
     document.getElementById('sidebarUserRole').textContent = role;
     document.getElementById('sidebarAvatar').textContent = initials;
-
+    var hr = new Date().getHours();
+    var greet = hr < 12 ? 'Good morning' : hr < 18 ? 'Good afternoon' : 'Good evening';
+    var first = name.split(' ')[0];
+    var dashEl = document.getElementById('dashGreeting');
+    if (dashEl) dashEl.innerHTML = greet + ', ' + first + ' &#128075;';
     document.getElementById('authScreen').style.display = 'none';
     document.getElementById('mainApp').classList.add('active');
     document.getElementById('loginBtnText').textContent = 'Sign In to Portal';
     document.getElementById('loginBtn').disabled = false;
-
-    await loadDashboardData();
+    await loadAll();
     navigate('dashboard', document.querySelector('.nav-item'));
   }
 
   async function logout() {
     await db.auth.signOut();
     currentUser = null;
-    currentGarage = null;
     document.getElementById('authScreen').style.display = 'flex';
     document.getElementById('mainApp').classList.remove('active');
     document.getElementById('loginEmail').value = '';
@@ -2769,555 +2366,516 @@ Speedy Tyres Team</textarea>
 
   async function handlePasswordReset() {
     var email = document.getElementById('loginEmail').value.trim();
-    if (!email) { showLoginError('Enter your email address above first.'); return; }
-    var result = await db.auth.resetPasswordForEmail(email, { redirectTo: window.location.href });
-    if (result.error) {
-      showLoginError(result.error.message);
-    } else {
-      document.getElementById('forgotMsg').innerHTML = '<strong style="color:var(--ca-success);">Reset email sent!</strong> Check your inbox and follow the link to reset your password.';
-    }
+    if (!email) { showLoginError('Enter your email address first.'); return; }
+    var r = await db.auth.resetPasswordForEmail(email);
+    if (r.error) { showLoginError(r.error.message); }
+    else { document.getElementById('forgotMsg').innerHTML = '<strong style="color:var(--ca-success);">Reset email sent!</strong> Check your inbox.'; }
   }
 
   function showForgotPassword() {
-    var msg = document.getElementById('forgotMsg');
-    msg.style.display = msg.style.display === 'none' ? 'block' : 'none';
+    var m = document.getElementById('forgotMsg');
+    m.style.display = m.style.display === 'none' ? 'block' : 'none';
   }
 
-  // Check if already logged in on page load
   window.addEventListener('load', async function() {
-    var session = await db.auth.getSession();
-    if (session.data && session.data.session && session.data.session.user) {
-      currentUser = session.data.session.user;
-      await loadUserProfile(currentUser);
-    }
-    // Listen for auth changes
-    db.auth.onAuthStateChange(async function(event, session) {
-      if (event === 'PASSWORD_RECOVERY') {
-        var newPass = prompt('Enter your new password:');
-        if (newPass) {
-          var res = await db.auth.updateUser({ password: newPass });
-          if (res.error) { alert('Error: ' + res.error.message); }
-          else { showToast('Password updated successfully!'); }
-        }
+    try {
+      var s = await db.auth.getSession();
+      if (s.data && s.data.session && s.data.session.user) {
+        currentUser = s.data.session.user;
+        await enterApp();
       }
-    });
+    } catch(e) { console.error('Session check failed', e); }
   });
 
-  // ============================================================
-  // LOAD DASHBOARD DATA FROM SUPABASE
-  // ============================================================
-  async function loadDashboardData() {
-    await Promise.all([
-      loadTodaysBookings(),
-      loadDashboardStats(),
-      loadRecentInvoices(),
-      loadCustomers(),
-      loadVehicles(),
-      loadAllBookings(),
-      loadInvoices()
-    ]);
+  async function loadAll() {
+    await Promise.all([loadDashboard(), loadAllBookings(), loadJobs(), loadBays(), loadVehicles(), loadCustomers(), loadInvoices(), loadReports(), loadTeam()]);
+    buildSchedule();
   }
 
-  async function loadTodaysBookings() {
+  async function loadDashboard() {
     var today = new Date().toISOString().split('T')[0];
-    var res = await db.from('bookings').select('*').eq('booking_date', today).order('booking_time');
-    if (res.error) { console.error('Bookings error:', res.error); return; }
-    var tbody = document.getElementById('todaysBookingsTbody');
-    if (!tbody) return;
-    if (!res.data || res.data.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:var(--ca-text-muted);padding:24px;">No bookings today yet.</td></tr>';
-      return;
-    }
-    tbody.innerHTML = res.data.map(function(b) {
-      var badge = b.status === 'Completed' ? 'badge-success' : b.status === 'In Progress' ? 'badge-warning' : b.status === 'Cancelled' ? 'badge-danger' : 'badge-muted';
-      return '<tr><td><strong>' + (b.booking_time || '') + '</strong></td>' +
-        '<td><div>' + (b.customer_name || '') + '</div><span class="vehicle-reg">' + (b.vehicle_reg || '') + '</span></td>' +
-        '<td>' + (b.service || '') + '</td>' +
-        '<td><span class="badge ' + badge + '">' + (b.status || 'Booked') + '</span></td></tr>';
-    }).join('');
-    // Update subtitle
-    var sub = document.getElementById('todaysBookingsSub');
-    if (sub) sub.textContent = res.data.length + ' bookings scheduled';
-  }
-
-  async function loadDashboardStats() {
-    var today = new Date().toISOString().split('T')[0];
-
-    // Today bookings count
-    var bRes = await db.from('bookings').select('id', { count: 'exact' }).eq('booking_date', today);
+    var b = await db.from('bookings').select('*').eq('booking_date', today).order('booking_time');
+    var totalToday = (!b.error && b.data) ? b.data.length : 0;
     var el = document.getElementById('statTodayBookings');
-    if (el && !bRes.error) el.textContent = bRes.count || 0;
-
-    // Jobs in progress
-    var jRes = await db.from('jobs').select('id', { count: 'exact' }).eq('status', 'In Progress');
-    el = document.getElementById('statJobsInProgress');
-    if (el && !jRes.error) el.textContent = jRes.count || 0;
-
-    // Revenue this week
-    var weekStart = new Date();
-    weekStart.setDate(weekStart.getDate() - weekStart.getDay() + 1);
-    var weekStartStr = weekStart.toISOString().split('T')[0];
-    var rRes = await db.from('invoices').select('total').gte('invoice_date', weekStartStr).eq('status', 'Paid');
-    if (!rRes.error && rRes.data) {
-      var total = rRes.data.reduce(function(sum, inv){ return sum + (parseFloat(inv.total) || 0); }, 0);
-      el = document.getElementById('statWeekRevenue');
-      if (el) el.textContent = total > 0 ? ('&pound;' + total.toLocaleString('en-GB', {minimumFractionDigits:2, maximumFractionDigits:2})) : '&pound;0.00';
+    if (el) el.textContent = totalToday;
+    var tbody = document.getElementById('todaysBookingsTbody');
+    if (tbody) {
+      if (!b.error && b.data && b.data.length > 0) {
+        tbody.innerHTML = b.data.map(function(bk) {
+          var badge = bk.status === 'Completed' ? 'badge-success' : bk.status === 'In Progress' ? 'badge-warning' : bk.status === 'Cancelled' ? 'badge-danger' : 'badge-muted';
+          return '<tr><td><strong>' + (bk.booking_time || '') + '</strong></td><td><div>' + (bk.customer_name || '') + '</div><span class="vehicle-reg">' + (bk.vehicle_reg || '') + '</span></td><td>' + (bk.service || '') + '</td><td><span class="badge ' + badge + '">' + (bk.status || 'Booked') + '</span></td></tr>';
+        }).join('');
+        var sub = document.getElementById('todaysBookingsSub');
+        if (sub) sub.textContent = b.data.length + ' bookings scheduled';
+      } else {
+        tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:var(--ca-text-muted);padding:20px;">No bookings today yet.</td></tr>';
+        var sub = document.getElementById('todaysBookingsSub');
+        if (sub) sub.textContent = '0 bookings today';
+      }
+    }
+    var j = await db.from('jobs').select('id', { count: 'exact', head: true }).eq('status', 'In Progress');
+    var jEl = document.getElementById('statJobsInProgress');
+    if (jEl) jEl.textContent = (!j.error && j.count !== null) ? j.count : 0;
+    var mon = new Date(); mon.setDate(mon.getDate() - ((mon.getDay() + 6) % 7));
+    var r = await db.from('invoices').select('total').gte('invoice_date', mon.toISOString().split('T')[0]).eq('status', 'Paid');
+    var rev = 0;
+    if (!r.error && r.data) { r.data.forEach(function(i){ rev += parseFloat(i.total) || 0; }); }
+    var rEl = document.getElementById('statWeekRevenue');
+    if (rEl) rEl.innerHTML = '&#163;' + rev.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    var now = new Date(); var in30 = new Date(now); in30.setDate(now.getDate() + 30);
+    var mv = await db.from('vehicles').select('id', { count: 'exact', head: true }).gte('mot_expiry', now.toISOString().split('T')[0]).lte('mot_expiry', in30.toISOString().split('T')[0]);
+    var mEl = document.getElementById('statMotsDue');
+    if (mEl) mEl.textContent = (!mv.error && mv.count !== null) ? mv.count : 0;
+    var inv = await db.from('invoices').select('*').order('created_at', { ascending: false }).limit(4);
+    var dil = document.getElementById('dashInvoiceList');
+    if (dil) {
+      if (!inv.error && inv.data && inv.data.length > 0) {
+        dil.innerHTML = inv.data.map(function(i, idx) {
+          var badge = i.status === 'Paid' ? 'badge-success' : i.status === 'Overdue' ? 'badge-danger' : 'badge-warning';
+          var border = idx < inv.data.length - 1 ? 'border-bottom:1px solid var(--ca-border);' : '';
+          return '<div class="flex-between" style="padding:10px 0;' + border + 'font-size:13px;"><div><strong>' + (i.invoice_number || '') + '</strong> &middot; ' + (i.customer_name || '') + '</div><div style="display:flex;align-items:center;gap:8px;"><strong>&#163;' + parseFloat(i.total || 0).toFixed(2) + '</strong><span class="badge ' + badge + '">' + (i.status || 'Pending') + '</span></div></div>';
+        }).join('');
+      } else { dil.innerHTML = '<div style="color:var(--ca-text-muted);font-size:13px;padding:12px 0;">No invoices yet.</div>'; }
+    }
+    var dit = document.getElementById('dashInvoiceTableBody');
+    if (dit) {
+      if (!inv.error && inv.data && inv.data.length > 0) {
+        dit.innerHTML = '';
+        inv.data.forEach(function(i) {
+          var badge = i.status === 'Paid' ? 'badge-success' : i.status === 'Overdue' ? 'badge-danger' : 'badge-warning';
+          var tr = document.createElement('tr');
+          tr.innerHTML = '<td><strong>' + (i.invoice_number || '') + '</strong></td><td>' + (i.invoice_date || '') + '</td><td>' + (i.customer_name || '') + '</td><td><span class="vehicle-reg">' + (i.vehicle_reg || '') + '</span></td><td>' + (i.service || '') + '</td><td><strong>&#163;' + parseFloat(i.total || 0).toFixed(2) + '</strong></td><td><span class="badge ' + badge + '">' + (i.status || 'Pending') + '</span></td><td></td>';
+          var cell = tr.querySelector('td:last-child');
+          var wrap = document.createElement('div'); wrap.style.cssText = 'display:flex;gap:4px;';
+          var pb = document.createElement('button'); pb.className = 'btn btn-ghost btn-xs'; pb.textContent = 'Print';
+          pb.onclick = (function(inv){ return function(){ printInvoice(inv.invoice_number, inv.customer_name, inv.vehicle_reg, inv.service, parseFloat(inv.subtotal||0).toFixed(2), parseFloat(inv.vat||0).toFixed(2), parseFloat(inv.total||0).toFixed(2), inv.status, inv.invoice_date); }; })(i);
+          var sb = document.createElement('button'); sb.className = i.status === 'Overdue' ? 'btn btn-danger btn-xs' : 'btn btn-outline btn-xs'; sb.textContent = i.status === 'Overdue' ? 'Chase' : 'Send';
+          sb.onclick = (function(inv){ return function(){ sendInvoice(inv.invoice_number, inv.customer_name, ''); }; })(i);
+          wrap.appendChild(pb); wrap.appendChild(sb); cell.appendChild(wrap); dit.appendChild(tr);
+        });
+      } else { dit.innerHTML = '<tr><td colspan="8" style="text-align:center;color:var(--ca-text-muted);padding:20px;">No invoices yet.</td></tr>'; }
     }
   }
 
-  async function loadRecentInvoices() {
-    var res = await db.from('invoices').select('*').order('created_at', { ascending: false }).limit(4);
-    if (res.error) { console.error('Invoice error:', res.error); return; }
-    var el = document.getElementById('dashInvoiceList');
-    if (!el) return;
-    if (!res.data || res.data.length === 0) {
-      el.innerHTML = '<div style="color:var(--ca-text-muted);font-size:13px;padding:8px 0;">No invoices yet.</div>';
-      return;
-    }
-    el.innerHTML = res.data.map(function(inv, i) {
-      var badge = inv.status === 'Paid' ? 'badge-success' : inv.status === 'Overdue' ? 'badge-danger' : 'badge-warning';
-      var border = i < res.data.length - 1 ? 'border-bottom:1px solid var(--ca-border);' : '';
-      return '<div class="flex-between" style="padding:10px 0;' + border + 'font-size:13px;">' +
-        '<div><strong>' + (inv.invoice_number || 'INV') + '</strong> &middot; ' + (inv.customer_name || '') + '</div>' +
-        '<div style="display:flex;align-items:center;gap:8px;"><strong>&pound;' + (parseFloat(inv.total || 0).toFixed(2)) + '</strong><span class="badge ' + badge + '">' + (inv.status || 'Pending') + '</span></div>' +
-        '</div>';
-    }).join('');
+  async function loadAllBookings() {
+    var res = await db.from('bookings').select('*').order('booking_date', { ascending: false }).limit(100);
+    allBookingsCache = (!res.error && res.data) ? res.data : [];
+    renderBookingsTable(allBookingsCache);
   }
 
-  async function loadCustomers() {
-    var res = await db.from('customers').select('*').order('created_at', { ascending: false });
-    if (res.error) { console.error('Customer error:', res.error); return; }
-    var tbody = document.getElementById('customersTbody');
+  function renderBookingsTable(data) {
+    var tbody = document.getElementById('allBookingsTbody');
     if (!tbody) return;
-    if (!res.data || res.data.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;color:var(--ca-text-muted);padding:24px;">No customers yet. Add your first customer!</td></tr>';
+    tbody.innerHTML = '';
+    if (!data || data.length === 0) { tbody.innerHTML = '<tr><td colspan="9" style="text-align:center;color:var(--ca-text-muted);padding:24px;">No bookings yet. Create your first booking!</td></tr>'; return; }
+    data.forEach(function(bk) {
+      var badge = bk.status === 'Completed' ? 'badge-success' : bk.status === 'In Progress' ? 'badge-warning' : bk.status === 'Cancelled' ? 'badge-danger' : 'badge-navy';
+      var tr = document.createElement('tr');
+      tr.innerHTML = '<td><strong>#' + (bk.id || '').slice(0,8).toUpperCase() + '</strong></td><td>' + (bk.booking_date || '') + ' &middot; ' + (bk.booking_time || '') + '</td><td>' + (bk.customer_name || '') + '</td><td><span class="vehicle-reg">' + (bk.vehicle_reg || '') + '</span></td><td>' + (bk.service || '') + '</td><td>' + (bk.technician || '-') + '</td><td>' + (bk.price ? '&#163;' + parseFloat(bk.price).toFixed(2) : '-') + '</td><td><span class="badge ' + badge + '">' + (bk.status || 'Booked') + '</span></td><td></td>';
+      var btn = document.createElement('button'); btn.className = 'btn btn-ghost btn-xs'; btn.textContent = 'View';
+      btn.onclick = (function(id){ return function(){ showToast('Booking #' + id.slice(0,8).toUpperCase()); }; })(bk.id || '');
+      tr.querySelector('td:last-child').appendChild(btn);
+      tbody.appendChild(tr);
+    });
+  }
+
+  function filterBookingsByDate() {
+    var date = (document.getElementById('bookingDateFilter') || {}).value || '';
+    var search = ((document.getElementById('bookingSearch') || {}).value || '').toLowerCase();
+    renderBookingsTable(allBookingsCache.filter(function(bk) {
+      return (!date || bk.booking_date === date) && (!search || (bk.customer_name||'').toLowerCase().includes(search) || (bk.vehicle_reg||'').toLowerCase().includes(search));
+    }));
+  }
+  function filterBookingsSearch() { filterBookingsByDate(); }
+
+  function exportBookingsCSV() {
+    if (!allBookingsCache.length) { showToast('No bookings to export.'); return; }
+    var rows = [['Date','Time','Customer','Vehicle','Service','Technician','Price','Status']];
+    allBookingsCache.forEach(function(bk){ rows.push([bk.booking_date||'',bk.booking_time||'',bk.customer_name||'',bk.vehicle_reg||'',bk.service||'',bk.technician||'',bk.price||'',bk.status||'']); });
+    var csv = rows.map(function(r){ return r.map(function(c){ return '"'+String(c).replace(/"/g,'""')+'"'; }).join(','); }).join('\n');
+    var a = document.createElement('a'); a.href = 'data:text/csv;charset=utf-8,'+encodeURIComponent(csv); a.download = 'bookings.csv'; a.click();
+  }
+
+  async function saveBooking() {
+    var customer = (document.getElementById('bk_customer')||{}).value||'';
+    var reg = ((document.getElementById('bk_reg')||{}).value||'').toUpperCase();
+    var selects = document.querySelectorAll('#newBookingModal select');
+    var service = selects[0] ? selects[0].value : '';
+    var dateEl = document.querySelector('#newBookingModal input[type=date]');
+    var bdate = dateEl ? dateEl.value : new Date().toISOString().split('T')[0];
+    var btime = selects[1] ? selects[1].value : '09:00';
+    var tech = selects[2] ? selects[2].value : '';
+    var bay = selects[3] ? selects[3].value : '';
+    var notesEl = document.querySelector('#newBookingModal textarea');
+    var notes = notesEl ? notesEl.value : '';
+    if (!customer || !reg) { showToast('Please enter customer name and registration.'); return; }
+    var res = await db.from('bookings').insert([{customer_name:customer,vehicle_reg:reg,service:service,booking_date:bdate,booking_time:btime,technician:tech,bay:bay,notes:notes,status:'Booked',price:0}]);
+    if (res.error) { showToast('Error: ' + res.error.message); return; }
+    closeModal('newBookingModal');
+    showToast('Booking saved!');
+    await loadAll();
+  }
+
+  async function loadJobs() {
+    var res = await db.from('jobs').select('*').order('created_at', { ascending: false });
+    var w = document.getElementById('jobsWaiting'); var ip = document.getElementById('jobsInProgress'); var d = document.getElementById('jobsCompleted');
+    if (!w) return;
+    var data = (!res.error && res.data) ? res.data : [];
+    var today = new Date().toISOString().split('T')[0];
+    function card(j, col) { return '<div class="info-card" style="border-top:3px solid '+col+';"><div class="flex-between" style="margin-bottom:8px;"><strong>'+( j.bay||'Bay')+'</strong><span class="badge '+(j.status==='Completed'?'badge-success':j.status==='In Progress'?'badge-warning':'badge-muted')+'">'+( j.status||'')+'</span></div><div style="font-size:13px;margin-bottom:4px;">'+(j.notes||'Job')+'</div><div style="font-size:12px;color:var(--ca-text-muted);">'+(j.technician||'Unassigned')+'</div><div style="margin-top:8px;"><div class="progress-bar"><div class="progress-fill" style="width:'+(j.progress||0)+'%;background:'+col+';"></div></div></div></div>'; }
+    var empty = '<div class="info-card" style="text-align:center;color:var(--ca-text-muted);font-size:13px;padding:20px;">';
+    w.innerHTML = data.filter(function(j){return j.status==='Waiting';}).map(function(j){return card(j,'var(--ca-silver-mid)');}).join('') || empty+'No waiting jobs.</div>';
+    ip.innerHTML = data.filter(function(j){return j.status==='In Progress';}).map(function(j){return card(j,'var(--ca-warning)');}).join('') || empty+'No jobs in progress.</div>';
+    d.innerHTML = data.filter(function(j){return j.status==='Completed'&&(j.completed_at||'').startsWith(today);}).map(function(j){return card(j,'var(--ca-success)');}).join('') || empty+'No completed jobs today.</div>';
+  }
+
+  async function loadBays() {
+    var res = await db.from('jobs').select('*').order('created_at');
+    var grid = document.getElementById('baysGrid'); var sched = document.getElementById('bayScheduleTbody');
+    if (!grid) return;
+    var bays = (!res.error && res.data) ? res.data : [];
+    var occ = bays.filter(function(b){return b.status==='Occupied'||b.status==='In Progress';}).length;
+    var avl = bays.filter(function(b){return b.status==='Available';}).length;
+    var e=document.getElementById('bayStatTotal'); if(e) e.textContent=bays.length;
+    e=document.getElementById('bayStatOccupied'); if(e) e.textContent=occ;
+    e=document.getElementById('bayStatAvailable'); if(e) e.textContent=avl;
+    e=document.getElementById('bayStatUtil'); if(e) e.textContent=bays.length>0?Math.round(occ/bays.length*100)+'%':'0%';
+    if (bays.length === 0) {
+      grid.innerHTML = '<div class="info-card" style="grid-column:span 2;text-align:center;color:var(--ca-text-muted);padding:32px;"><strong style="display:block;margin-bottom:8px;">No bays set up yet.</strong>Click &quot;+ Add Bay&quot; to create your first bay.</div>';
+      if (sched) sched.innerHTML = '<tr><td colspan="8" style="text-align:center;color:var(--ca-text-muted);padding:20px;">No bays configured yet.</td></tr>';
       return;
     }
-    tbody.innerHTML = res.data.map(function(c) {
-      var initials = (c.full_name || 'U').split(' ').map(function(w){ return w[0]; }).join('').toUpperCase().slice(0,2);
-      return '<tr>' +
-        '<td><div style="display:flex;align-items:center;gap:10px;"><div class="user-avatar" style="width:30px;height:30px;font-size:11px;">' + initials + '</div><div><div class="fw-600">' + (c.full_name || '') + '</div></div></div></td>' +
-        '<td><div style="font-size:12px;">' + (c.email || '') + '</div><div style="font-size:12px;color:var(--ca-text-muted);">' + (c.phone || '') + '</div></td>' +
-        '<td>-</td><td>-</td><td>-</td>' +
-        '<td>-</td><td>-</td>' +
-        '<td><button class="btn btn-ghost btn-xs" onclick="viewCustomer(this)" data-id="' + c.id + '">View</button></td>' +
-        '</tr>';
+    grid.innerHTML = bays.map(function(bay) {
+      var sc = bay.status==='Available'?'bay-available':bay.status==='In Progress'?'bay-progress':bay.status==='Out of Service'?'':'bay-occupied';
+      var bc = bay.status==='Available'?'badge-success':bay.status==='In Progress'?'badge-warning':bay.status==='Out of Service'?'badge-muted':'badge-danger';
+      var dot = bay.status==='Available'?'var(--ca-success)':bay.status==='In Progress'?'var(--ca-warning)':bay.status==='Out of Service'?'var(--ca-text-muted)':'var(--ca-danger)';
+      return '<div class="bay-card '+sc+'"><div class="bay-card-header"><div><div class="bay-card-title">'+(bay.bay||'Bay')+'</div><div class="bay-card-type">'+(bay.notes?bay.notes.split(' - ')[0]||'General':'General')+'</div></div><span class="badge '+bc+'" style="font-size:12px;padding:5px 12px;"><span class="bay-status-dot" style="background:'+dot+'"></span>'+(bay.status||'Available')+'</span></div><div class="bay-card-body"><div class="bay-info-row"><span class="bay-info-label">Current Job</span><span class="bay-info-value">'+(bay.notes||'None')+'</span></div><div class="bay-info-row"><span class="bay-info-label">Technician</span><span class="bay-info-value">'+(bay.technician||'Unassigned')+'</span></div><div class="bay-info-row"><span class="bay-info-label">Progress</span><span class="bay-info-value">'+(bay.progress||0)+'%</span></div><div style="margin-top:12px;"><div class="progress-bar"><div class="progress-fill" style="width:'+(bay.progress||0)+'%;background:'+dot+'"></div></div></div><div style="display:flex;gap:8px;margin-top:12px;"><button class="btn btn-outline btn-xs" style="flex:1;" onclick="openEditBayModal(\''+bay.id+'\')">Edit Bay</button></div></div></div>';
     }).join('');
+    if (sched) {
+      sched.innerHTML = bays.map(function(bay) {
+        var bc = bay.status==='Available'?'badge-success':bay.status==='In Progress'?'badge-warning':bay.status==='Out of Service'?'badge-muted':'badge-danger';
+        return '<tr><td>-</td><td><strong>'+(bay.bay||'')+'</strong></td><td>'+(bay.notes||'-')+'</td><td>-</td><td>-</td><td>'+(bay.technician||'-')+'</td><td><span class="badge '+bc+'">'+(bay.status||'')+'</span></td><td><button class="btn btn-ghost btn-xs" onclick="openEditBayModal(\''+bay.id+'\')">Edit</button></td></tr>';
+      }).join('');
+    }
+  }
+
+  function openAddBayModal() {
+    currentEditBayId = null;
+    document.getElementById('addBayModalTitle').textContent = 'Add Bay';
+    document.getElementById('editBayId').value = '';
+    document.getElementById('bayName').value = '';
+    document.getElementById('bayStatus').value = 'Available';
+    document.getElementById('bayNotes').value = '';
+    document.getElementById('bayTech').value = '';
+    document.getElementById('deleteBayBtn').style.display = 'none';
+    document.getElementById('addBayModal').classList.add('active');
+  }
+
+  async function openEditBayModal(id) {
+    currentEditBayId = id;
+    var res = await db.from('jobs').select('*').eq('id', id).single();
+    if (res.error || !res.data) { showToast('Could not load bay.'); return; }
+    var bay = res.data;
+    document.getElementById('addBayModalTitle').textContent = 'Edit Bay';
+    document.getElementById('editBayId').value = id;
+    document.getElementById('bayName').value = bay.bay || '';
+    document.getElementById('bayStatus').value = bay.status || 'Available';
+    document.getElementById('bayNotes').value = bay.notes || '';
+    document.getElementById('bayTech').value = bay.technician || '';
+    document.getElementById('deleteBayBtn').style.display = 'inline-flex';
+    document.getElementById('addBayModal').classList.add('active');
+  }
+
+  async function saveBay() {
+    var name = document.getElementById('bayName').value.trim();
+    var status = document.getElementById('bayStatus').value;
+    var notes = document.getElementById('bayNotes').value.trim();
+    var tech = document.getElementById('bayTech').value.trim();
+    if (!name) { showToast('Please enter a bay name.'); return; }
+    var payload = {bay:name, status:status, notes:notes, technician:tech, progress:status==='Available'?0:status==='Completed'?100:50};
+    var res = currentEditBayId ? await db.from('jobs').update(payload).eq('id', currentEditBayId) : await db.from('jobs').insert([payload]);
+    if (res.error) { showToast('Error: ' + res.error.message); return; }
+    closeModal('addBayModal');
+    showToast(currentEditBayId ? 'Bay updated!' : 'Bay added!');
+    await loadBays(); await loadJobs(); await loadDashboard();
+  }
+
+  async function deleteCurrentBay() {
+    if (!currentEditBayId || !confirm('Delete this bay? This cannot be undone.')) return;
+    var res = await db.from('jobs').delete().eq('id', currentEditBayId);
+    if (res.error) { showToast('Error: ' + res.error.message); return; }
+    closeModal('addBayModal');
+    showToast('Bay deleted.');
+    await loadBays(); await loadJobs();
   }
 
   async function loadVehicles() {
     var res = await db.from('vehicles').select('*').order('created_at', { ascending: false });
-    if (res.error) { console.error('Vehicle error:', res.error); return; }
     var tbody = document.getElementById('vehiclesTbody');
     if (!tbody) return;
-    if (!res.data || res.data.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;color:var(--ca-text-muted);padding:24px;">No vehicles registered yet.</td></tr>';
-      return;
-    }
-    tbody.innerHTML = res.data.map(function(v) {
-      var motClass = 'badge-success';
-      if (v.mot_expiry) {
-        var diff = (new Date(v.mot_expiry) - new Date()) / (1000*60*60*24);
-        if (diff < 30) motClass = 'badge-danger';
-        else if (diff < 90) motClass = 'badge-warning';
-      }
-      return '<tr>' +
-        '<td><span class="vehicle-reg">' + (v.registration || '') + '</span></td>' +
-        '<td><strong>' + (v.make || '') + '</strong> ' + (v.model || '') + '</td>' +
-        '<td>' + (v.year || '') + '</td>' +
-        '<td>' + (v.colour || '') + '</td>' +
-        '<td>-</td>' +
-        '<td><span class="badge ' + motClass + '">' + (v.mot_expiry || 'Not set') + '</span></td>' +
-        '<td>-</td>' +
-        '<td><button class="btn btn-ghost btn-xs">View</button></td>' +
-        '</tr>';
-    }).join('');
-  }
-
-  async function loadAllBookings() {
-    var res = await db.from('bookings').select('*').order('booking_date', { ascending: false }).limit(50);
-    if (res.error) { console.error('All bookings error:', res.error); return; }
-    var tbody = document.getElementById('allBookingsTbody');
-    if (!tbody) return;
+    if (res.error || !res.data || res.data.length === 0) { tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;color:var(--ca-text-muted);padding:24px;">No vehicles yet. Add your first vehicle!</td></tr>'; return; }
     tbody.innerHTML = '';
-    if (!res.data || res.data.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="9" style="text-align:center;color:var(--ca-text-muted);padding:24px;">No bookings yet. Create your first booking!</td></tr>';
-      return;
-    }
-    res.data.forEach(function(b) {
-      var badge = b.status === 'Completed' ? 'badge-success' : b.status === 'In Progress' ? 'badge-warning' : b.status === 'Cancelled' ? 'badge-danger' : 'badge-navy';
+    res.data.forEach(function(v) {
+      var mc = 'badge-success';
+      if (v.mot_expiry) { var diff=(new Date(v.mot_expiry)-new Date())/86400000; if(diff<30) mc='badge-danger'; else if(diff<90) mc='badge-warning'; }
       var tr = document.createElement('tr');
-      var shortId = (b.id || '').slice(0,8).toUpperCase();
-      var price = b.price ? ('&#163;' + parseFloat(b.price).toFixed(2)) : '-';
-      tr.innerHTML =
-        '<td><strong>#' + shortId + '</strong></td>' +
-        '<td>' + (b.booking_date || '') + ' &middot; ' + (b.booking_time || '') + '</td>' +
-        '<td>' + (b.customer_name || '') + '</td>' +
-        '<td><span class="vehicle-reg">' + (b.vehicle_reg || '') + '</span></td>' +
-        '<td>' + (b.service || '') + '</td>' +
-        '<td>' + (b.technician || '-') + '</td>' +
-        '<td>' + price + '</td>' +
-        '<td><span class="badge ' + badge + '">' + (b.status || 'Booked') + '</span></td>' +
-        '<td></td>';
-      var viewBtn = document.createElement('button');
-      viewBtn.className = 'btn btn-ghost btn-xs';
-      viewBtn.textContent = 'View';
-      viewBtn.onclick = function(){ viewBooking(b.id); };
-      tr.querySelector('td:last-child').appendChild(viewBtn);
-      tbody.appendChild(tr);
+      tr.innerHTML = '<td><span class="vehicle-reg">'+(v.registration||'')+'</span></td><td><strong>'+(v.make||'')+'</strong> '+(v.model||'')+'</td><td>'+(v.year||'')+'</td><td>'+(v.colour||'')+'</td><td>-</td><td><span class="badge '+mc+'">'+(v.mot_expiry||'Not set')+'</span></td><td>-</td><td></td>';
+      var btn=document.createElement('button'); btn.className='btn btn-ghost btn-xs'; btn.textContent='View';
+      btn.onclick=function(){showToast('Vehicle '+(v.registration||'')+' selected.');};
+      tr.querySelector('td:last-child').appendChild(btn); tbody.appendChild(tr);
     });
   }
 
-    async function loadInvoices() {
-    var res = await db.from('invoices').select('*').order('created_at', { ascending: false }).limit(50);
-    if (res.error) { console.error('Invoice load error:', res.error); return; }
+  function openAddVehicleModal() { document.getElementById('addVehicleModal').classList.add('active'); }
+
+  async function saveVehicle() {
+    var reg = ((document.getElementById('veh_reg')||{}).value||'').toUpperCase().trim();
+    var make = (document.getElementById('veh_make')||{}).value||'';
+    var model = (document.getElementById('veh_model')||{}).value||'';
+    var year = parseInt((document.getElementById('veh_year')||{}).value||'0')||null;
+    var colour = (document.getElementById('veh_colour')||{}).value||'';
+    var mot = (document.getElementById('veh_mot')||{}).value||null;
+    if (!reg) { showToast('Please enter a registration.'); return; }
+    var res = await db.from('vehicles').insert([{registration:reg, make:make, model:model, year:year, colour:colour, mot_expiry:mot}]);
+    if (res.error) { showToast('Error: '+res.error.message); return; }
+    closeModal('addVehicleModal'); showToast('Vehicle added!'); await loadVehicles();
+  }
+
+  async function loadCustomers() {
+    var res = await db.from('customers').select('*').order('created_at', { ascending: false });
+    var tbody = document.getElementById('customersTbody');
+    if (!tbody) return;
+    if (res.error || !res.data || res.data.length === 0) { tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;color:var(--ca-text-muted);padding:24px;">No customers yet. Add your first customer!</td></tr>'; return; }
+    tbody.innerHTML = '';
+    res.data.forEach(function(c) {
+      var ini=(c.full_name||'U').split(' ').map(function(w){return w[0]||'';}).join('').toUpperCase().slice(0,2);
+      var tr=document.createElement('tr');
+      tr.innerHTML='<td><div style="display:flex;align-items:center;gap:10px;"><div class="user-avatar" style="width:30px;height:30px;font-size:11px;">'+ini+'</div><div class="fw-600">'+(c.full_name||'')+'</div></div></td><td><div style="font-size:12px;">'+(c.email||'')+'</div><div style="font-size:12px;color:var(--ca-text-muted);">'+(c.phone||'')+'</div></td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td></td>';
+      var btn=document.createElement('button'); btn.className='btn btn-ghost btn-xs'; btn.textContent='View';
+      btn.onclick=function(){showToast('Customer '+(c.full_name||'')+' selected.');};
+      tr.querySelector('td:last-child').appendChild(btn); tbody.appendChild(tr);
+    });
+  }
+
+  function openNewCustomerModal() { document.getElementById('newCustomerModal').classList.add('active'); }
+
+  async function saveNewCustomer() {
+    var name=(document.getElementById('nc_name')||{}).value||'';
+    var email=(document.getElementById('nc_email')||{}).value||'';
+    var phone=(document.getElementById('nc_phone')||{}).value||'';
+    if (!name) { showToast('Please enter a customer name.'); return; }
+    var res=await db.from('customers').insert([{full_name:name, email:email, phone:phone}]);
+    if (res.error) { showToast('Error: '+res.error.message); return; }
+    closeModal('newCustomerModal'); showToast('Customer added!'); await loadCustomers();
+  }
+
+  async function loadInvoices() {
+    var res = await db.from('invoices').select('*').order('created_at', { ascending: false });
     var tbody = document.getElementById('invoiceTableBody');
     if (!tbody) return;
     tbody.innerHTML = '';
-    if (!res.data || res.data.length === 0) {
+    var paid=0,paidC=0,pend=0,pendC=0,over=0,overC=0;
+    if (res.error || !res.data || res.data.length === 0) {
       tbody.innerHTML = '<tr><td colspan="10" style="text-align:center;color:var(--ca-text-muted);padding:24px;">No invoices yet. Create your first invoice!</td></tr>';
-      return;
+    } else {
+      res.data.forEach(function(inv) {
+        var t=parseFloat(inv.total||0);
+        if(inv.status==='Paid'){paid+=t;paidC++;}else if(inv.status==='Overdue'){over+=t;overC++;}else{pend+=t;pendC++;}
+        var badge=inv.status==='Paid'?'badge-success':inv.status==='Overdue'?'badge-danger':'badge-warning';
+        var tr=document.createElement('tr');
+        tr.innerHTML='<td><strong>'+(inv.invoice_number||'')+'</strong></td><td>'+(inv.invoice_date||'')+'</td><td>'+(inv.customer_name||'')+'</td><td><span class="vehicle-reg">'+(inv.vehicle_reg||'')+'</span></td><td>'+(inv.service||'')+'</td><td>&#163;'+parseFloat(inv.subtotal||0).toFixed(2)+'</td><td>&#163;'+parseFloat(inv.vat||0).toFixed(2)+'</td><td><strong>&#163;'+parseFloat(inv.total||0).toFixed(2)+'</strong></td><td><span class="badge '+badge+'">'+(inv.status||'Pending')+'</span></td><td></td>';
+        var cell=tr.querySelector('td:last-child');
+        var wrap=document.createElement('div'); wrap.style.cssText='display:flex;gap:4px;';
+        var pb=document.createElement('button'); pb.className='btn btn-ghost btn-xs'; pb.textContent='Print';
+        pb.onclick=(function(i){return function(){printInvoice(i.invoice_number,i.customer_name,i.vehicle_reg,i.service,parseFloat(i.subtotal||0).toFixed(2),parseFloat(i.vat||0).toFixed(2),parseFloat(i.total||0).toFixed(2),i.status,i.invoice_date);};})(inv);
+        var sb=document.createElement('button'); sb.className=inv.status==='Overdue'?'btn btn-danger btn-xs':'btn btn-outline btn-xs'; sb.textContent=inv.status==='Overdue'?'Chase':'Send';
+        sb.onclick=(function(i){return function(){sendInvoice(i.invoice_number,i.customer_name,'');};})(inv);
+        wrap.appendChild(pb); wrap.appendChild(sb); cell.appendChild(wrap); tbody.appendChild(tr);
+      });
     }
-    res.data.forEach(function(inv) {
-      var tr = document.createElement('tr');
-      var badge = inv.status === 'Paid' ? 'badge-success' : inv.status === 'Overdue' ? 'badge-danger' : 'badge-warning';
-      var invNum = inv.invoice_number || '';
-      var cust = inv.customer_name || '';
-      var vreg = inv.vehicle_reg || '';
-      var svc = inv.service || '';
-      var sub = parseFloat(inv.subtotal || 0).toFixed(2);
-      var vat = parseFloat(inv.vat || 0).toFixed(2);
-      var tot = parseFloat(inv.total || 0).toFixed(2);
-      var idate = inv.invoice_date || '';
-      var stat = inv.status || 'Pending';
-      tr.innerHTML =
-        '<td><strong>' + invNum + '</strong></td>' +
-        '<td>' + idate + '</td>' +
-        '<td>' + cust + '</td>' +
-        '<td><span class="vehicle-reg">' + vreg + '</span></td>' +
-        '<td>' + svc + '</td>' +
-        '<td>&#163;' + sub + '</td>' +
-        '<td>&#163;' + vat + '</td>' +
-        '<td><strong>&#163;' + tot + '</strong></td>' +
-        '<td><span class="badge ' + badge + '">' + stat + '</span></td>' +
-        '<td></td>';
-      var actCell = tr.querySelector('td:last-child');
-      var wrap = document.createElement('div');
-      wrap.style.cssText = 'display:flex;gap:4px;';
-      var printBtn = document.createElement('button');
-      printBtn.className = 'btn btn-ghost btn-xs';
-      printBtn.textContent = 'Print';
-      printBtn.onclick = function(){ printInvoice(invNum, cust, vreg, svc, sub, vat, tot, stat, idate); };
-      var actionBtn = document.createElement('button');
-      if (stat === 'Overdue') {
-        actionBtn.className = 'btn btn-danger btn-xs';
-        actionBtn.textContent = 'Chase';
-      } else {
-        actionBtn.className = 'btn btn-outline btn-xs';
-        actionBtn.textContent = 'Send';
-      }
-      actionBtn.onclick = function(){ sendInvoice(invNum, cust, ''); };
-      wrap.appendChild(printBtn);
-      wrap.appendChild(actionBtn);
-      actCell.appendChild(wrap);
-      tbody.appendChild(tr);
+    var e=document.getElementById('invPaidTotal'); if(e) e.innerHTML='&#163;'+paid.toFixed(2);
+    e=document.getElementById('invPaidCount'); if(e) e.textContent=paidC+' invoices settled';
+    e=document.getElementById('invPendingTotal'); if(e) e.innerHTML='&#163;'+pend.toFixed(2);
+    e=document.getElementById('invPendingCount'); if(e) e.textContent=pendC+' invoices pending';
+    e=document.getElementById('invOverdueTotal'); if(e) e.innerHTML='&#163;'+over.toFixed(2);
+    e=document.getElementById('invOverdueCount'); if(e) e.textContent=overC+' invoices overdue';
+  }
+
+  function filterInvoices() {
+    var search=((document.getElementById('invSearch')||{}).value||'').toLowerCase();
+    var status=(document.getElementById('invStatusFilter')||{}).value||'';
+    document.querySelectorAll('#invoiceTableBody tr').forEach(function(row){
+      var text=row.textContent.toLowerCase();
+      row.style.display=(!search||text.includes(search))&&(!status||text.includes(status.toLowerCase()))?'':'none';
     });
   }
 
-    // ============================================================
-  // ADD CUSTOMER TO SUPABASE
-  // ============================================================
-  async function saveNewCustomer() {
-    var name = document.getElementById('nc_name') ? document.getElementById('nc_name').value : '';
-    var email = document.getElementById('nc_email') ? document.getElementById('nc_email').value : '';
-    var phone = document.getElementById('nc_phone') ? document.getElementById('nc_phone').value : '';
-    if (!name) { showToast('Please enter a customer name.'); return; }
-    var res = await db.from('customers').insert([{ full_name: name, email: email, phone: phone }]);
-    if (res.error) { showToast('Error: ' + res.error.message); return; }
-    showToast('Customer added successfully!');
-    closeModal('newCustomerModal');
-    await loadCustomers();
-  }
+  function exportInvoices() { showToast('Exporting to CSV...'); }
 
-  function viewCustomer(btn) { var id = btn ? (btn.dataset ? btn.dataset.id : btn) : ''; showToast('Customer detail view coming soon.'); }
-  function viewBooking(btn) { var id = btn ? (btn.dataset ? btn.dataset.id : btn) : ''; showToast('Booking detail view coming soon.'); }
-
-  // ============================================================
-  // SAVE NEW BOOKING TO SUPABASE
-  // ============================================================
-  async function saveBooking() {
-    var customer = document.getElementById('bk_customer') ? document.getElementById('bk_customer').value : '';
-    var reg = document.getElementById('bk_reg') ? document.getElementById('bk_reg').value.toUpperCase() : '';
-    var serviceEl = document.querySelectorAll('#newBookingModal select')[0];
-    var service = serviceEl ? serviceEl.value : '';
-    var dateEl = document.querySelector('#newBookingModal input[type=date]');
-    var bdate = dateEl ? dateEl.value : new Date().toISOString().split('T')[0];
-    var timeEl = document.querySelectorAll('#newBookingModal select')[1];
-    var btime = timeEl ? timeEl.value : '09:00';
-    var techEl = document.querySelectorAll('#newBookingModal select')[2];
-    var tech = techEl ? techEl.value : '';
-    var bayEl = document.querySelectorAll('#newBookingModal select')[3];
-    var bay = bayEl ? bayEl.value : '';
-    var notesEl = document.querySelector('#newBookingModal textarea');
-    var notes = notesEl ? notesEl.value : '';
-    if (!customer || !reg) { showToast('Please enter customer name and vehicle registration.'); return; }
-    var res = await db.from('bookings').insert([{ customer_name: customer, vehicle_reg: reg, service: service, booking_date: bdate, booking_time: btime, technician: tech, bay: bay, notes: notes, status: 'Booked', price: 0 }]);
-    if (res.error) { showToast('Error saving booking: ' + res.error.message); return; }
-    closeModal('newBookingModal');
-    showToast('Booking created and saved successfully!');
-    await loadTodaysBookings();
-    await loadAllBookings();
-    await loadDashboardStats();
-  }
-
-  // ============================================================
-  // SAVE INVOICE TO SUPABASE
-  // ============================================================
-  async function saveInvoiceToDb(invNum, customer, reg, service, subtotal, vat, total, status, date, notes) {
-    var res = await db.from('invoices').insert([{ invoice_number: invNum, customer_name: customer, vehicle_reg: reg, service: service, subtotal: parseFloat(subtotal) || 0, vat: parseFloat(vat) || 0, total: parseFloat(total) || 0, status: status, invoice_date: date, notes: notes || '' }]);
-    if (res.error) { console.error('Invoice save error:', res.error); showToast('Warning: invoice not saved to database.'); }
-    else { await loadInvoices(); await loadRecentInvoices(); }
+  async function saveInvoiceToDb(invNum,customer,reg,service,subtotal,vat,total,status,date,notes) {
+    var res=await db.from('invoices').insert([{invoice_number:invNum,customer_name:customer,vehicle_reg:reg,service:service,subtotal:parseFloat(subtotal)||0,vat:parseFloat(vat)||0,total:parseFloat(total)||0,status:status,invoice_date:date,notes:notes||''}]);
+    if (res.error) { showToast('Warning: invoice not saved. '+res.error.message); }
+    else { await loadInvoices(); await loadDashboard(); }
   }
 
   async function previewAndPrintNewInvoice() {
-    var customer = document.getElementById('ci_customer').value || 'Customer';
-    var reg = (document.getElementById('ci_reg').value || 'REG').toUpperCase();
-    var service = document.getElementById('ci_service').value || 'Service';
-    var date = document.getElementById('ci_date').value || new Date().toISOString().split('T')[0];
-    var subtotal = (document.getElementById('ci_subtotal').textContent || '0').replace(String.fromCharCode(163), '').trim();
-    var vat = (document.getElementById('ci_vat').textContent || '0').replace(String.fromCharCode(163), '').trim();
-    var total = (document.getElementById('ci_total').textContent || '0').replace(String.fromCharCode(163), '').trim();
-    var notes = document.getElementById('ci_notes').value;
-    var invNum = 'INV-' + String(invoiceCounter++).padStart(4, '0');
-    var html = buildInvoiceHTML(invNum, customer, reg, service, subtotal, vat, total, 'Pending', date, notes);
-    var w = window.open('', '_blank', 'width=800,height=900');
-    w.document.write(html);
-    w.document.close();
-    w.focus();
-    setTimeout(function(){ w.print(); }, 400);
-    await saveInvoiceToDb(invNum, customer, reg, service, subtotal, vat, total, 'Pending', date, notes);
-    closeModal('createInvoiceModal');
-    showToast('Invoice ' + invNum + ' saved and opened for print!');
+    var customer=(document.getElementById('ci_customer')||{}).value||'Customer';
+    var reg=((document.getElementById('ci_reg')||{}).value||'REG').toUpperCase();
+    var service=(document.getElementById('ci_service')||{}).value||'Service';
+    var date=(document.getElementById('ci_date')||{}).value||new Date().toISOString().split('T')[0];
+    var subtotal=((document.getElementById('ci_subtotal')||{}).textContent||'0').replace(String.fromCharCode(163),'').trim();
+    var vat=((document.getElementById('ci_vat')||{}).textContent||'0').replace(String.fromCharCode(163),'').trim();
+    var total=((document.getElementById('ci_total')||{}).textContent||'0').replace(String.fromCharCode(163),'').trim();
+    var notes=(document.getElementById('ci_notes')||{}).value||'';
+    var invNum='INV-'+String(invoiceCounter++).padStart(4,'0');
+    var html=buildInvoiceHTML(invNum,customer,reg,service,subtotal,vat,total,'Pending',date,notes);
+    var w=window.open('','_blank','width=800,height=900');
+    if(w){w.document.write(html);w.document.close();w.focus();setTimeout(function(){w.print();},400);}
+    await saveInvoiceToDb(invNum,customer,reg,service,subtotal,vat,total,'Pending',date,notes);
+    closeModal('createInvoiceModal'); showToast('Invoice '+invNum+' saved!');
   }
 
   async function saveAndSendNewInvoice() {
-    var customer = document.getElementById('ci_customer').value || 'Customer';
-    var email = document.getElementById('ci_email').value;
-    var reg = (document.getElementById('ci_reg').value || 'REG').toUpperCase();
-    var service = document.getElementById('ci_service').value || 'Service';
-    var date = document.getElementById('ci_date').value || new Date().toISOString().split('T')[0];
-    var subtotal = (document.getElementById('ci_subtotal').textContent || '0').replace(String.fromCharCode(163), '').trim();
-    var vat = (document.getElementById('ci_vat').textContent || '0').replace(String.fromCharCode(163), '').trim();
-    var total = (document.getElementById('ci_total').textContent || '0').replace(String.fromCharCode(163), '').trim();
-    var notes = document.getElementById('ci_notes').value;
-    var invNum = 'INV-' + String(invoiceCounter++).padStart(4, '0');
-    await saveInvoiceToDb(invNum, customer, reg, service, subtotal, vat, total, 'Pending', date, notes);
-    closeModal('createInvoiceModal');
-    sendInvoice(invNum, customer, email);
+    var customer=(document.getElementById('ci_customer')||{}).value||'Customer';
+    var email=(document.getElementById('ci_email')||{}).value||'';
+    var reg=((document.getElementById('ci_reg')||{}).value||'REG').toUpperCase();
+    var service=(document.getElementById('ci_service')||{}).value||'Service';
+    var date=(document.getElementById('ci_date')||{}).value||new Date().toISOString().split('T')[0];
+    var subtotal=((document.getElementById('ci_subtotal')||{}).textContent||'0').replace(String.fromCharCode(163),'').trim();
+    var vat=((document.getElementById('ci_vat')||{}).textContent||'0').replace(String.fromCharCode(163),'').trim();
+    var total=((document.getElementById('ci_total')||{}).textContent||'0').replace(String.fromCharCode(163),'').trim();
+    var invNum='INV-'+String(invoiceCounter++).padStart(4,'0');
+    await saveInvoiceToDb(invNum,customer,reg,service,subtotal,vat,total,'Pending',date,'');
+    closeModal('createInvoiceModal'); sendInvoice(invNum,customer,email);
   }
 
-  // ============================================================
-  // ADD CUSTOMER TO SUPABASE
-  // ============================================================
-  async function saveNewCustomer() {
-    var name = document.getElementById('nc_name') ? document.getElementById('nc_name').value : '';
-    var email = document.getElementById('nc_email') ? document.getElementById('nc_email').value : '';
-    var phone = document.getElementById('nc_phone') ? document.getElementById('nc_phone').value : '';
-    if (!name) { showToast('Please enter a customer name.'); return; }
-    var res = await db.from('customers').insert([{ full_name: name, email: email, phone: phone }]);
-    if (res.error) { showToast('Error: ' + res.error.message); return; }
-    showToast('Customer added successfully!');
-    closeModal('newCustomerModal');
-    await loadCustomers();
+  async function loadReports() {
+    var res=await db.from('invoices').select('total,status,service');
+    if(res.error||!res.data) return;
+    var total=0; res.data.forEach(function(i){total+=parseFloat(i.total)||0;});
+    var e=document.getElementById('rptRevenue'); if(e) e.innerHTML='&#163;'+total.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g,',');
+    e=document.getElementById('rptAvgJob'); if(e) e.innerHTML=res.data.length>0?'&#163;'+(total/res.data.length).toFixed(2):'&#163;0.00';
+    e=document.getElementById('rptMotPass'); if(e) e.textContent='N/A';
   }
 
-  function viewCustomer(btn) { showToast('Customer detail view coming soon.'); }
-  function viewBooking(id) { showToast('Booking detail view coming soon.'); }
-
-  // ============================================================
-  // NAVIGATION
-  // ============================================================
-  const pageTitles = {
-    dashboard: 'Dashboard',
-    schedule: 'Schedule',
-    bookings: 'Bookings',
-    jobs: 'Job Cards',
-    vehicles: 'Vehicles',
-    customers: 'Customers',
-    bays: 'Bay Status',
-    invoices: 'Invoices',
-    reports: 'Reports',
-    settings: 'Settings'
-  };
-
-  function navigate(page, el) {
-    document.querySelectorAll('.page').forEach(function(p){ p.classList.remove('active'); });
-    document.querySelectorAll('.nav-item').forEach(function(n){ n.classList.remove('active'); });
-    var target = document.getElementById('page-' + page);
-    if (target) target.classList.add('active');
-    if (el) el.classList.add('active');
-    document.getElementById('topbarTitle').textContent = pageTitles[page] || page;
+  async function loadTeam() {
+    var tbody=document.getElementById('teamTbody');
+    if(!tbody||!currentUser) return;
+    var name=(currentUser.user_metadata||{}).full_name||currentUser.email;
+    var role=(currentUser.user_metadata||{}).role||'User';
+    var ini=name.split(' ').map(function(w){return w[0]||'';}).join('').toUpperCase().slice(0,2);
+    tbody.innerHTML='<tr><td><div style="display:flex;align-items:center;gap:8px;"><div class="user-avatar" style="width:28px;height:28px;font-size:10px;">'+ini+'</div>'+name+'</div></td><td>'+role+'</td><td>'+currentUser.email+'</td><td>Now</td><td><span class="badge badge-success">Active</span></td><td></td></tr>';
   }
 
-  // ============================================================
-  // INVOICE FUNCTIONS (unchanged - print/send/build)
-  // ============================================================
-  function openCreateInvoiceModal() {
-    document.getElementById('createInvoiceModal').classList.add('active');
-    calcInvoiceTotal();
+  function saveGarageSettings() { showToast('Settings saved!'); }
+
+  function buildSchedule() {
+    var days=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+    var today=new Date(); var dow=today.getDay(); var off=dow===0?-6:1-dow;
+    for(var i=0;i<7;i++){
+      var d=new Date(today); d.setDate(today.getDate()+off+i+(scheduleWeekOffset*7));
+      var isToday=d.toDateString()===today.toDateString();
+      var hdr=document.getElementById('schHdr'+i); var cell=document.getElementById('schCell'+i); var dateEl=document.getElementById('schDate'+i);
+      if(hdr) hdr.textContent=days[i]+' '+d.getDate();
+      if(cell){ cell.className='schedule-cell'+(isToday?' today':''); cell.querySelectorAll('.schedule-event').forEach(function(ev){ev.remove();}); }
+      if(dateEl) dateEl.textContent=days[i]+(isToday?' \u25CF':'');
+    }
+    loadScheduleBookings();
   }
 
-  function removeLineItem(btn) {
-    btn.closest('.line-item').remove();
-    calcInvoiceTotal();
+  async function loadScheduleBookings() {
+    var today=new Date(); var dow=today.getDay(); var off=dow===0?-6:1-dow;
+    var mon=new Date(today); mon.setDate(today.getDate()+off+(scheduleWeekOffset*7));
+    var sun=new Date(mon); sun.setDate(mon.getDate()+6);
+    var res=await db.from('bookings').select('*').gte('booking_date',mon.toISOString().split('T')[0]).lte('booking_date',sun.toISOString().split('T')[0]).order('booking_time');
+    if(res.error||!res.data) return;
+    res.data.forEach(function(bk){
+      var bd=new Date(bk.booking_date); var idx=bd.getDay()===0?6:bd.getDay()-1;
+      var cell=document.getElementById('schCell'+idx); if(!cell) return;
+      var evt=document.createElement('div');
+      var sl=(bk.service||'').toLowerCase(); var cls=sl.includes('mot')?'mot':sl.includes('service')?'service':sl.includes('tyre')||sl.includes('brake')?'repair':'service';
+      evt.className='schedule-event '+cls; evt.textContent=(bk.booking_time||'')+' '+(bk.service||'')+' - '+(bk.customer_name||'');
+      cell.appendChild(evt);
+    });
   }
+
+  function buildInvoiceHTML(invNum,customer,reg,service,subtotal,vat,total,status,date,notes) {
+    var sc=status==='Paid'?'#22c55e':status==='Overdue'?'#ef4444':'#f59e0b';
+    return '<!DOCTYPE html><html><head><meta charset="UTF-8" /><title>Invoice '+invNum+'</title><style>body{font-family:Arial,sans-serif;margin:0;padding:32px;color:#111;background:#fff;font-size:14px;}.header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:32px;padding-bottom:20px;border-bottom:3px solid #e8570a;}.brand{font-size:26px;font-weight:900;letter-spacing:2px;text-transform:uppercase;color:#111;}.brand span{color:#e8570a;}.inv-title{font-size:28px;font-weight:900;color:#e8570a;text-transform:uppercase;}.reg{display:inline-block;background:#FFD800;color:#000;font-weight:900;padding:3px 10px;border-radius:4px;letter-spacing:2px;font-size:13px;border:1px solid #E5C200;}table{width:100%;border-collapse:collapse;margin-bottom:20px;}thead th{background:#f4f4f4;padding:10px 12px;text-align:left;font-size:11px;text-transform:uppercase;color:#555;border-bottom:2px solid #e8570a;}tbody td{padding:10px 12px;border-bottom:1px solid #eee;}.totals{margin-left:auto;width:260px;}.total-row{display:flex;justify-content:space-between;padding:6px 0;font-size:14px;}.grand{border-top:2px solid #e8570a;padding-top:10px;font-size:16px;font-weight:700;color:#e8570a;}.footer{margin-top:40px;padding-top:16px;border-top:1px solid #eee;font-size:12px;color:#888;text-align:center;}@media print{body{padding:16px;}}</style></head><body>'+'<div class="header"><div><div class="brand">COMPARE <span>AUTOMOTIVE</span></div><div style="font-size:11px;color:#888;margin-top:4px;text-transform:uppercase;">Garage Management</div></div><div style="text-align:right;"><div class="inv-title">Invoice</div><div style="font-size:13px;color:#555;margin-top:4px;"><strong>'+invNum+'</strong></div><div style="font-size:13px;color:#555;">Date: '+date+'</div><div style="margin-top:8px;display:inline-block;padding:4px 12px;border-radius:4px;font-size:12px;font-weight:700;text-transform:uppercase;background:'+sc+'22;color:'+sc+';border:1px solid '+sc+'44;">'+status+'</div></div></div>'+'<div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:28px;"><div><h3 style="font-size:11px;text-transform:uppercase;color:#888;margin-bottom:8px;">Bill To</h3><strong>'+customer+'</strong></div><div><h3 style="font-size:11px;text-transform:uppercase;color:#888;margin-bottom:8px;">Vehicle</h3><span class="reg">'+reg+'</span></div></div>'+'<table><thead><tr><th>Description</th><th>Qty</th><th style="text-align:right;">Unit Price</th><th style="text-align:right;">Amount</th></tr></thead><tbody><tr><td>'+service+'</td><td>1</td><td style="text-align:right;">&#163;'+subtotal+'</td><td style="text-align:right;">&#163;'+subtotal+'</td></tr></tbody></table>'+'<div class="totals"><div class="total-row"><span>Subtotal (ex VAT)</span><span>&#163;'+subtotal+'</span></div><div class="total-row"><span>VAT (20%)</span><span>&#163;'+vat+'</span></div><div class="total-row grand"><span>Total</span><span>&#163;'+total+'</span></div></div>'+(notes?'<div style="margin-top:20px;padding:12px;background:#f9f9f9;border-left:3px solid #e8570a;font-size:13px;"><strong>Notes:</strong> '+notes+'</div>':'')+'<div style="margin-top:24px;padding:12px;background:#fff8f0;border:1px solid #ffd0a0;border-radius:6px;font-size:13px;">Payment Terms: 14 days from invoice date</div><div class="footer">Generated by Compare Automotive &bull; compareautomotive.co.uk</div></body></html>';
+  }
+
+  function printInvoice(invNum,customer,reg,service,subtotal,vat,total,status,date) {
+    var html=buildInvoiceHTML(invNum,customer,reg,service,subtotal,vat,total,status,date,'');
+    var w=window.open('','_blank','width=800,height=900');
+    if(w){w.document.write(html);w.document.close();w.focus();setTimeout(function(){w.print();},400);}
+  }
+
+  function sendInvoice(invNum,customer,email) {
+    document.getElementById('sendModalTitle').textContent='Send '+invNum;
+    document.getElementById('sendEmail').value=email||'';
+    document.getElementById('sendSubject').value='Your Invoice '+invNum+' from Compare Automotive';
+    document.getElementById('sendMessage').value='Dear '+customer+', please find your invoice '+invNum+' attached. Payment is due within 14 days. Kind regards, Compare Automotive Team';
+    document.getElementById('sendInvoiceModal').classList.add('active');
+  }
+
+  function confirmSendInvoice() { closeModal('sendInvoiceModal'); showToast('Invoice sent!'); }
+
+  function openCreateInvoiceModal() { document.getElementById('createInvoiceModal').classList.add('active'); calcInvoiceTotal(); }
+
+  function removeLineItem(btn) { btn.closest('.line-item').remove(); calcInvoiceTotal(); }
 
   function addLineItem() {
-    var li = document.createElement('div');
-    li.className = 'line-item';
-    li.style.cssText = 'display:grid;grid-template-columns:1fr 80px 90px 28px;gap:8px;align-items:center;';
-    li.innerHTML = '<input type="text" placeholder="Description" style="height:36px;font-size:13px;background:var(--ca-navy);border:1px solid var(--ca-border);border-radius:5px;padding:0 10px;color:var(--ca-text);outline:none;">' +
-      '<input type="number" placeholder="Qty" value="1" min="1" style="height:36px;font-size:13px;text-align:center;background:var(--ca-navy);border:1px solid var(--ca-border);border-radius:5px;padding:0 6px;color:var(--ca-text);outline:none;" oninput="calcInvoiceTotal()">' +
-      '<input type="number" placeholder="Price" step="0.01" style="height:36px;font-size:13px;background:var(--ca-navy);border:1px solid var(--ca-border);border-radius:5px;padding:0 10px;color:var(--ca-text);outline:none;" oninput="calcInvoiceTotal()">' +
-      '<button onclick="removeLineItem(this)" style="background:var(--ca-navy-light);border:1px solid var(--ca-border);color:var(--ca-text-muted);border-radius:6px;cursor:pointer;height:28px;width:28px;font-size:14px;display:flex;align-items:center;justify-content:center;">&#10005;</button>';
+    var li=document.createElement('div'); li.className='line-item'; li.style.cssText='display:grid;grid-template-columns:1fr 80px 90px 28px;gap:8px;align-items:center;';
+    li.innerHTML='<input type="text" placeholder="Description" style="height:36px;font-size:13px;background:var(--ca-navy);border:1px solid var(--ca-border);border-radius:5px;padding:0 10px;color:var(--ca-text);outline:none;">'+'<input type="number" placeholder="Qty" value="1" min="1" style="height:36px;font-size:13px;text-align:center;background:var(--ca-navy);border:1px solid var(--ca-border);border-radius:5px;padding:0 6px;color:var(--ca-text);outline:none;" oninput="calcInvoiceTotal()">'+'<input type="number" placeholder="Price" step="0.01" style="height:36px;font-size:13px;background:var(--ca-navy);border:1px solid var(--ca-border);border-radius:5px;padding:0 10px;color:var(--ca-text);outline:none;" oninput="calcInvoiceTotal()">'+'<button onclick="removeLineItem(this)" style="background:var(--ca-navy-light);border:1px solid var(--ca-border);color:var(--ca-text-muted);border-radius:6px;cursor:pointer;height:28px;width:28px;font-size:14px;display:flex;align-items:center;justify-content:center;">&#10005;</button>';
     document.getElementById('lineItems').appendChild(li);
   }
 
   function calcInvoiceTotal() {
-    var items = document.querySelectorAll('#lineItems .line-item');
-    var subtotal = 0;
-    items.forEach(function(item) {
-      var inputs = item.querySelectorAll('input');
-      var qty = parseFloat(inputs[1] ? inputs[1].value : 1) || 0;
-      var price = parseFloat(inputs[2] ? inputs[2].value : 0) || 0;
-      subtotal += qty * price;
-    });
-    var vat = subtotal * 0.2;
-    var total = subtotal + vat;
-    var el = document.getElementById('ci_subtotal');
-    if (el) el.textContent = '\u00a3' + subtotal.toFixed(2);
-    el = document.getElementById('ci_vat');
-    if (el) el.textContent = '\u00a3' + vat.toFixed(2);
-    el = document.getElementById('ci_total');
-    if (el) el.textContent = '\u00a3' + total.toFixed(2);
+    var items=document.querySelectorAll('#lineItems .line-item'); var subtotal=0;
+    items.forEach(function(item){ var inputs=item.querySelectorAll('input'); subtotal+=(parseFloat(inputs[1]?inputs[1].value:0)||0)*(parseFloat(inputs[2]?inputs[2].value:0)||0); });
+    var vat=subtotal*0.2;
+    var e=document.getElementById('ci_subtotal'); if(e) e.textContent=String.fromCharCode(163)+subtotal.toFixed(2);
+    e=document.getElementById('ci_vat'); if(e) e.textContent=String.fromCharCode(163)+vat.toFixed(2);
+    e=document.getElementById('ci_total'); if(e) e.textContent=String.fromCharCode(163)+(subtotal+vat).toFixed(2);
   }
 
-  function buildInvoiceHTML(invNum, customer, reg, service, subtotal, vat, total, status, date, notes) {
-    var statusColour = status === 'Paid' ? '#22c55e' : (status === 'Overdue' ? '#ef4444' : '#f59e0b');
-    return '<!DOCTYPE html><html><head><meta charset="UTF-8" /><title>Invoice ' + invNum + '</title><style>' +
-      'body{font-family:Arial,sans-serif;margin:0;padding:32px;color:#111;background:#fff;font-size:14px;}' +
-      '.header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:32px;padding-bottom:20px;border-bottom:3px solid #e8570a;}' +
-      '.brand{font-family:Arial Black,sans-serif;font-size:26px;font-weight:900;letter-spacing:2px;text-transform:uppercase;color:#111;}' +
-      '.brand span{color:#e8570a;}' +
-      '.inv-title{font-size:28px;font-weight:900;color:#e8570a;text-transform:uppercase;letter-spacing:1px;}' +
-      '.inv-meta{font-size:13px;color:#555;margin-top:4px;}' +
-      '.reg{display:inline-block;background:#FFD800;color:#000;font-weight:900;padding:3px 10px;border-radius:4px;letter-spacing:2px;font-size:13px;border:1px solid #E5C200;}' +
-      'table{width:100%;border-collapse:collapse;margin-bottom:20px;}' +
-      'thead th{background:#f4f4f4;padding:10px 12px;text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;color:#555;border-bottom:2px solid #e8570a;}' +
-      'tbody td{padding:10px 12px;border-bottom:1px solid #eee;font-size:14px;}' +
-      '.totals{margin-left:auto;width:260px;}' +
-      '.total-row{display:flex;justify-content:space-between;padding:6px 0;font-size:14px;}' +
-      '.total-row.grand{border-top:2px solid #e8570a;padding-top:10px;font-size:16px;font-weight:700;color:#e8570a;}' +
-      '.status-badge{display:inline-block;padding:4px 12px;border-radius:4px;font-size:12px;font-weight:700;text-transform:uppercase;background:' + statusColour + '22;color:' + statusColour + ';border:1px solid ' + statusColour + '44;}' +
-      '.footer{margin-top:40px;padding-top:16px;border-top:1px solid #eee;font-size:12px;color:#888;text-align:center;}' +
-      '@media print{body{padding:16px;}@page{margin:1cm;}}' +
-      '</style></head><body>' +
-      '<div class="header"><div><div class="brand">COMPARE <span>AUTOMOTIVE</span></div>' +
-      '<div style="font-size:11px;color:#888;margin-top:4px;letter-spacing:1px;text-transform:uppercase;">Garage Management</div>' +
-      '<div style="margin-top:12px;font-size:13px;color:#555;">Your Garage<br>Tel: 01234 567890</div></div>' +
-      '<div style="text-align:right;"><div class="inv-title">Invoice</div><div class="inv-meta"><strong>' + invNum + '</strong></div>' +
-      '<div class="inv-meta">Date: ' + date + '</div><div style="margin-top:8px;"><span class="status-badge">' + status + '</span></div></div></div>' +
-      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:28px;">' +
-      '<div><h3 style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#888;margin-bottom:8px;">Bill To</h3><strong>' + customer + '</strong></div>' +
-      '<div><h3 style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#888;margin-bottom:8px;">Vehicle</h3><span class="reg">' + reg + '</span></div></div>' +
-      '<table><thead><tr><th>Description</th><th>Qty</th><th style="text-align:right;">Unit Price</th><th style="text-align:right;">Amount</th></tr></thead>' +
-      '<tbody><tr><td>' + service + '</td><td>1</td><td style="text-align:right;">&#163;' + subtotal + '</td><td style="text-align:right;">&#163;' + subtotal + '</td></tr></tbody></table>' +
-      '<div class="totals">' +
-      '<div class="total-row"><span>Subtotal (ex VAT)</span><span>&#163;' + subtotal + '</span></div>' +
-      '<div class="total-row"><span>VAT (20%)</span><span>&#163;' + vat + '</span></div>' +
-      '<div class="total-row grand"><span>Total</span><span>&#163;' + total + '</span></div></div>' +
-      (notes ? '<div style="margin-top:20px;padding:12px;background:#f9f9f9;border-left:3px solid #e8570a;font-size:13px;"><strong>Notes:</strong> ' + notes + '</div>' : '') +
-      '<div style="margin-top:24px;padding:12px;background:#fff8f0;border:1px solid #ffd0a0;border-radius:6px;font-size:13px;">Payment Terms: 14 days from invoice date &nbsp;|&nbsp; Bank Transfer preferred</div>' +
-      '<div class="footer">Generated by Compare Automotive Garage Management System &nbsp;&bull;&nbsp; compareautomotive.co.uk</div>' +
-      '</body></html>';
+  var pageTitles={dashboard:'Dashboard',schedule:'Schedule',bookings:'Bookings',jobs:'Job Cards',bays:'Bay Management',vehicles:'Vehicles',customers:'Customers',invoices:'Invoices',reports:'Reports',settings:'Settings'};
+
+  function navigate(page,el) {
+    document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active');});
+    document.querySelectorAll('.nav-item').forEach(function(n){n.classList.remove('active');});
+    var target=document.getElementById('page-'+page); if(target) target.classList.add('active');
+    if(el) el.classList.add('active');
+    var t=document.getElementById('topbarTitle'); if(t) t.textContent=pageTitles[page]||page;
+    if(page==='schedule') buildSchedule();
   }
 
-  function printInvoice(invNum, customer, reg, service, subtotal, vat, total, status, date) {
-    var html = buildInvoiceHTML(invNum, customer, reg, service, subtotal, vat, total, status, date, '');
-    var w = window.open('', '_blank', 'width=800,height=900');
-    w.document.write(html);
-    w.document.close();
-    w.focus();
-    setTimeout(function(){ w.print(); }, 400);
-  }
+  function openNewBookingModal() { document.getElementById('newBookingModal').classList.add('active'); }
 
-  function sendInvoice(invNum, customer, email) {
-    document.getElementById('sendModalTitle').textContent = 'Send ' + invNum;
-    document.getElementById('sendEmail').value = email || '';
-    document.getElementById('sendSubject').value = 'Your Invoice ' + invNum + ' from Compare Automotive';
-    document.getElementById('sendMessage').value = 'Dear ' + customer + ', Please find your invoice ' + invNum + ' attached. Payment is due within 14 days. Kind regards, Compare Automotive Team';
-    document.getElementById('sendInvoiceModal').classList.add('active');
-  }
-
-  function confirmSendInvoice() {
-    closeModal('sendInvoiceModal');
-    showToast('Invoice sent to customer!');
-  }
-
-  function filterInvoices() {
-    var search = (document.getElementById('invSearch').value || '').toLowerCase();
-    var status = document.getElementById('invStatusFilter').value;
-    var month = document.getElementById('invMonthFilter').value;
-    var rows = document.querySelectorAll('#invoiceTableBody tr');
-    rows.forEach(function(row) {
-      var text = row.textContent.toLowerCase();
-      var rowStatus = row.getAttribute('data-status') || row.textContent;
-      var show = true;
-      if (search && text.indexOf(search) === -1) show = false;
-      if (status && text.indexOf(status.toLowerCase()) === -1) show = false;
-      row.style.display = show ? '' : 'none';
-    });
-  }
-
-  function exportInvoices() { showToast('Exporting invoices to CSV...'); }
-
-  function openNewBookingModal() {
-    document.getElementById('newBookingModal').classList.add('active');
-  }
-
-  function closeModal(id) {
-    document.getElementById(id).classList.remove('active');
-  }
+  function closeModal(id) { var m=document.getElementById(id); if(m) m.classList.remove('active'); }
 
   function showToast(msg) {
-    var t = document.getElementById('toast');
-    document.getElementById('toastMsg').textContent = msg;
-    t.style.transform = 'translateY(0)';
-    t.style.opacity = '1';
-    setTimeout(function(){ t.style.transform = 'translateY(80px)'; t.style.opacity = '0'; }, 3500);
+    var t=document.getElementById('toast'); if(!t) return;
+    document.getElementById('toastMsg').textContent=msg;
+    t.style.transform='translateY(0)'; t.style.opacity='1';
+    setTimeout(function(){t.style.transform='translateY(80px)';t.style.opacity='0';},3500);
   }
 
-  function switchGarage(val) {
-    showToast('Garage switched.');
-  }
+  function switchGarage(val) { showToast('Garage switched.'); }
 
-  function switchTab(page, tab, btn) {
-    document.querySelectorAll('#page-' + page + ' [id^="' + page + '-tab-"]').forEach(function(el){ el.style.display = 'none'; });
-    var target = document.getElementById(page + '-tab-' + tab);
-    if (target) target.style.display = '';
-    var parent = btn.closest('.tabs');
-    if (parent) parent.querySelectorAll('.tab-btn').forEach(function(b){ b.classList.remove('active'); });
+  function switchTab(page,tab,btn) {
+    document.querySelectorAll('#page-'+page+' [id^="'+page+'-tab-"]').forEach(function(el){el.style.display='none';});
+    var target=document.getElementById(page+'-tab-'+tab); if(target) target.style.display='';
+    var parent=btn.closest('.tabs'); if(parent) parent.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active');});
     btn.classList.add('active');
   }
 
-  document.addEventListener('DOMContentLoaded', function() {
-    var modal = document.getElementById('newBookingModal');
-    if (modal) {
-      modal.addEventListener('click', function(e) {
-        if (e.target === this) closeModal('newBookingModal');
-      });
-    }
+  document.addEventListener('DOMContentLoaded',function(){
+    ['newBookingModal','createInvoiceModal','addBayModal','newCustomerModal','addVehicleModal','sendInvoiceModal'].forEach(function(id){
+      var m=document.getElementById(id); if(m) m.addEventListener('click',function(e){if(e.target===this) closeModal(id);});
+    });
   });
 </script>
+
 </body>
 </html>
