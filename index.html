@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+  <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
@@ -1246,26 +1246,13 @@
 =============================================== -->
 <div class="auth-screen" id="authScreen">
   <div class="auth-left">
-    <div class="auth-logo" style="position:relative;z-index:1;">
-      <div style="text-align:center;margin-bottom:8px;">
-        <div style="display:inline-flex;align-items:center;gap:12px;margin-bottom:10px;">
-          <div style="width:52px;height:52px;background:var(--ca-red);border-radius:12px;display:flex;align-items:center;justify-content:center;">
-            <svg width="30" height="30" viewBox="0 0 24 24" fill="white"><path d="M18.92 6.01C18.72 5.42 18.16 5 17.5 5h-11c-.66 0-1.21.42-1.42 1.01L3 12v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99zM6.5 16c-.83 0-1.5-.67-1.5-1.5S5.67 13 6.5 13s1.5.67 1.5 1.5S7.33 16 6.5 16zm11 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zM5 11l1.5-4.5h11L19 11H5z"/></svg>
-          </div>
-        </div>
-        <div style="font-family:'Barlow Condensed',sans-serif;font-size:30px;font-weight:900;letter-spacing:2px;text-transform:uppercase;color:#ffffff;line-height:1;">COMPARE <span style="color:var(--ca-red);">AUTOMOTIVE</span></div>
-        <div style="font-size:10px;letter-spacing:3px;color:rgba(255,255,255,0.4);text-transform:uppercase;margin-top:6px;">Garage Management System</div>
-      </div>
-    </div>
     <div style="position:relative;z-index:1;text-align:center;">
-      <div class="auth-tagline">Drive your<br>garage <span>forward</span></div>
-      <div class="auth-desc">Complete management platform for MOT centres, service garages and repair shops across the UK.</div>
-    </div>
-    <div class="auth-stats">
-      <div class="auth-stat"><div class="auth-stat-num">2,400+</div><div class="auth-stat-label">Garages using the platform</div></div>
-      <div class="auth-stat"><div class="auth-stat-num">98%</div><div class="auth-stat-label">Customer satisfaction</div></div>
-      <div class="auth-stat"><div class="auth-stat-num">4.8&#9733;</div><div class="auth-stat-label">Average garage rating</div></div>
-      <div class="auth-stat"><div class="auth-stat-num">&pound;0</div><div class="auth-stat-label">No setup fees ever</div></div>
+      <div style="width:64px;height:64px;background:var(--ca-red);border-radius:16px;display:flex;align-items:center;justify-content:center;margin:0 auto 24px;">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="white"><path d="M18.92 6.01C18.72 5.42 18.16 5 17.5 5h-11c-.66 0-1.21.42-1.42 1.01L3 12v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99zM6.5 16c-.83 0-1.5-.67-1.5-1.5S5.67 13 6.5 13s1.5.67 1.5 1.5S7.33 16 6.5 16zm11 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zM5 11l1.5-4.5h11L19 11H5z"/></svg>
+      </div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:40px;font-weight:900;letter-spacing:3px;text-transform:uppercase;color:#ffffff;line-height:1;">COMPARE</div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:40px;font-weight:900;letter-spacing:3px;text-transform:uppercase;color:var(--ca-red);line-height:1.1;">AUTOMOTIVE</div>
+      <div style="font-size:11px;letter-spacing:3px;color:rgba(255,255,255,0.35);text-transform:uppercase;margin-top:14px;">Garage Management System</div>
     </div>
   </div>
 
@@ -1303,10 +1290,7 @@
           <button class="btn btn-primary btn-sm btn-fw" onclick="handlePasswordReset()">Send Reset Link</button>
         </div>
 
-        <div style="margin-top:20px;padding:14px;background:var(--ca-navy-light);border:1px solid var(--ca-border);border-radius:8px;font-size:12px;color:var(--ca-text-muted);">
-          <strong style="color:var(--ca-text);display:block;margin-bottom:4px;">First time here?</strong>
-          Contact your Compare Automotive account manager to get your garage login credentials set up.
-        </div>
+
       </div>
     </div>
   </div>
@@ -1329,15 +1313,6 @@
           <div style="font-size:9px;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:1.5px;margin-top:2px;">Garage Management</div>
         </div>
       </div>
-    </div>
-
-    <div class="garage-selector" id="garageSelectorWrap">
-      <div class="garage-selector-label">Active Garage</div>
-      <select onchange="switchGarage(this.value)">
-        <option value="speedy">Speedy Tyres  -  Manchester</option>
-        <option value="autofix">AutoFix Centre  -  Leeds</option>
-        <option value="premier">Premier MOT  -  Birmingham</option>
-      </select>
     </div>
 
     <nav class="sidebar-nav">
@@ -1414,12 +1389,13 @@
 
   <!-- MAIN CONTENT -->
   <main class="main">
-    <div class="topbar">
+    <div class="topbar" style="position:relative;">
       <div class="topbar-title" id="topbarTitle">Dashboard</div>
       <div class="topbar-search">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="var(--ca-text-muted)"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
-        <input type="text" placeholder="Search bookings, customers, reg...">
+        <input type="text" id="globalSearch" placeholder="Search bookings, customers, reg..." oninput="handleGlobalSearch(this.value)">
       </div>
+      <div id="searchResults" style="display:none;position:absolute;top:52px;left:0;right:0;background:var(--ca-navy-mid);border:1px solid var(--ca-border);border-radius:8px;max-height:320px;overflow-y:auto;z-index:200;box-shadow:0 8px 24px rgba(0,0,0,0.4);margin:0 16px;"></div>
       <div class="topbar-actions">
         <div class="notif-btn">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="var(--ca-text-muted)"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
@@ -1454,7 +1430,7 @@
             </div>
             <div class="stat-label">Today's Bookings</div>
             <div class="stat-value" id="statTodayBookings">-</div>
-            <div class="stat-change up">&#8593; 3 more than yesterday</div>
+            <div class="stat-change" id="statTodayChange"></div>
           </div>
           <div class="stat-card green">
             <div class="stat-icon">
@@ -1462,7 +1438,7 @@
             </div>
             <div class="stat-label">Revenue This Week</div>
             <div class="stat-value" id="statWeekRevenue">-</div>
-            <div class="stat-change up">&#8593; 12% vs last week</div>
+            <div class="stat-change" id="statWeekChange"></div>
           </div>
           <div class="stat-card amber">
             <div class="stat-icon">
@@ -1470,7 +1446,7 @@
             </div>
             <div class="stat-label">Jobs In Progress</div>
             <div class="stat-value" id="statJobsInProgress">-</div>
-            <div class="stat-change">2 awaiting parts</div>
+            <div class="stat-change" id="statJobsChange"></div>
           </div>
           <div class="stat-card blue">
             <div class="stat-icon">
@@ -1478,7 +1454,7 @@
             </div>
             <div class="stat-label">MOTs Due This Month</div>
             <div class="stat-value" id="statMotsDue">-</div>
-            <div class="stat-change down">&#8595; 12 still unbooked</div>
+            <div class="stat-change" id="statMotsChange"></div>
           </div>
         </div>
 
@@ -1571,11 +1547,11 @@
         <div class="page-header">
           <div>
             <div class="page-header-title">Schedule</div>
-            <div class="page-header-sub">Weekly booking calendar</div>
+            <div class="page-header-sub" id="scheduleSubtitle">Weekly booking calendar</div>
           </div>
           <div class="page-header-actions">
-            <button class="btn btn-outline btn-sm">&larr; Prev Week</button>
-            <button class="btn btn-outline btn-sm">Next Week &rarr;</button>
+            <button class="btn btn-outline btn-sm" onclick="changeWeek(-1)">&larr; Prev Week</button>
+            <button class="btn btn-outline btn-sm" onclick="changeWeek(1)">Next Week &rarr;</button>
             <button class="btn btn-primary btn-sm" onclick="openNewBookingModal()">+ New Booking</button>
           </div>
         </div>
@@ -1958,7 +1934,7 @@
               <div class="flex-between"><div><div style="font-size:14px;font-weight:600;">Service interval reminders</div><div style="font-size:12px;color:var(--ca-text-muted);">Remind when service is due by mileage/date</div></div><label style="cursor:pointer;"><input type="checkbox"></label></div>
               <div class="flex-between"><div><div style="font-size:14px;font-weight:600;">Booking confirmation</div><div style="font-size:12px;color:var(--ca-text-muted);">Auto-send confirmation on new booking</div></div><label style="cursor:pointer;"><input type="checkbox" checked></label></div>
             </div>
-            <button class="btn btn-primary btn-sm mt-16" style="margin-top:16px;">Save Preferences</button>
+            <button class="btn btn-primary btn-sm" style="margin-top:16px;" onclick="saveGarageSettings()">Save Preferences</button>
           </div>
         </div>
       </div>
@@ -2089,7 +2065,7 @@
         </div>
         <div class="form-group">
           <label>Invoice Date</label>
-          <input type="date" id="ci_date" value="2026-04-12">
+          <input type="date" id="ci_date">
         </div>
       </div>
       <div class="form-group">
@@ -2151,18 +2127,11 @@
       </div>
       <div class="form-group">
         <label>Subject</label>
-        <input type="text" id="sendSubject" placeholder="Invoice from Speedy Tyres">
+        <input type="text" id="sendSubject" placeholder="Invoice from Compare Automotive">
       </div>
       <div class="form-group">
         <label>Message</label>
-        <textarea id="sendMessage" style="height:110px;">Dear Customer,
-
-Please find your invoice attached. Payment is due within 14 days.
-
-Thank you for choosing Speedy Tyres.
-
-Kind regards,
-Speedy Tyres Team</textarea>
+        <textarea id="sendMessage" style="height:110px;">Dear Customer, please find your invoice attached. Payment is due within 14 days. Thank you for your custom.</textarea>
       </div>
       <div style="display:flex;align-items:center;gap:8px;font-size:13px;padding:10px;background:var(--ca-navy);border:1px solid var(--ca-border);border-radius:8px;">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="var(--ca-text-muted)"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
@@ -2351,6 +2320,11 @@ Speedy Tyres Team</textarea>
     document.getElementById('loginBtn').disabled = false;
     await loadAll();
     navigate('dashboard', document.querySelector('.nav-item'));
+    var gRes = await db.from('garages').select('name').limit(1).single();
+    if (!gRes.error && gRes.data && gRes.data.name) {
+      var subEl = document.querySelector('.sidebar-logo div div:last-child');
+      if (subEl) subEl.textContent = gRes.data.name;
+    }
   }
 
   async function logout() {
@@ -2388,7 +2362,7 @@ Speedy Tyres Team</textarea>
   });
 
   async function loadAll() {
-    await Promise.all([loadDashboard(), loadAllBookings(), loadJobs(), loadBays(), loadVehicles(), loadCustomers(), loadInvoices(), loadReports(), loadTeam()]);
+    await Promise.all([loadDashboard(), loadAllBookings(), loadJobs(), loadBays(), loadVehicles(), loadCustomers(), loadInvoices(), loadReports(), loadTeam(), loadSettings()]);
     buildSchedule();
   }
 
@@ -2758,7 +2732,22 @@ Speedy Tyres Team</textarea>
     e=document.getElementById('rptMotPass'); if(e) e.textContent='N/A';
   }
 
-  async function loadTeam() {
+  async function loadSettings() {
+    var emailEl = document.getElementById('settEmail');
+    if (emailEl && currentUser) emailEl.value = currentUser.email || '';
+    try {
+      var res = await db.from('garages').select('*').limit(1).single();
+      if (!res.error && res.data) {
+        var g = res.data;
+        var nm = document.getElementById('settGarageName'); if(nm) nm.value = g.name || '';
+        var ad = document.getElementById('settAddress'); if(ad) ad.value = g.address || '';
+        var ph = document.getElementById('settPhone'); if(ph) ph.value = g.phone || '';
+        if (emailEl && g.email) emailEl.value = g.email;
+      }
+    } catch(e) { console.log('No garage record yet:', e.message); }
+  }
+
+    async function loadTeam() {
     var tbody=document.getElementById('teamTbody');
     if(!tbody||!currentUser) return;
     var name=(currentUser.user_metadata||{}).full_name||currentUser.email;
@@ -2767,18 +2756,45 @@ Speedy Tyres Team</textarea>
     tbody.innerHTML='<tr><td><div style="display:flex;align-items:center;gap:8px;"><div class="user-avatar" style="width:28px;height:28px;font-size:10px;">'+ini+'</div>'+name+'</div></td><td>'+role+'</td><td>'+currentUser.email+'</td><td>Now</td><td><span class="badge badge-success">Active</span></td><td></td></tr>';
   }
 
-  function saveGarageSettings() { showToast('Settings saved!'); }
+  async function saveGarageSettings() {
+    var name = (document.getElementById('settGarageName')||{}).value||'';
+    var address = (document.getElementById('settAddress')||{}).value||'';
+    var phone = (document.getElementById('settPhone')||{}).value||'';
+    var email = (document.getElementById('settEmail')||{}).value||'';
+    var url = (document.getElementById('settUrl')||{}).value||'';
+    if (!name) { showToast('Please enter a garage name.'); return; }
+    var res = await db.from('garages').upsert([{ name: name, address: address, phone: phone, email: email }], { onConflict: 'id' });
+    if (res.error) {
+      var res2 = await db.from('garages').insert([{ name: name, address: address, phone: phone, email: email }]);
+      if (res2.error) { showToast('Saved locally (no garages table row yet).'); return; }
+    }
+    showToast('Garage settings saved!');
+  }
+
+  function changeWeek(dir) {
+    scheduleWeekOffset += dir;
+    buildSchedule();
+  }
 
   function buildSchedule() {
+    var months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
     var days=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
     var today=new Date(); var dow=today.getDay(); var off=dow===0?-6:1-dow;
+    var monday=new Date(today); monday.setDate(today.getDate()+off+(scheduleWeekOffset*7));
+    var sunday=new Date(monday); sunday.setDate(monday.getDate()+6);
+    var sub=document.getElementById('scheduleSubtitle');
+    if(sub){
+      var fromStr=monday.getDate()+' '+months[monday.getMonth()]+' '+monday.getFullYear();
+      var toStr=sunday.getDate()+' '+months[sunday.getMonth()]+' '+sunday.getFullYear();
+      sub.textContent='Week of '+fromStr+' - '+toStr;
+    }
     for(var i=0;i<7;i++){
-      var d=new Date(today); d.setDate(today.getDate()+off+i+(scheduleWeekOffset*7));
+      var d=new Date(monday); d.setDate(monday.getDate()+i);
       var isToday=d.toDateString()===today.toDateString();
       var hdr=document.getElementById('schHdr'+i); var cell=document.getElementById('schCell'+i); var dateEl=document.getElementById('schDate'+i);
-      if(hdr) hdr.textContent=days[i]+' '+d.getDate();
+      if(hdr) hdr.textContent=days[i]+' '+d.getDate()+' '+months[d.getMonth()];
       if(cell){ cell.className='schedule-cell'+(isToday?' today':''); cell.querySelectorAll('.schedule-event').forEach(function(ev){ev.remove();}); }
-      if(dateEl) dateEl.textContent=days[i]+(isToday?' \u25CF':'');
+      if(dateEl) dateEl.textContent=d.getDate()+' '+months[d.getMonth()]+(isToday?' \u25CF':'');
     }
     loadScheduleBookings();
   }
@@ -2820,7 +2836,12 @@ Speedy Tyres Team</textarea>
 
   function confirmSendInvoice() { closeModal('sendInvoiceModal'); showToast('Invoice sent!'); }
 
-  function openCreateInvoiceModal() { document.getElementById('createInvoiceModal').classList.add('active'); calcInvoiceTotal(); }
+  function openCreateInvoiceModal() {
+    var dateEl = document.getElementById('ci_date');
+    if (dateEl && !dateEl.value) dateEl.value = new Date().toISOString().split('T')[0];
+    document.getElementById('createInvoiceModal').classList.add('active');
+    calcInvoiceTotal();
+  }
 
   function removeLineItem(btn) { btn.closest('.line-item').remove(); calcInvoiceTotal(); }
 
@@ -2838,6 +2859,49 @@ Speedy Tyres Team</textarea>
     e=document.getElementById('ci_vat'); if(e) e.textContent=String.fromCharCode(163)+vat.toFixed(2);
     e=document.getElementById('ci_total'); if(e) e.textContent=String.fromCharCode(163)+(subtotal+vat).toFixed(2);
   }
+
+
+  function handleGlobalSearch(query) {
+    var box = document.getElementById('searchResults');
+    if (!box) return;
+    query = query.trim().toLowerCase();
+    if (!query || query.length < 2) { box.style.display = 'none'; return; }
+    var results = [];
+    allBookingsCache.forEach(function(bk) {
+      if ((bk.customer_name||'').toLowerCase().includes(query) || (bk.vehicle_reg||'').toLowerCase().includes(query) || (bk.service||'').toLowerCase().includes(query)) {
+        results.push({ type: 'Booking', label: (bk.customer_name||'') + ' - ' + (bk.vehicle_reg||'') + ' - ' + (bk.service||''), sub: (bk.booking_date||'') + ' ' + (bk.booking_time||''), page: 'bookings' });
+      }
+    });
+    if (results.length === 0) {
+      box.innerHTML = '<div style="padding:14px 16px;font-size:13px;color:var(--ca-text-muted);">No results for &quot;' + query + '&quot;</div>';
+      box.style.display = 'block';
+      return;
+    }
+    box.innerHTML = '';
+    results.slice(0,8).forEach(function(r) {
+      var item = document.createElement('div');
+      item.style.cssText = 'padding:10px 16px;border-bottom:1px solid var(--ca-border);cursor:pointer;font-size:13px;';
+      item.innerHTML = '<div style="font-weight:600;color:var(--ca-text);">' + r.label + '</div><div style="color:var(--ca-text-muted);font-size:12px;">' + r.type + ' &middot; ' + r.sub + '</div>';
+      item.addEventListener('mouseover', function(){ this.style.background='var(--ca-navy-light)'; });
+      item.addEventListener('mouseout', function(){ this.style.background=''; });
+      item.addEventListener('click', function() {
+        var navEl = document.querySelector('[onclick*="' + r.page + '"]');
+        navigate(r.page, navEl);
+        box.style.display = 'none';
+        var gs = document.getElementById('globalSearch'); if(gs) gs.value = '';
+      });
+      box.appendChild(item);
+    });
+    box.style.display = 'block';
+  }
+
+  document.addEventListener('click', function(e) {
+    var box = document.getElementById('searchResults');
+    var search = document.getElementById('globalSearch');
+    if (box && search && !search.contains(e.target) && !box.contains(e.target)) {
+      box.style.display = 'none';
+    }
+  });
 
   var pageTitles={dashboard:'Dashboard',schedule:'Schedule',bookings:'Bookings',jobs:'Job Cards',bays:'Bay Management',vehicles:'Vehicles',customers:'Customers',invoices:'Invoices',reports:'Reports',settings:'Settings'};
 
@@ -2861,7 +2925,7 @@ Speedy Tyres Team</textarea>
     setTimeout(function(){t.style.transform='translateY(80px)';t.style.opacity='0';},3500);
   }
 
-  function switchGarage(val) { showToast('Garage switched.'); }
+
 
   function switchTab(page,tab,btn) {
     document.querySelectorAll('#page-'+page+' [id^="'+page+'-tab-"]').forEach(function(el){el.style.display='none';});
@@ -2876,6 +2940,5 @@ Speedy Tyres Team</textarea>
     });
   });
 </script>
-
 </body>
 </html>
