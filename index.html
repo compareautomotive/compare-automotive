@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 
-<html lang="en"> 
+<html lang="en">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <meta name="theme-color" content="#0a0a0a" />
 <title>Compare Automotive - Garage Management System</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Barlow:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 <style>
   :root {
     --ca-red: #e8570a; --ca-red-dark: #c44608; --ca-red-light: rgba(232,87,10,0.18);
@@ -297,12 +297,18 @@
           <a href="#" onclick="showForgotPassword();return false;" style="font-size:13px;color:var(--ca-red);text-decoration:none;font-weight:500;">Forgot password?</a>
         </div>
         <button class="btn btn-primary btn-fw" id="loginBtn" onclick="handleLogin()"><span id="loginBtnText">Sign In to Portal</span></button>
-        <div id="forgotMsg" style="display:none;margin-top:16px;padding:12px 16px;background:rgba(232,87,10,0.08);border:1px solid rgba(232,87,10,0.25);border-radius:8px;font-size:13px;color:var(--ca-red);">
-          Enter your email above and click Send Reset Link.<br><br>
-          <button class="btn btn-primary btn-sm btn-fw" onclick="handlePasswordReset()">Send Reset Link</button>
-        </div>
-      </div>
+
+```
+    <div style="text-align:center;margin-top:14px;font-size:13px;color:var(--ca-text-muted);">or</div>
+    <button class="btn btn-outline btn-fw" style="margin-top:10px;" onclick="loginAsDemo()">Try Demo Mode (no login required)</button>
+    <div id="forgotMsg" style="display:none;margin-top:16px;padding:12px 16px;background:rgba(232,87,10,0.08);border:1px solid rgba(232,87,10,0.25);border-radius:8px;font-size:13px;color:var(--ca-red);">
+      Enter your email above and click Send Reset Link.<br><br>
+      <button class="btn btn-primary btn-sm btn-fw" onclick="handlePasswordReset()">Send Reset Link</button>
     </div>
+  </div>
+</div>
+```
+
   </div>
 </div>
 
@@ -785,7 +791,17 @@
 <script>
   var SUPA_URL = 'https://broizygakhfmnkkgvhek.supabase.co';
   var SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJyb2l6eWdha2hmbW5ra2d2aGVrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY1NTMxMjgsImV4cCI6MjA5MjEyOTEyOH0.K1vnDbHVbmr24yhnNtjHjqDyHr6hTbrEfY1MHpTlCNk';
-  var db = supabase.createClient(SUPA_URL, SUPA_KEY);
+  var db = null;
+  function initSupabase() {
+    if (db) return db;
+    if (typeof supabase === 'undefined') {
+      console.error('Supabase library not loaded yet');
+      return null;
+    }
+    try { db = supabase.createClient(SUPA_URL, SUPA_KEY); }
+    catch (e) { console.error('Supabase init failed:', e); return null; }
+    return db;
+  }
   var currentUser = null;
   var invoiceCounter = 1001;
   var scheduleWeekOffset = 0;
@@ -809,18 +825,89 @@
     var btn = document.getElementById('loginBtn');
     var errBox = document.getElementById('loginError');
     if (!email || !pass) { showLoginError('Please enter your email and password.'); return; }
+
+    // Demo mode bypass - email "demo" or "demo@demo" with any password
+    if (email === 'demo' || email === 'demo@demo.com' || email === 'demo@demo') {
+      currentUser = {
+        email: 'demo@compareautomotive.co.uk',
+        user_metadata: { full_name: 'Demo User', role: 'Garage Manager' }
+      };
+      document.getElementById('loginBtnText').textContent = 'Sign In to Portal';
+      btn.disabled = false;
+      enterAppDemo();
+      return;
+    }
+
+    if (!initSupabase()) {
+      showLoginError('Connection library still loading. Please wait a moment and try again.');
+      return;
+    }
+
     document.getElementById('loginBtnText').textContent = 'Signing in...';
     btn.disabled = true;
     errBox.style.display = 'none';
-    var result = await db.auth.signInWithPassword({ email: email, password: pass });
-    if (result.error) {
-      showLoginError(result.error.message || 'Invalid email or password.');
+
+    try {
+      var result = await db.auth.signInWithPassword({ email: email, password: pass });
+      if (result.error) {
+        var msg = result.error.message || String(result.error);
+        // Make common errors more user-friendly
+        if (msg.toLowerCase().indexOf('load failed') >= 0 || msg.toLowerCase().indexOf('fetch') >= 0 || msg.toLowerCase().indexOf('network') >= 0) {
+          showLoginError('Cannot reach Supabase. Check your project is not paused and that ' + window.location.origin + ' is in your Supabase Site URL whitelist. (Raw: ' + msg + ')');
+        } else if (msg.toLowerCase().indexOf('invalid') >= 0 || msg.toLowerCase().indexOf('credentials') >= 0) {
+          showLoginError('Invalid email or password. Make sure the user exists in Supabase and is confirmed.');
+        } else {
+          showLoginError('Login error: ' + msg);
+        }
+        document.getElementById('loginBtnText').textContent = 'Sign In to Portal';
+        btn.disabled = false;
+        return;
+      }
+      currentUser = result.data.user;
+      await enterApp();
+    } catch (err) {
+      var emsg = (err && err.message) ? err.message : String(err);
+      showLoginError('Connection failed: ' + emsg + '. Try the demo login (email: demo) to bypass auth.');
       document.getElementById('loginBtnText').textContent = 'Sign In to Portal';
       btn.disabled = false;
-      return;
     }
-    currentUser = result.data.user;
-    await enterApp();
+  }
+
+  // Demo mode - skip Supabase, populate UI with sample data
+  function enterAppDemo() {
+    var name = 'Demo User';
+    document.getElementById('sidebarUserName').textContent = name;
+    document.getElementById('sidebarUserRole').textContent = 'Garage Manager';
+    document.getElementById('sidebarAvatar').textContent = 'DU';
+    var hr = new Date().getHours();
+    var greet = hr < 12 ? 'Good morning' : hr < 18 ? 'Good afternoon' : 'Good evening';
+    var dashEl = document.getElementById('dashGreeting');
+    if (dashEl) dashEl.innerHTML = greet + ', Demo &#128075;';
+    document.getElementById('authScreen').style.display = 'none';
+    document.getElementById('mainApp').classList.add('active');
+
+    // Populate with fake data
+    var stats = {statTodayBookings:'7', statWeekRevenue:'&#163;2,840', statJobsInProgress:'3', statMotsDue:'12'};
+    Object.keys(stats).forEach(function(k){ var e=document.getElementById(k); if(e) e.innerHTML = stats[k]; });
+
+    var tbody = document.getElementById('todaysBookingsTbody');
+    if (tbody) {
+      tbody.innerHTML = ''
+        + '<tr><td><strong>09:00</strong></td><td><div>Sarah Johnson</div><span class="vehicle-reg">AB21 XYZ</span></td><td>MOT Test</td><td><span class="badge badge-success">Completed</span></td></tr>'
+        + '<tr><td><strong>10:30</strong></td><td><div>Mark Wilson</div><span class="vehicle-reg">BD68 KLM</span></td><td>Full Service</td><td><span class="badge badge-warning">In Progress</span></td></tr>'
+        + '<tr><td><strong>12:00</strong></td><td><div>Emma Clarke</div><span class="vehicle-reg">CF19 PQR</span></td><td>Tyre Replacement</td><td><span class="badge badge-muted">Booked</span></td></tr>'
+        + '<tr><td><strong>14:30</strong></td><td><div>James Peters</div><span class="vehicle-reg">DH22 STU</span></td><td>Brake Inspection</td><td><span class="badge badge-muted">Booked</span></td></tr>';
+      var sub = document.getElementById('todaysBookingsSub'); if (sub) sub.textContent = '7 bookings scheduled';
+    }
+    var dil = document.getElementById('dashInvoiceList');
+    if (dil) {
+      dil.innerHTML = ''
+        + '<div class="flex-between" style="padding:10px 0;border-bottom:1px solid var(--ca-border);font-size:13px;flex-wrap:wrap;gap:6px;"><div><strong>INV-1004</strong> &middot; Sarah Johnson</div><div style="display:flex;align-items:center;gap:8px;"><strong>&#163;54.85</strong><span class="badge badge-success">Paid</span></div></div>'
+        + '<div class="flex-between" style="padding:10px 0;border-bottom:1px solid var(--ca-border);font-size:13px;flex-wrap:wrap;gap:6px;"><div><strong>INV-1003</strong> &middot; Mark Wilson</div><div style="display:flex;align-items:center;gap:8px;"><strong>&#163;189.00</strong><span class="badge badge-warning">Pending</span></div></div>'
+        + '<div class="flex-between" style="padding:10px 0;font-size:13px;flex-wrap:wrap;gap:6px;"><div><strong>INV-1002</strong> &middot; Tom Reid</div><div style="display:flex;align-items:center;gap:8px;"><strong>&#163;229.00</strong><span class="badge badge-danger">Overdue</span></div></div>';
+    }
+    navigate('dashboard', document.querySelector('.nav-item'));
+    showToast('Demo mode - data is not saved');
   }
 
   function showLoginError(msg) { var e = document.getElementById('loginError'); e.textContent = msg; e.style.display = 'block'; }
@@ -869,7 +956,18 @@
     m.style.display = m.style.display === 'none' ? 'block' : 'none';
   }
 
+  function loginAsDemo() {
+    document.getElementById('loginEmail').value = 'demo';
+    document.getElementById('loginPass').value = 'demo';
+    handleLogin();
+  }
+
   window.addEventListener('load', async function() {
+    if (!initSupabase()) {
+      // Library not ready yet — try again after a delay
+      setTimeout(function(){ initSupabase(); }, 1000);
+      return;
+    }
     try {
       var s = await db.auth.getSession();
       if (s.data && s.data.session && s.data.session.user) {
