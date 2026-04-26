@@ -963,468 +963,475 @@
   }
 
   window.addEventListener('load', async function() {
-    if (!initSupabase()) {
-      // Library not ready yet — try again after a delay
-      setTimeout(function(){ initSupabase(); }, 1000);
-      return;
-    }
-    try {
-      var s = await db.auth.getSession();
-      if (s.data && s.data.session && s.data.session.user) {
-        currentUser = s.data.session.user;
-        await enterApp();
-      }
-    } catch(e) { console.error('Session check failed', e); }
-  });
+    // URL-based demo mode bypass: ?demo=1
+    if (window.location.search.indexOf('demo=1') >= 0) {
+      try { enterAppDemo(); } catch(e) { document.body.innerHTML = '<div style="padding:40px;color:#fff;font-family:sans-serif;background:#0a0a0a;min-height:100vh;"><h2>Demo mode error</h2><pre style="white-space:pre-wrap;color:#ef4444;">'+(e && e.stack ? e.stack : String(e))+'</pre></div>'; }
 
-  async function loadAll() {
-    await Promise.all([loadDashboard(), loadAllBookings(), loadJobs(), loadBays(), loadVehicles(), loadCustomers(), loadInvoices(), loadReports(), loadTeam(), loadSettings()]);
-    buildSchedule();
+```
+  return;
+}
+if (!initSupabase()) {
+  setTimeout(function(){ initSupabase(); }, 1000);
+  return;
+}
+try {
+  var s = await db.auth.getSession();
+  if (s.data && s.data.session && s.data.session.user) {
+    currentUser = s.data.session.user;
+    await enterApp();
   }
+} catch(e) { console.error('Session check failed', e); }
+```
 
-  async function loadDashboard() {
-    var today = new Date().toISOString().split('T')[0];
-    var b = await db.from('bookings').select('*').eq('booking_date', today).order('booking_time');
-    var totalToday = (!b.error && b.data) ? b.data.length : 0;
-    var el = document.getElementById('statTodayBookings'); if (el) el.textContent = totalToday;
-    var tbody = document.getElementById('todaysBookingsTbody');
-    if (tbody) {
-      if (!b.error && b.data && b.data.length > 0) {
-        tbody.innerHTML = b.data.map(function(bk) {
-          var badge = bk.status === 'Completed' ? 'badge-success' : bk.status === 'In Progress' ? 'badge-warning' : bk.status === 'Cancelled' ? 'badge-danger' : 'badge-muted';
-          return '<tr><td><strong>' + (bk.booking_time || '') + '</strong></td><td><div>' + (bk.customer_name || '') + '</div><span class="vehicle-reg">' + (bk.vehicle_reg || '') + '</span></td><td>' + (bk.service || '') + '</td><td><span class="badge ' + badge + '">' + (bk.status || 'Booked') + '</span></td></tr>';
-        }).join('');
-        var sub = document.getElementById('todaysBookingsSub'); if (sub) sub.textContent = b.data.length + ' bookings scheduled';
-      } else {
-        tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:var(--ca-text-muted);padding:20px;">No bookings today yet.</td></tr>';
-        var sub = document.getElementById('todaysBookingsSub'); if (sub) sub.textContent = '0 bookings today';
-      }
-    }
-    var j = await db.from('jobs').select('id', { count: 'exact', head: true }).eq('status', 'In Progress');
-    var jEl = document.getElementById('statJobsInProgress'); if (jEl) jEl.textContent = (!j.error && j.count !== null) ? j.count : 0;
-    var mon = new Date(); mon.setDate(mon.getDate() - ((mon.getDay() + 6) % 7));
-    var r = await db.from('invoices').select('total').gte('invoice_date', mon.toISOString().split('T')[0]).eq('status', 'Paid');
-    var rev = 0;
-    if (!r.error && r.data) { r.data.forEach(function(i){ rev += parseFloat(i.total) || 0; }); }
-    var rEl = document.getElementById('statWeekRevenue'); if (rEl) rEl.innerHTML = '&#163;' + rev.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-    var now = new Date(); var in30 = new Date(now); in30.setDate(now.getDate() + 30);
-    var mv = await db.from('vehicles').select('id', { count: 'exact', head: true }).gte('mot_expiry', now.toISOString().split('T')[0]).lte('mot_expiry', in30.toISOString().split('T')[0]);
-    var mEl = document.getElementById('statMotsDue'); if (mEl) mEl.textContent = (!mv.error && mv.count !== null) ? mv.count : 0;
-    var inv = await db.from('invoices').select('*').order('created_at', { ascending: false }).limit(4);
-    var dil = document.getElementById('dashInvoiceList');
-    if (dil) {
-      if (!inv.error && inv.data && inv.data.length > 0) {
-        dil.innerHTML = inv.data.map(function(i, idx) {
-          var badge = i.status === 'Paid' ? 'badge-success' : i.status === 'Overdue' ? 'badge-danger' : 'badge-warning';
-          var border = idx < inv.data.length - 1 ? 'border-bottom:1px solid var(--ca-border);' : '';
-          return '<div class="flex-between" style="padding:10px 0;' + border + 'font-size:13px;flex-wrap:wrap;gap:6px;"><div style="min-width:0;"><strong>' + (i.invoice_number || '') + '</strong> &middot; ' + (i.customer_name || '') + '</div><div style="display:flex;align-items:center;gap:8px;flex-shrink:0;"><strong>&#163;' + parseFloat(i.total || 0).toFixed(2) + '</strong><span class="badge ' + badge + '">' + (i.status || 'Pending') + '</span></div></div>';
-        }).join('');
-      } else { dil.innerHTML = '<div style="color:var(--ca-text-muted);font-size:13px;padding:12px 0;">No invoices yet.</div>'; }
-    }
-    var dit = document.getElementById('dashInvoiceTableBody');
-    if (dit) {
-      if (!inv.error && inv.data && inv.data.length > 0) {
-        dit.innerHTML = '';
-        inv.data.forEach(function(i) {
-          var badge = i.status === 'Paid' ? 'badge-success' : i.status === 'Overdue' ? 'badge-danger' : 'badge-warning';
-          var tr = document.createElement('tr');
-          tr.innerHTML = '<td><strong>' + (i.invoice_number || '') + '</strong></td><td>' + (i.invoice_date || '') + '</td><td>' + (i.customer_name || '') + '</td><td><span class="vehicle-reg">' + (i.vehicle_reg || '') + '</span></td><td>' + (i.service || '') + '</td><td><strong>&#163;' + parseFloat(i.total || 0).toFixed(2) + '</strong></td><td><span class="badge ' + badge + '">' + (i.status || 'Pending') + '</span></td><td></td>';
-          var cell = tr.querySelector('td:last-child');
-          var wrap = document.createElement('div'); wrap.style.cssText = 'display:flex;gap:4px;';
-          var pb = document.createElement('button'); pb.className = 'btn btn-ghost btn-xs'; pb.textContent = 'Print';
-          pb.onclick = (function(inv){ return function(){ printInvoice(inv.invoice_number, inv.customer_name, inv.vehicle_reg, inv.service, parseFloat(inv.subtotal||0).toFixed(2), parseFloat(inv.vat||0).toFixed(2), parseFloat(inv.total||0).toFixed(2), inv.status, inv.invoice_date); }; })(i);
-          var sb = document.createElement('button'); sb.className = i.status === 'Overdue' ? 'btn btn-danger btn-xs' : 'btn btn-outline btn-xs'; sb.textContent = i.status === 'Overdue' ? 'Chase' : 'Send';
-          sb.onclick = (function(inv){ return function(){ sendInvoice(inv.invoice_number, inv.customer_name, ''); }; })(i);
-          wrap.appendChild(pb); wrap.appendChild(sb); cell.appendChild(wrap); dit.appendChild(tr);
-        });
-      } else { dit.innerHTML = '<tr><td colspan="8" style="text-align:center;color:var(--ca-text-muted);padding:20px;">No invoices yet.</td></tr>'; }
-    }
-  }
+});
 
-  async function loadAllBookings() {
-    var res = await db.from('bookings').select('*').order('booking_date', { ascending: false }).limit(100);
-    allBookingsCache = (!res.error && res.data) ? res.data : [];
-    renderBookingsTable(allBookingsCache);
-  }
+async function loadAll() {
+await Promise.all([loadDashboard(), loadAllBookings(), loadJobs(), loadBays(), loadVehicles(), loadCustomers(), loadInvoices(), loadReports(), loadTeam(), loadSettings()]);
+buildSchedule();
+}
 
-  function renderBookingsTable(data) {
-    var tbody = document.getElementById('allBookingsTbody');
-    if (!tbody) return;
-    tbody.innerHTML = '';
-    if (!data || data.length === 0) { tbody.innerHTML = '<tr><td colspan="9" style="text-align:center;color:var(--ca-text-muted);padding:24px;">No bookings yet.</td></tr>'; return; }
-    data.forEach(function(bk) {
-      var badge = bk.status === 'Completed' ? 'badge-success' : bk.status === 'In Progress' ? 'badge-warning' : bk.status === 'Cancelled' ? 'badge-danger' : 'badge-navy';
-      var tr = document.createElement('tr');
-      tr.innerHTML = '<td><strong>#' + (bk.id || '').slice(0,8).toUpperCase() + '</strong></td><td>' + (bk.booking_date || '') + ' &middot; ' + (bk.booking_time || '') + '</td><td>' + (bk.customer_name || '') + '</td><td><span class="vehicle-reg">' + (bk.vehicle_reg || '') + '</span></td><td>' + (bk.service || '') + '</td><td>' + (bk.technician || '-') + '</td><td>' + (bk.price ? '&#163;' + parseFloat(bk.price).toFixed(2) : '-') + '</td><td><span class="badge ' + badge + '">' + (bk.status || 'Booked') + '</span></td><td></td>';
-      var btn = document.createElement('button'); btn.className = 'btn btn-ghost btn-xs'; btn.textContent = 'View';
-      btn.onclick = (function(id){ return function(){ showToast('Booking #' + id.slice(0,8).toUpperCase()); }; })(bk.id || '');
-      tr.querySelector('td:last-child').appendChild(btn);
-      tbody.appendChild(tr);
-    });
-  }
+async function loadDashboard() {
+var today = new Date().toISOString().split(‘T’)[0];
+var b = await db.from(‘bookings’).select(’*’).eq(‘booking_date’, today).order(‘booking_time’);
+var totalToday = (!b.error && b.data) ? b.data.length : 0;
+var el = document.getElementById(‘statTodayBookings’); if (el) el.textContent = totalToday;
+var tbody = document.getElementById(‘todaysBookingsTbody’);
+if (tbody) {
+if (!b.error && b.data && b.data.length > 0) {
+tbody.innerHTML = b.data.map(function(bk) {
+var badge = bk.status === ‘Completed’ ? ‘badge-success’ : bk.status === ‘In Progress’ ? ‘badge-warning’ : bk.status === ‘Cancelled’ ? ‘badge-danger’ : ‘badge-muted’;
+return ‘<tr><td><strong>’ + (bk.booking_time || ‘’) + ‘</strong></td><td><div>’ + (bk.customer_name || ‘’) + ‘</div><span class="vehicle-reg">’ + (bk.vehicle_reg || ‘’) + ‘</span></td><td>’ + (bk.service || ‘’) + ‘</td><td><span class="badge ' + badge + '">’ + (bk.status || ‘Booked’) + ‘</span></td></tr>’;
+}).join(’’);
+var sub = document.getElementById(‘todaysBookingsSub’); if (sub) sub.textContent = b.data.length + ’ bookings scheduled’;
+} else {
+tbody.innerHTML = ‘<tr><td colspan="4" style="text-align:center;color:var(--ca-text-muted);padding:20px;">No bookings today yet.</td></tr>’;
+var sub = document.getElementById(‘todaysBookingsSub’); if (sub) sub.textContent = ‘0 bookings today’;
+}
+}
+var j = await db.from(‘jobs’).select(‘id’, { count: ‘exact’, head: true }).eq(‘status’, ‘In Progress’);
+var jEl = document.getElementById(‘statJobsInProgress’); if (jEl) jEl.textContent = (!j.error && j.count !== null) ? j.count : 0;
+var mon = new Date(); mon.setDate(mon.getDate() - ((mon.getDay() + 6) % 7));
+var r = await db.from(‘invoices’).select(‘total’).gte(‘invoice_date’, mon.toISOString().split(‘T’)[0]).eq(‘status’, ‘Paid’);
+var rev = 0;
+if (!r.error && r.data) { r.data.forEach(function(i){ rev += parseFloat(i.total) || 0; }); }
+var rEl = document.getElementById(‘statWeekRevenue’); if (rEl) rEl.innerHTML = ‘£’ + rev.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ‘,’);
+var now = new Date(); var in30 = new Date(now); in30.setDate(now.getDate() + 30);
+var mv = await db.from(‘vehicles’).select(‘id’, { count: ‘exact’, head: true }).gte(‘mot_expiry’, now.toISOString().split(‘T’)[0]).lte(‘mot_expiry’, in30.toISOString().split(‘T’)[0]);
+var mEl = document.getElementById(‘statMotsDue’); if (mEl) mEl.textContent = (!mv.error && mv.count !== null) ? mv.count : 0;
+var inv = await db.from(‘invoices’).select(’*’).order(‘created_at’, { ascending: false }).limit(4);
+var dil = document.getElementById(‘dashInvoiceList’);
+if (dil) {
+if (!inv.error && inv.data && inv.data.length > 0) {
+dil.innerHTML = inv.data.map(function(i, idx) {
+var badge = i.status === ‘Paid’ ? ‘badge-success’ : i.status === ‘Overdue’ ? ‘badge-danger’ : ‘badge-warning’;
+var border = idx < inv.data.length - 1 ? ‘border-bottom:1px solid var(–ca-border);’ : ‘’;
+return ‘<div class="flex-between" style="padding:10px 0;' + border + 'font-size:13px;flex-wrap:wrap;gap:6px;"><div style="min-width:0;"><strong>’ + (i.invoice_number || ‘’) + ‘</strong> · ’ + (i.customer_name || ‘’) + ‘</div><div style="display:flex;align-items:center;gap:8px;flex-shrink:0;"><strong>£’ + parseFloat(i.total || 0).toFixed(2) + ‘</strong><span class="badge ' + badge + '">’ + (i.status || ‘Pending’) + ‘</span></div></div>’;
+}).join(’’);
+} else { dil.innerHTML = ‘<div style="color:var(--ca-text-muted);font-size:13px;padding:12px 0;">No invoices yet.</div>’; }
+}
+var dit = document.getElementById(‘dashInvoiceTableBody’);
+if (dit) {
+if (!inv.error && inv.data && inv.data.length > 0) {
+dit.innerHTML = ‘’;
+inv.data.forEach(function(i) {
+var badge = i.status === ‘Paid’ ? ‘badge-success’ : i.status === ‘Overdue’ ? ‘badge-danger’ : ‘badge-warning’;
+var tr = document.createElement(‘tr’);
+tr.innerHTML = ‘<td><strong>’ + (i.invoice_number || ‘’) + ‘</strong></td><td>’ + (i.invoice_date || ‘’) + ‘</td><td>’ + (i.customer_name || ‘’) + ‘</td><td><span class="vehicle-reg">’ + (i.vehicle_reg || ‘’) + ‘</span></td><td>’ + (i.service || ‘’) + ‘</td><td><strong>£’ + parseFloat(i.total || 0).toFixed(2) + ‘</strong></td><td><span class="badge ' + badge + '">’ + (i.status || ‘Pending’) + ‘</span></td><td></td>’;
+var cell = tr.querySelector(‘td:last-child’);
+var wrap = document.createElement(‘div’); wrap.style.cssText = ‘display:flex;gap:4px;’;
+var pb = document.createElement(‘button’); pb.className = ‘btn btn-ghost btn-xs’; pb.textContent = ‘Print’;
+pb.onclick = (function(inv){ return function(){ printInvoice(inv.invoice_number, inv.customer_name, inv.vehicle_reg, inv.service, parseFloat(inv.subtotal||0).toFixed(2), parseFloat(inv.vat||0).toFixed(2), parseFloat(inv.total||0).toFixed(2), inv.status, inv.invoice_date); }; })(i);
+var sb = document.createElement(‘button’); sb.className = i.status === ‘Overdue’ ? ‘btn btn-danger btn-xs’ : ‘btn btn-outline btn-xs’; sb.textContent = i.status === ‘Overdue’ ? ‘Chase’ : ‘Send’;
+sb.onclick = (function(inv){ return function(){ sendInvoice(inv.invoice_number, inv.customer_name, ‘’); }; })(i);
+wrap.appendChild(pb); wrap.appendChild(sb); cell.appendChild(wrap); dit.appendChild(tr);
+});
+} else { dit.innerHTML = ‘<tr><td colspan="8" style="text-align:center;color:var(--ca-text-muted);padding:20px;">No invoices yet.</td></tr>’; }
+}
+}
 
-  function filterBookingsByDate() {
-    var date = (document.getElementById('bookingDateFilter') || {}).value || '';
-    var search = ((document.getElementById('bookingSearch') || {}).value || '').toLowerCase();
-    renderBookingsTable(allBookingsCache.filter(function(bk) {
-      return (!date || bk.booking_date === date) && (!search || (bk.customer_name||'').toLowerCase().includes(search) || (bk.vehicle_reg||'').toLowerCase().includes(search));
-    }));
-  }
-  function filterBookingsSearch() { filterBookingsByDate(); }
+async function loadAllBookings() {
+var res = await db.from(‘bookings’).select(’*’).order(‘booking_date’, { ascending: false }).limit(100);
+allBookingsCache = (!res.error && res.data) ? res.data : [];
+renderBookingsTable(allBookingsCache);
+}
 
-  function exportBookingsCSV() {
-    if (!allBookingsCache.length) { showToast('No bookings to export.'); return; }
-    var rows = [['Date','Time','Customer','Vehicle','Service','Technician','Price','Status']];
-    allBookingsCache.forEach(function(bk){ rows.push([bk.booking_date||'',bk.booking_time||'',bk.customer_name||'',bk.vehicle_reg||'',bk.service||'',bk.technician||'',bk.price||'',bk.status||'']); });
-    var csv = rows.map(function(r){ return r.map(function(c){ return '"'+String(c).replace(/"/g,'""')+'"'; }).join(','); }).join('\n');
-    var a = document.createElement('a'); a.href = 'data:text/csv;charset=utf-8,'+encodeURIComponent(csv); a.download = 'bookings.csv'; a.click();
-  }
+function renderBookingsTable(data) {
+var tbody = document.getElementById(‘allBookingsTbody’);
+if (!tbody) return;
+tbody.innerHTML = ‘’;
+if (!data || data.length === 0) { tbody.innerHTML = ‘<tr><td colspan="9" style="text-align:center;color:var(--ca-text-muted);padding:24px;">No bookings yet.</td></tr>’; return; }
+data.forEach(function(bk) {
+var badge = bk.status === ‘Completed’ ? ‘badge-success’ : bk.status === ‘In Progress’ ? ‘badge-warning’ : bk.status === ‘Cancelled’ ? ‘badge-danger’ : ‘badge-navy’;
+var tr = document.createElement(‘tr’);
+tr.innerHTML = ‘<td><strong>#’ + (bk.id || ‘’).slice(0,8).toUpperCase() + ‘</strong></td><td>’ + (bk.booking_date || ‘’) + ’ · ’ + (bk.booking_time || ‘’) + ‘</td><td>’ + (bk.customer_name || ‘’) + ‘</td><td><span class="vehicle-reg">’ + (bk.vehicle_reg || ‘’) + ‘</span></td><td>’ + (bk.service || ‘’) + ‘</td><td>’ + (bk.technician || ‘-’) + ‘</td><td>’ + (bk.price ? ‘£’ + parseFloat(bk.price).toFixed(2) : ‘-’) + ‘</td><td><span class="badge ' + badge + '">’ + (bk.status || ‘Booked’) + ‘</span></td><td></td>’;
+var btn = document.createElement(‘button’); btn.className = ‘btn btn-ghost btn-xs’; btn.textContent = ‘View’;
+btn.onclick = (function(id){ return function(){ showToast(‘Booking #’ + id.slice(0,8).toUpperCase()); }; })(bk.id || ‘’);
+tr.querySelector(‘td:last-child’).appendChild(btn);
+tbody.appendChild(tr);
+});
+}
 
-  async function saveBooking() {
-    var customer = (document.getElementById('bk_customer')||{}).value||'';
-    var reg = ((document.getElementById('bk_reg')||{}).value||'').toUpperCase();
-    var service = (document.getElementById('bk_service')||{}).value||'';
-    var bdate = (document.getElementById('bk_date')||{}).value||new Date().toISOString().split('T')[0];
-    var btime = (document.getElementById('bk_time')||{}).value||'09:00';
-    var tech = (document.getElementById('bk_tech')||{}).value||'';
-    var bay = (document.getElementById('bk_bay')||{}).value||'';
-    var notes = (document.getElementById('bk_notes')||{}).value||'';
-    if (!customer || !reg) { showToast('Please enter customer name and registration.'); return; }
-    var res = await db.from('bookings').insert([{customer_name:customer,vehicle_reg:reg,service:service,booking_date:bdate,booking_time:btime,technician:tech,bay:bay,notes:notes,status:'Booked',price:0}]);
-    if (res.error) { showToast('Error: ' + res.error.message); return; }
-    closeModal('newBookingModal');
-    showToast('Booking saved!');
-    ['bk_customer','bk_reg','bk_phone','bk_email','bk_make','bk_notes'].forEach(function(id){ var e=document.getElementById(id); if(e) e.value=''; });
-    await loadAll();
-  }
+function filterBookingsByDate() {
+var date = (document.getElementById(‘bookingDateFilter’) || {}).value || ‘’;
+var search = ((document.getElementById(‘bookingSearch’) || {}).value || ‘’).toLowerCase();
+renderBookingsTable(allBookingsCache.filter(function(bk) {
+return (!date || bk.booking_date === date) && (!search || (bk.customer_name||’’).toLowerCase().includes(search) || (bk.vehicle_reg||’’).toLowerCase().includes(search));
+}));
+}
+function filterBookingsSearch() { filterBookingsByDate(); }
 
-  async function loadJobs() {
-    var res = await db.from('jobs').select('*').order('created_at', { ascending: false });
-    var w = document.getElementById('jobsWaiting'); var ip = document.getElementById('jobsInProgress'); var d = document.getElementById('jobsCompleted');
-    if (!w) return;
-    var data = (!res.error && res.data) ? res.data : [];
-    var today = new Date().toISOString().split('T')[0];
-    function card(j, col) { return '<div class="info-card" style="border-top:3px solid '+col+';"><div class="flex-between" style="margin-bottom:8px;"><strong>'+( j.bay||'Bay')+'</strong><span class="badge '+(j.status==='Completed'?'badge-success':j.status==='In Progress'?'badge-warning':'badge-muted')+'">'+( j.status||'')+'</span></div><div style="font-size:13px;margin-bottom:4px;">'+(j.notes||'Job')+'</div><div style="font-size:12px;color:var(--ca-text-muted);">'+(j.technician||'Unassigned')+'</div><div style="margin-top:8px;"><div class="progress-bar"><div class="progress-fill" style="width:'+(j.progress||0)+'%;background:'+col+';"></div></div></div></div>'; }
-    var empty = '<div class="info-card" style="text-align:center;color:var(--ca-text-muted);font-size:13px;padding:20px;">';
-    w.innerHTML = data.filter(function(j){return j.status==='Waiting';}).map(function(j){return card(j,'var(--ca-silver-mid)');}).join('') || empty+'No waiting jobs.</div>';
-    ip.innerHTML = data.filter(function(j){return j.status==='In Progress';}).map(function(j){return card(j,'var(--ca-warning)');}).join('') || empty+'No jobs in progress.</div>';
-    d.innerHTML = data.filter(function(j){return j.status==='Completed'&&(j.completed_at||'').startsWith(today);}).map(function(j){return card(j,'var(--ca-success)');}).join('') || empty+'No completed jobs today.</div>';
-  }
+function exportBookingsCSV() {
+if (!allBookingsCache.length) { showToast(‘No bookings to export.’); return; }
+var rows = [[‘Date’,‘Time’,‘Customer’,‘Vehicle’,‘Service’,‘Technician’,‘Price’,‘Status’]];
+allBookingsCache.forEach(function(bk){ rows.push([bk.booking_date||’’,bk.booking_time||’’,bk.customer_name||’’,bk.vehicle_reg||’’,bk.service||’’,bk.technician||’’,bk.price||’’,bk.status||’’]); });
+var csv = rows.map(function(r){ return r.map(function(c){ return ‘”’+String(c).replace(/”/g,’””’)+’”’; }).join(’,’); }).join(’\n’);
+var a = document.createElement(‘a’); a.href = ‘data:text/csv;charset=utf-8,’+encodeURIComponent(csv); a.download = ‘bookings.csv’; a.click();
+}
 
-  async function loadBays() {
-    var res = await db.from('jobs').select('*').order('created_at');
-    var grid = document.getElementById('baysGrid'); var sched = document.getElementById('bayScheduleTbody');
-    if (!grid) return;
-    var bays = (!res.error && res.data) ? res.data : [];
-    var occ = bays.filter(function(b){return b.status==='Occupied'||b.status==='In Progress';}).length;
-    var avl = bays.filter(function(b){return b.status==='Available';}).length;
-    var e=document.getElementById('bayStatTotal'); if(e) e.textContent=bays.length;
-    e=document.getElementById('bayStatOccupied'); if(e) e.textContent=occ;
-    e=document.getElementById('bayStatAvailable'); if(e) e.textContent=avl;
-    e=document.getElementById('bayStatUtil'); if(e) e.textContent=bays.length>0?Math.round(occ/bays.length*100)+'%':'0%';
-    if (bays.length === 0) {
-      grid.innerHTML = '<div class="info-card" style="grid-column:1/-1;text-align:center;color:var(--ca-text-muted);padding:32px;"><strong style="display:block;margin-bottom:8px;">No bays set up yet.</strong>Tap &quot;+ Add Bay&quot; to create your first bay.</div>';
-      if (sched) sched.innerHTML = '<tr><td colspan="8" style="text-align:center;color:var(--ca-text-muted);padding:20px;">No bays configured yet.</td></tr>';
-      return;
-    }
-    grid.innerHTML = bays.map(function(bay) {
-      var sc = bay.status==='Available'?'bay-available':bay.status==='In Progress'?'bay-progress':bay.status==='Out of Service'?'':'bay-occupied';
-      var bc = bay.status==='Available'?'badge-success':bay.status==='In Progress'?'badge-warning':bay.status==='Out of Service'?'badge-muted':'badge-danger';
-      var dot = bay.status==='Available'?'var(--ca-success)':bay.status==='In Progress'?'var(--ca-warning)':bay.status==='Out of Service'?'var(--ca-text-muted)':'var(--ca-danger)';
-      return '<div class="bay-card '+sc+'"><div class="bay-card-header"><div><div class="bay-card-title">'+(bay.bay||'Bay')+'</div><div class="bay-card-type">'+(bay.notes?(bay.notes.split(" - ")[0]||'General'):'General')+'</div></div><span class="badge '+bc+'" style="font-size:12px;padding:5px 10px;"><span class="bay-status-dot" style="background:'+dot+'"></span>'+(bay.status||'Available')+'</span></div><div class="bay-card-body"><div class="bay-info-row"><span class="bay-info-label">Current Job</span><span class="bay-info-value">'+(bay.notes||'None')+'</span></div><div class="bay-info-row"><span class="bay-info-label">Technician</span><span class="bay-info-value">'+(bay.technician||'Unassigned')+'</span></div><div class="bay-info-row"><span class="bay-info-label">Progress</span><span class="bay-info-value">'+(bay.progress||0)+'%</span></div><div style="margin-top:12px;"><div class="progress-bar"><div class="progress-fill" style="width:'+(bay.progress||0)+'%;background:'+dot+'"></div></div></div><div style="display:flex;gap:8px;margin-top:12px;"><button class="btn btn-outline btn-xs" style="flex:1;" onclick="openEditBayModal(\''+bay.id+'\')">Edit Bay</button></div></div></div>';
-    }).join('');
-    if (sched) {
-      sched.innerHTML = bays.map(function(bay) {
-        var bc = bay.status==='Available'?'badge-success':bay.status==='In Progress'?'badge-warning':bay.status==='Out of Service'?'badge-muted':'badge-danger';
-        return '<tr><td>-</td><td><strong>'+(bay.bay||'')+'</strong></td><td>'+(bay.notes||'-')+'</td><td>-</td><td>-</td><td>'+(bay.technician||'-')+'</td><td><span class="badge '+bc+'">'+(bay.status||'')+'</span></td><td><button class="btn btn-ghost btn-xs" onclick="openEditBayModal(\''+bay.id+'\')">Edit</button></td></tr>';
-      }).join('');
-    }
-  }
+async function saveBooking() {
+var customer = (document.getElementById(‘bk_customer’)||{}).value||’’;
+var reg = ((document.getElementById(‘bk_reg’)||{}).value||’’).toUpperCase();
+var service = (document.getElementById(‘bk_service’)||{}).value||’’;
+var bdate = (document.getElementById(‘bk_date’)||{}).value||new Date().toISOString().split(‘T’)[0];
+var btime = (document.getElementById(‘bk_time’)||{}).value||‘09:00’;
+var tech = (document.getElementById(‘bk_tech’)||{}).value||’’;
+var bay = (document.getElementById(‘bk_bay’)||{}).value||’’;
+var notes = (document.getElementById(‘bk_notes’)||{}).value||’’;
+if (!customer || !reg) { showToast(‘Please enter customer name and registration.’); return; }
+var res = await db.from(‘bookings’).insert([{customer_name:customer,vehicle_reg:reg,service:service,booking_date:bdate,booking_time:btime,technician:tech,bay:bay,notes:notes,status:‘Booked’,price:0}]);
+if (res.error) { showToast(‘Error: ’ + res.error.message); return; }
+closeModal(‘newBookingModal’);
+showToast(‘Booking saved!’);
+[‘bk_customer’,‘bk_reg’,‘bk_phone’,‘bk_email’,‘bk_make’,‘bk_notes’].forEach(function(id){ var e=document.getElementById(id); if(e) e.value=’’; });
+await loadAll();
+}
 
-  function openAddBayModal() {
-    currentEditBayId = null;
-    document.getElementById('addBayModalTitle').textContent = 'Add Bay';
-    document.getElementById('editBayId').value = '';
-    document.getElementById('bayName').value = '';
-    document.getElementById('bayStatus').value = 'Available';
-    document.getElementById('bayNotes').value = '';
-    document.getElementById('bayTech').value = '';
-    document.getElementById('deleteBayBtn').style.display = 'none';
-    document.getElementById('addBayModal').classList.add('active');
-  }
+async function loadJobs() {
+var res = await db.from(‘jobs’).select(’*’).order(‘created_at’, { ascending: false });
+var w = document.getElementById(‘jobsWaiting’); var ip = document.getElementById(‘jobsInProgress’); var d = document.getElementById(‘jobsCompleted’);
+if (!w) return;
+var data = (!res.error && res.data) ? res.data : [];
+var today = new Date().toISOString().split(‘T’)[0];
+function card(j, col) { return ‘<div class="info-card" style="border-top:3px solid '+col+';"><div class="flex-between" style="margin-bottom:8px;"><strong>’+( j.bay||‘Bay’)+’</strong><span class="badge '+(j.status==='Completed'?'badge-success':j.status==='In Progress'?'badge-warning':'badge-muted')+'">’+( j.status||’’)+’</span></div><div style="font-size:13px;margin-bottom:4px;">’+(j.notes||‘Job’)+’</div><div style="font-size:12px;color:var(--ca-text-muted);">’+(j.technician||‘Unassigned’)+’</div><div style="margin-top:8px;"><div class="progress-bar"><div class="progress-fill" style="width:'+(j.progress||0)+'%;background:'+col+';"></div></div></div></div>’; }
+var empty = ‘<div class="info-card" style="text-align:center;color:var(--ca-text-muted);font-size:13px;padding:20px;">’;
+w.innerHTML = data.filter(function(j){return j.status===‘Waiting’;}).map(function(j){return card(j,‘var(–ca-silver-mid)’);}).join(’’) || empty+‘No waiting jobs.</div>’;
+ip.innerHTML = data.filter(function(j){return j.status===‘In Progress’;}).map(function(j){return card(j,‘var(–ca-warning)’);}).join(’’) || empty+‘No jobs in progress.</div>’;
+d.innerHTML = data.filter(function(j){return j.status===‘Completed’&&(j.completed_at||’’).startsWith(today);}).map(function(j){return card(j,‘var(–ca-success)’);}).join(’’) || empty+‘No completed jobs today.</div>’;
+}
 
-  async function openEditBayModal(id) {
-    currentEditBayId = id;
-    var res = await db.from('jobs').select('*').eq('id', id).single();
-    if (res.error || !res.data) { showToast('Could not load bay.'); return; }
-    var bay = res.data;
-    document.getElementById('addBayModalTitle').textContent = 'Edit Bay';
-    document.getElementById('editBayId').value = id;
-    document.getElementById('bayName').value = bay.bay || '';
-    document.getElementById('bayStatus').value = bay.status || 'Available';
-    document.getElementById('bayNotes').value = bay.notes || '';
-    document.getElementById('bayTech').value = bay.technician || '';
-    document.getElementById('deleteBayBtn').style.display = 'inline-flex';
-    document.getElementById('addBayModal').classList.add('active');
-  }
+async function loadBays() {
+var res = await db.from(‘jobs’).select(’*’).order(‘created_at’);
+var grid = document.getElementById(‘baysGrid’); var sched = document.getElementById(‘bayScheduleTbody’);
+if (!grid) return;
+var bays = (!res.error && res.data) ? res.data : [];
+var occ = bays.filter(function(b){return b.status===‘Occupied’||b.status===‘In Progress’;}).length;
+var avl = bays.filter(function(b){return b.status===‘Available’;}).length;
+var e=document.getElementById(‘bayStatTotal’); if(e) e.textContent=bays.length;
+e=document.getElementById(‘bayStatOccupied’); if(e) e.textContent=occ;
+e=document.getElementById(‘bayStatAvailable’); if(e) e.textContent=avl;
+e=document.getElementById(‘bayStatUtil’); if(e) e.textContent=bays.length>0?Math.round(occ/bays.length*100)+’%’:‘0%’;
+if (bays.length === 0) {
+grid.innerHTML = ‘<div class="info-card" style="grid-column:1/-1;text-align:center;color:var(--ca-text-muted);padding:32px;"><strong style="display:block;margin-bottom:8px;">No bays set up yet.</strong>Tap "+ Add Bay" to create your first bay.</div>’;
+if (sched) sched.innerHTML = ‘<tr><td colspan="8" style="text-align:center;color:var(--ca-text-muted);padding:20px;">No bays configured yet.</td></tr>’;
+return;
+}
+grid.innerHTML = bays.map(function(bay) {
+var sc = bay.status===‘Available’?‘bay-available’:bay.status===‘In Progress’?‘bay-progress’:bay.status===‘Out of Service’?’’:‘bay-occupied’;
+var bc = bay.status===‘Available’?‘badge-success’:bay.status===‘In Progress’?‘badge-warning’:bay.status===‘Out of Service’?‘badge-muted’:‘badge-danger’;
+var dot = bay.status===‘Available’?‘var(–ca-success)’:bay.status===‘In Progress’?‘var(–ca-warning)’:bay.status===‘Out of Service’?‘var(–ca-text-muted)’:‘var(–ca-danger)’;
+return ‘<div class="bay-card '+sc+'"><div class="bay-card-header"><div><div class="bay-card-title">’+(bay.bay||‘Bay’)+’</div><div class="bay-card-type">’+(bay.notes?(bay.notes.split(” - “)[0]||‘General’):‘General’)+’</div></div><span class="badge '+bc+'" style="font-size:12px;padding:5px 10px;"><span class="bay-status-dot" style="background:'+dot+'"></span>’+(bay.status||‘Available’)+’</span></div><div class="bay-card-body"><div class="bay-info-row"><span class="bay-info-label">Current Job</span><span class="bay-info-value">’+(bay.notes||‘None’)+’</span></div><div class="bay-info-row"><span class="bay-info-label">Technician</span><span class="bay-info-value">’+(bay.technician||‘Unassigned’)+’</span></div><div class="bay-info-row"><span class="bay-info-label">Progress</span><span class="bay-info-value">’+(bay.progress||0)+’%</span></div><div style="margin-top:12px;"><div class="progress-bar"><div class="progress-fill" style="width:'+(bay.progress||0)+'%;background:'+dot+'"></div></div></div><div style="display:flex;gap:8px;margin-top:12px;"><button class="btn btn-outline btn-xs" style="flex:1;" onclick="openEditBayModal(\''+bay.id+'\')">Edit Bay</button></div></div></div>’;
+}).join(’’);
+if (sched) {
+sched.innerHTML = bays.map(function(bay) {
+var bc = bay.status===‘Available’?‘badge-success’:bay.status===‘In Progress’?‘badge-warning’:bay.status===‘Out of Service’?‘badge-muted’:‘badge-danger’;
+return ‘<tr><td>-</td><td><strong>’+(bay.bay||’’)+’</strong></td><td>’+(bay.notes||’-’)+’</td><td>-</td><td>-</td><td>’+(bay.technician||’-’)+’</td><td><span class="badge '+bc+'">’+(bay.status||’’)+’</span></td><td><button class="btn btn-ghost btn-xs" onclick="openEditBayModal(\''+bay.id+'\')">Edit</button></td></tr>’;
+}).join(’’);
+}
+}
 
-  async function saveBay() {
-    var name = document.getElementById('bayName').value.trim();
-    var status = document.getElementById('bayStatus').value;
-    var notes = document.getElementById('bayNotes').value.trim();
-    var tech = document.getElementById('bayTech').value.trim();
-    if (!name) { showToast('Please enter a bay name.'); return; }
-    var payload = {bay:name, status:status, notes:notes, technician:tech, progress:status==='Available'?0:status==='Completed'?100:50};
-    var res = currentEditBayId ? await db.from('jobs').update(payload).eq('id', currentEditBayId) : await db.from('jobs').insert([payload]);
-    if (res.error) { showToast('Error: ' + res.error.message); return; }
-    closeModal('addBayModal');
-    showToast(currentEditBayId ? 'Bay updated!' : 'Bay added!');
-    await loadBays(); await loadJobs(); await loadDashboard();
-  }
+function openAddBayModal() {
+currentEditBayId = null;
+document.getElementById(‘addBayModalTitle’).textContent = ‘Add Bay’;
+document.getElementById(‘editBayId’).value = ‘’;
+document.getElementById(‘bayName’).value = ‘’;
+document.getElementById(‘bayStatus’).value = ‘Available’;
+document.getElementById(‘bayNotes’).value = ‘’;
+document.getElementById(‘bayTech’).value = ‘’;
+document.getElementById(‘deleteBayBtn’).style.display = ‘none’;
+document.getElementById(‘addBayModal’).classList.add(‘active’);
+}
 
-  async function deleteCurrentBay() {
-    if (!currentEditBayId || !confirm('Delete this bay? This cannot be undone.')) return;
-    var res = await db.from('jobs').delete().eq('id', currentEditBayId);
-    if (res.error) { showToast('Error: ' + res.error.message); return; }
-    closeModal('addBayModal');
-    showToast('Bay deleted.');
-    await loadBays(); await loadJobs();
-  }
+async function openEditBayModal(id) {
+currentEditBayId = id;
+var res = await db.from(‘jobs’).select(’*’).eq(‘id’, id).single();
+if (res.error || !res.data) { showToast(‘Could not load bay.’); return; }
+var bay = res.data;
+document.getElementById(‘addBayModalTitle’).textContent = ‘Edit Bay’;
+document.getElementById(‘editBayId’).value = id;
+document.getElementById(‘bayName’).value = bay.bay || ‘’;
+document.getElementById(‘bayStatus’).value = bay.status || ‘Available’;
+document.getElementById(‘bayNotes’).value = bay.notes || ‘’;
+document.getElementById(‘bayTech’).value = bay.technician || ‘’;
+document.getElementById(‘deleteBayBtn’).style.display = ‘inline-flex’;
+document.getElementById(‘addBayModal’).classList.add(‘active’);
+}
 
-  async function loadVehicles() {
-    var res = await db.from('vehicles').select('*').order('created_at', { ascending: false });
-    var tbody = document.getElementById('vehiclesTbody');
-    if (!tbody) return;
-    if (res.error || !res.data || res.data.length === 0) { tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;color:var(--ca-text-muted);padding:24px;">No vehicles yet.</td></tr>'; return; }
-    tbody.innerHTML = '';
-    res.data.forEach(function(v) {
-      var mc = 'badge-success';
-      if (v.mot_expiry) { var diff=(new Date(v.mot_expiry)-new Date())/86400000; if(diff<30) mc='badge-danger'; else if(diff<90) mc='badge-warning'; }
-      var tr = document.createElement('tr');
-      tr.innerHTML = '<td><span class="vehicle-reg">'+(v.registration||'')+'</span></td><td><strong>'+(v.make||'')+'</strong> '+(v.model||'')+'</td><td>'+(v.year||'')+'</td><td>'+(v.colour||'')+'</td><td>-</td><td><span class="badge '+mc+'">'+(v.mot_expiry||'Not set')+'</span></td><td>-</td><td></td>';
-      var btn=document.createElement('button'); btn.className='btn btn-ghost btn-xs'; btn.textContent='View';
-      btn.onclick=function(){showToast('Vehicle '+(v.registration||'')+' selected.');};
-      tr.querySelector('td:last-child').appendChild(btn); tbody.appendChild(tr);
-    });
-  }
+async function saveBay() {
+var name = document.getElementById(‘bayName’).value.trim();
+var status = document.getElementById(‘bayStatus’).value;
+var notes = document.getElementById(‘bayNotes’).value.trim();
+var tech = document.getElementById(‘bayTech’).value.trim();
+if (!name) { showToast(‘Please enter a bay name.’); return; }
+var payload = {bay:name, status:status, notes:notes, technician:tech, progress:status===‘Available’?0:status===‘Completed’?100:50};
+var res = currentEditBayId ? await db.from(‘jobs’).update(payload).eq(‘id’, currentEditBayId) : await db.from(‘jobs’).insert([payload]);
+if (res.error) { showToast(’Error: ’ + res.error.message); return; }
+closeModal(‘addBayModal’);
+showToast(currentEditBayId ? ‘Bay updated!’ : ‘Bay added!’);
+await loadBays(); await loadJobs(); await loadDashboard();
+}
 
-  function openAddVehicleModal() { document.getElementById('addVehicleModal').classList.add('active'); }
+async function deleteCurrentBay() {
+if (!currentEditBayId || !confirm(‘Delete this bay? This cannot be undone.’)) return;
+var res = await db.from(‘jobs’).delete().eq(‘id’, currentEditBayId);
+if (res.error) { showToast(’Error: ’ + res.error.message); return; }
+closeModal(‘addBayModal’);
+showToast(‘Bay deleted.’);
+await loadBays(); await loadJobs();
+}
 
-  async function saveVehicle() {
-    var reg = ((document.getElementById('veh_reg')||{}).value||'').toUpperCase().trim();
-    var make = (document.getElementById('veh_make')||{}).value||'';
-    var model = (document.getElementById('veh_model')||{}).value||'';
-    var year = parseInt((document.getElementById('veh_year')||{}).value||'0')||null;
-    var colour = (document.getElementById('veh_colour')||{}).value||'';
-    var mot = (document.getElementById('veh_mot')||{}).value||null;
-    if (!reg) { showToast('Please enter a registration.'); return; }
-    var res = await db.from('vehicles').insert([{registration:reg, make:make, model:model, year:year, colour:colour, mot_expiry:mot}]);
-    if (res.error) { showToast('Error: '+res.error.message); return; }
-    closeModal('addVehicleModal'); showToast('Vehicle added!');
-    ['veh_reg','veh_make','veh_model','veh_year','veh_colour','veh_mot','veh_owner'].forEach(function(id){ var e=document.getElementById(id); if(e) e.value=''; });
-    await loadVehicles();
-  }
+async function loadVehicles() {
+var res = await db.from(‘vehicles’).select(’*’).order(‘created_at’, { ascending: false });
+var tbody = document.getElementById(‘vehiclesTbody’);
+if (!tbody) return;
+if (res.error || !res.data || res.data.length === 0) { tbody.innerHTML = ‘<tr><td colspan="8" style="text-align:center;color:var(--ca-text-muted);padding:24px;">No vehicles yet.</td></tr>’; return; }
+tbody.innerHTML = ‘’;
+res.data.forEach(function(v) {
+var mc = ‘badge-success’;
+if (v.mot_expiry) { var diff=(new Date(v.mot_expiry)-new Date())/86400000; if(diff<30) mc=‘badge-danger’; else if(diff<90) mc=‘badge-warning’; }
+var tr = document.createElement(‘tr’);
+tr.innerHTML = ‘<td><span class="vehicle-reg">’+(v.registration||’’)+’</span></td><td><strong>’+(v.make||’’)+’</strong> ‘+(v.model||’’)+’</td><td>’+(v.year||’’)+’</td><td>’+(v.colour||’’)+’</td><td>-</td><td><span class="badge '+mc+'">’+(v.mot_expiry||‘Not set’)+’</span></td><td>-</td><td></td>’;
+var btn=document.createElement(‘button’); btn.className=‘btn btn-ghost btn-xs’; btn.textContent=‘View’;
+btn.onclick=function(){showToast(‘Vehicle ‘+(v.registration||’’)+’ selected.’);};
+tr.querySelector(‘td:last-child’).appendChild(btn); tbody.appendChild(tr);
+});
+}
 
-  async function loadCustomers() {
-    var res = await db.from('customers').select('*').order('created_at', { ascending: false });
-    var tbody = document.getElementById('customersTbody');
-    if (!tbody) return;
-    if (res.error || !res.data || res.data.length === 0) { tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;color:var(--ca-text-muted);padding:24px;">No customers yet.</td></tr>'; return; }
-    tbody.innerHTML = '';
-    res.data.forEach(function(c) {
-      var ini=(c.full_name||'U').split(' ').map(function(w){return w[0]||'';}).join('').toUpperCase().slice(0,2);
-      var tr=document.createElement('tr');
-      tr.innerHTML='<td><div style="display:flex;align-items:center;gap:10px;"><div class="user-avatar" style="width:30px;height:30px;font-size:11px;">'+ini+'</div><div class="fw-600">'+(c.full_name||'')+'</div></div></td><td><div style="font-size:12px;">'+(c.email||'')+'</div><div style="font-size:12px;color:var(--ca-text-muted);">'+(c.phone||'')+'</div></td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td></td>';
-      var btn=document.createElement('button'); btn.className='btn btn-ghost btn-xs'; btn.textContent='View';
-      btn.onclick=function(){showToast('Customer '+(c.full_name||'')+' selected.');};
-      tr.querySelector('td:last-child').appendChild(btn); tbody.appendChild(tr);
-    });
-  }
+function openAddVehicleModal() { document.getElementById(‘addVehicleModal’).classList.add(‘active’); }
 
-  function openNewCustomerModal() { document.getElementById('newCustomerModal').classList.add('active'); }
+async function saveVehicle() {
+var reg = ((document.getElementById(‘veh_reg’)||{}).value||’’).toUpperCase().trim();
+var make = (document.getElementById(‘veh_make’)||{}).value||’’;
+var model = (document.getElementById(‘veh_model’)||{}).value||’’;
+var year = parseInt((document.getElementById(‘veh_year’)||{}).value||‘0’)||null;
+var colour = (document.getElementById(‘veh_colour’)||{}).value||’’;
+var mot = (document.getElementById(‘veh_mot’)||{}).value||null;
+if (!reg) { showToast(‘Please enter a registration.’); return; }
+var res = await db.from(‘vehicles’).insert([{registration:reg, make:make, model:model, year:year, colour:colour, mot_expiry:mot}]);
+if (res.error) { showToast(‘Error: ‘+res.error.message); return; }
+closeModal(‘addVehicleModal’); showToast(‘Vehicle added!’);
+[‘veh_reg’,‘veh_make’,‘veh_model’,‘veh_year’,‘veh_colour’,‘veh_mot’,‘veh_owner’].forEach(function(id){ var e=document.getElementById(id); if(e) e.value=’’; });
+await loadVehicles();
+}
 
-  async function saveNewCustomer() {
-    var name=(document.getElementById('nc_name')||{}).value||'';
-    var email=(document.getElementById('nc_email')||{}).value||'';
-    var phone=(document.getElementById('nc_phone')||{}).value||'';
-    if (!name) { showToast('Please enter a customer name.'); return; }
-    var res=await db.from('customers').insert([{full_name:name, email:email, phone:phone}]);
-    if (res.error) { showToast('Error: '+res.error.message); return; }
-    closeModal('newCustomerModal'); showToast('Customer added!');
-    ['nc_name','nc_email','nc_phone'].forEach(function(id){ var e=document.getElementById(id); if(e) e.value=''; });
-    await loadCustomers();
-  }
+async function loadCustomers() {
+var res = await db.from(‘customers’).select(’*’).order(‘created_at’, { ascending: false });
+var tbody = document.getElementById(‘customersTbody’);
+if (!tbody) return;
+if (res.error || !res.data || res.data.length === 0) { tbody.innerHTML = ‘<tr><td colspan="8" style="text-align:center;color:var(--ca-text-muted);padding:24px;">No customers yet.</td></tr>’; return; }
+tbody.innerHTML = ‘’;
+res.data.forEach(function(c) {
+var ini=(c.full_name||‘U’).split(’ ‘).map(function(w){return w[0]||’’;}).join(’’).toUpperCase().slice(0,2);
+var tr=document.createElement(‘tr’);
+tr.innerHTML=’<td><div style="display:flex;align-items:center;gap:10px;"><div class="user-avatar" style="width:30px;height:30px;font-size:11px;">’+ini+’</div><div class="fw-600">’+(c.full_name||’’)+’</div></div></td><td><div style="font-size:12px;">’+(c.email||’’)+’</div><div style="font-size:12px;color:var(--ca-text-muted);">’+(c.phone||’’)+’</div></td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td></td>’;
+var btn=document.createElement(‘button’); btn.className=‘btn btn-ghost btn-xs’; btn.textContent=‘View’;
+btn.onclick=function(){showToast(‘Customer ‘+(c.full_name||’’)+’ selected.’);};
+tr.querySelector(‘td:last-child’).appendChild(btn); tbody.appendChild(tr);
+});
+}
 
-  async function loadInvoices() {
-    var res = await db.from('invoices').select('*').order('created_at', { ascending: false });
-    var tbody = document.getElementById('invoiceTableBody');
-    if (!tbody) return;
-    tbody.innerHTML = '';
-    var paid=0,paidC=0,pend=0,pendC=0,over=0,overC=0;
-    if (res.error || !res.data || res.data.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="10" style="text-align:center;color:var(--ca-text-muted);padding:24px;">No invoices yet.</td></tr>';
-    } else {
-      res.data.forEach(function(inv) {
-        var t=parseFloat(inv.total||0);
-        if(inv.status==='Paid'){paid+=t;paidC++;}else if(inv.status==='Overdue'){over+=t;overC++;}else{pend+=t;pendC++;}
-        var badge=inv.status==='Paid'?'badge-success':inv.status==='Overdue'?'badge-danger':'badge-warning';
-        var tr=document.createElement('tr');
-        tr.innerHTML='<td><strong>'+(inv.invoice_number||'')+'</strong></td><td>'+(inv.invoice_date||'')+'</td><td>'+(inv.customer_name||'')+'</td><td><span class="vehicle-reg">'+(inv.vehicle_reg||'')+'</span></td><td>'+(inv.service||'')+'</td><td>&#163;'+parseFloat(inv.subtotal||0).toFixed(2)+'</td><td>&#163;'+parseFloat(inv.vat||0).toFixed(2)+'</td><td><strong>&#163;'+parseFloat(inv.total||0).toFixed(2)+'</strong></td><td><span class="badge '+badge+'">'+(inv.status||'Pending')+'</span></td><td></td>';
-        var cell=tr.querySelector('td:last-child');
-        var wrap=document.createElement('div'); wrap.style.cssText='display:flex;gap:4px;';
-        var pb=document.createElement('button'); pb.className='btn btn-ghost btn-xs'; pb.textContent='Print';
-        pb.onclick=(function(i){return function(){printInvoice(i.invoice_number,i.customer_name,i.vehicle_reg,i.service,parseFloat(i.subtotal||0).toFixed(2),parseFloat(i.vat||0).toFixed(2),parseFloat(i.total||0).toFixed(2),i.status,i.invoice_date);};})(inv);
-        var sb=document.createElement('button'); sb.className=inv.status==='Overdue'?'btn btn-danger btn-xs':'btn btn-outline btn-xs'; sb.textContent=inv.status==='Overdue'?'Chase':'Send';
-        sb.onclick=(function(i){return function(){sendInvoice(i.invoice_number,i.customer_name,'');};})(inv);
-        wrap.appendChild(pb); wrap.appendChild(sb); cell.appendChild(wrap); tbody.appendChild(tr);
-      });
-    }
-    var e=document.getElementById('invPaidTotal'); if(e) e.innerHTML='&#163;'+paid.toFixed(2);
-    e=document.getElementById('invPaidCount'); if(e) e.textContent=paidC+' invoices settled';
-    e=document.getElementById('invPendingTotal'); if(e) e.innerHTML='&#163;'+pend.toFixed(2);
-    e=document.getElementById('invPendingCount'); if(e) e.textContent=pendC+' invoices pending';
-    e=document.getElementById('invOverdueTotal'); if(e) e.innerHTML='&#163;'+over.toFixed(2);
-    e=document.getElementById('invOverdueCount'); if(e) e.textContent=overC+' invoices overdue';
-  }
+function openNewCustomerModal() { document.getElementById(‘newCustomerModal’).classList.add(‘active’); }
 
-  function filterInvoices() {
-    var search=((document.getElementById('invSearch')||{}).value||'').toLowerCase();
-    var status=(document.getElementById('invStatusFilter')||{}).value||'';
-    document.querySelectorAll('#invoiceTableBody tr').forEach(function(row){
-      var text=row.textContent.toLowerCase();
-      row.style.display=(!search||text.includes(search))&&(!status||text.includes(status.toLowerCase()))?'':'none';
-    });
-  }
+async function saveNewCustomer() {
+var name=(document.getElementById(‘nc_name’)||{}).value||’’;
+var email=(document.getElementById(‘nc_email’)||{}).value||’’;
+var phone=(document.getElementById(‘nc_phone’)||{}).value||’’;
+if (!name) { showToast(‘Please enter a customer name.’); return; }
+var res=await db.from(‘customers’).insert([{full_name:name, email:email, phone:phone}]);
+if (res.error) { showToast(‘Error: ‘+res.error.message); return; }
+closeModal(‘newCustomerModal’); showToast(‘Customer added!’);
+[‘nc_name’,‘nc_email’,‘nc_phone’].forEach(function(id){ var e=document.getElementById(id); if(e) e.value=’’; });
+await loadCustomers();
+}
 
-  function exportInvoices() { showToast('Exporting to CSV...'); }
+async function loadInvoices() {
+var res = await db.from(‘invoices’).select(’*’).order(‘created_at’, { ascending: false });
+var tbody = document.getElementById(‘invoiceTableBody’);
+if (!tbody) return;
+tbody.innerHTML = ‘’;
+var paid=0,paidC=0,pend=0,pendC=0,over=0,overC=0;
+if (res.error || !res.data || res.data.length === 0) {
+tbody.innerHTML = ‘<tr><td colspan="10" style="text-align:center;color:var(--ca-text-muted);padding:24px;">No invoices yet.</td></tr>’;
+} else {
+res.data.forEach(function(inv) {
+var t=parseFloat(inv.total||0);
+if(inv.status===‘Paid’){paid+=t;paidC++;}else if(inv.status===‘Overdue’){over+=t;overC++;}else{pend+=t;pendC++;}
+var badge=inv.status===‘Paid’?‘badge-success’:inv.status===‘Overdue’?‘badge-danger’:‘badge-warning’;
+var tr=document.createElement(‘tr’);
+tr.innerHTML=’<td><strong>’+(inv.invoice_number||’’)+’</strong></td><td>’+(inv.invoice_date||’’)+’</td><td>’+(inv.customer_name||’’)+’</td><td><span class="vehicle-reg">’+(inv.vehicle_reg||’’)+’</span></td><td>’+(inv.service||’’)+’</td><td>£’+parseFloat(inv.subtotal||0).toFixed(2)+’</td><td>£’+parseFloat(inv.vat||0).toFixed(2)+’</td><td><strong>£’+parseFloat(inv.total||0).toFixed(2)+’</strong></td><td><span class="badge '+badge+'">’+(inv.status||‘Pending’)+’</span></td><td></td>’;
+var cell=tr.querySelector(‘td:last-child’);
+var wrap=document.createElement(‘div’); wrap.style.cssText=‘display:flex;gap:4px;’;
+var pb=document.createElement(‘button’); pb.className=‘btn btn-ghost btn-xs’; pb.textContent=‘Print’;
+pb.onclick=(function(i){return function(){printInvoice(i.invoice_number,i.customer_name,i.vehicle_reg,i.service,parseFloat(i.subtotal||0).toFixed(2),parseFloat(i.vat||0).toFixed(2),parseFloat(i.total||0).toFixed(2),i.status,i.invoice_date);};})(inv);
+var sb=document.createElement(‘button’); sb.className=inv.status===‘Overdue’?‘btn btn-danger btn-xs’:‘btn btn-outline btn-xs’; sb.textContent=inv.status===‘Overdue’?‘Chase’:‘Send’;
+sb.onclick=(function(i){return function(){sendInvoice(i.invoice_number,i.customer_name,’’);};})(inv);
+wrap.appendChild(pb); wrap.appendChild(sb); cell.appendChild(wrap); tbody.appendChild(tr);
+});
+}
+var e=document.getElementById(‘invPaidTotal’); if(e) e.innerHTML=’£’+paid.toFixed(2);
+e=document.getElementById(‘invPaidCount’); if(e) e.textContent=paidC+’ invoices settled’;
+e=document.getElementById(‘invPendingTotal’); if(e) e.innerHTML=’£’+pend.toFixed(2);
+e=document.getElementById(‘invPendingCount’); if(e) e.textContent=pendC+’ invoices pending’;
+e=document.getElementById(‘invOverdueTotal’); if(e) e.innerHTML=’£’+over.toFixed(2);
+e=document.getElementById(‘invOverdueCount’); if(e) e.textContent=overC+’ invoices overdue’;
+}
 
-  async function saveInvoiceToDb(invNum,customer,reg,service,subtotal,vat,total,status,date,notes) {
-    var res=await db.from('invoices').insert([{invoice_number:invNum,customer_name:customer,vehicle_reg:reg,service:service,subtotal:parseFloat(subtotal)||0,vat:parseFloat(vat)||0,total:parseFloat(total)||0,status:status,invoice_date:date,notes:notes||''}]);
-    if (res.error) { showToast('Warning: invoice not saved. '+res.error.message); }
-    else { await loadInvoices(); await loadDashboard(); }
-  }
+function filterInvoices() {
+var search=((document.getElementById(‘invSearch’)||{}).value||’’).toLowerCase();
+var status=(document.getElementById(‘invStatusFilter’)||{}).value||’’;
+document.querySelectorAll(’#invoiceTableBody tr’).forEach(function(row){
+var text=row.textContent.toLowerCase();
+row.style.display=(!search||text.includes(search))&&(!status||text.includes(status.toLowerCase()))?’’:‘none’;
+});
+}
 
-  async function previewAndPrintNewInvoice() {
-    var customer=(document.getElementById('ci_customer')||{}).value||'Customer';
-    var reg=((document.getElementById('ci_reg')||{}).value||'REG').toUpperCase();
-    var service=(document.getElementById('ci_service')||{}).value||'Service';
-    var date=(document.getElementById('ci_date')||{}).value||new Date().toISOString().split('T')[0];
-    var subtotal=((document.getElementById('ci_subtotal')||{}).textContent||'0').replace(String.fromCharCode(163),'').trim();
-    var vat=((document.getElementById('ci_vat')||{}).textContent||'0').replace(String.fromCharCode(163),'').trim();
-    var total=((document.getElementById('ci_total')||{}).textContent||'0').replace(String.fromCharCode(163),'').trim();
-    var notes=(document.getElementById('ci_notes')||{}).value||'';
-    var invNum='INV-'+String(invoiceCounter++).padStart(4,'0');
-    var html=buildInvoiceHTML(invNum,customer,reg,service,subtotal,vat,total,'Pending',date,notes);
-    var w=window.open('','_blank','width=800,height=900');
-    if(w){w.document.write(html);w.document.close();w.focus();setTimeout(function(){w.print();},400);}
-    await saveInvoiceToDb(invNum,customer,reg,service,subtotal,vat,total,'Pending',date,notes);
-    closeModal('createInvoiceModal'); showToast('Invoice '+invNum+' saved!');
-  }
+function exportInvoices() { showToast(‘Exporting to CSV…’); }
 
-  async function saveAndSendNewInvoice() {
-    var customer=(document.getElementById('ci_customer')||{}).value||'Customer';
-    var email=(document.getElementById('ci_email')||{}).value||'';
-    var reg=((document.getElementById('ci_reg')||{}).value||'REG').toUpperCase();
-    var service=(document.getElementById('ci_service')||{}).value||'Service';
-    var date=(document.getElementById('ci_date')||{}).value||new Date().toISOString().split('T')[0];
-    var subtotal=((document.getElementById('ci_subtotal')||{}).textContent||'0').replace(String.fromCharCode(163),'').trim();
-    var vat=((document.getElementById('ci_vat')||{}).textContent||'0').replace(String.fromCharCode(163),'').trim();
-    var total=((document.getElementById('ci_total')||{}).textContent||'0').replace(String.fromCharCode(163),'').trim();
-    var invNum='INV-'+String(invoiceCounter++).padStart(4,'0');
-    await saveInvoiceToDb(invNum,customer,reg,service,subtotal,vat,total,'Pending',date,'');
-    closeModal('createInvoiceModal'); sendInvoice(invNum,customer,email);
-  }
+async function saveInvoiceToDb(invNum,customer,reg,service,subtotal,vat,total,status,date,notes) {
+var res=await db.from(‘invoices’).insert([{invoice_number:invNum,customer_name:customer,vehicle_reg:reg,service:service,subtotal:parseFloat(subtotal)||0,vat:parseFloat(vat)||0,total:parseFloat(total)||0,status:status,invoice_date:date,notes:notes||’’}]);
+if (res.error) { showToast(’Warning: invoice not saved. ’+res.error.message); }
+else { await loadInvoices(); await loadDashboard(); }
+}
 
-  async function loadReports() {
-    var res=await db.from('invoices').select('total,status,service');
-    if(res.error||!res.data) return;
-    var total=0; res.data.forEach(function(i){total+=parseFloat(i.total)||0;});
-    var e=document.getElementById('rptRevenue'); if(e) e.innerHTML='&#163;'+total.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g,',');
-    e=document.getElementById('rptAvgJob'); if(e) e.innerHTML=res.data.length>0?'&#163;'+(total/res.data.length).toFixed(2):'&#163;0.00';
-    e=document.getElementById('rptMotPass'); if(e) e.textContent='N/A';
-  }
+async function previewAndPrintNewInvoice() {
+var customer=(document.getElementById(‘ci_customer’)||{}).value||‘Customer’;
+var reg=((document.getElementById(‘ci_reg’)||{}).value||‘REG’).toUpperCase();
+var service=(document.getElementById(‘ci_service’)||{}).value||‘Service’;
+var date=(document.getElementById(‘ci_date’)||{}).value||new Date().toISOString().split(‘T’)[0];
+var subtotal=((document.getElementById(‘ci_subtotal’)||{}).textContent||‘0’).replace(String.fromCharCode(163),’’).trim();
+var vat=((document.getElementById(‘ci_vat’)||{}).textContent||‘0’).replace(String.fromCharCode(163),’’).trim();
+var total=((document.getElementById(‘ci_total’)||{}).textContent||‘0’).replace(String.fromCharCode(163),’’).trim();
+var notes=(document.getElementById(‘ci_notes’)||{}).value||’’;
+var invNum=‘INV-’+String(invoiceCounter++).padStart(4,‘0’);
+var html=buildInvoiceHTML(invNum,customer,reg,service,subtotal,vat,total,‘Pending’,date,notes);
+var w=window.open(’’,’_blank’,‘width=800,height=900’);
+if(w){w.document.write(html);w.document.close();w.focus();setTimeout(function(){w.print();},400);}
+await saveInvoiceToDb(invNum,customer,reg,service,subtotal,vat,total,‘Pending’,date,notes);
+closeModal(‘createInvoiceModal’); showToast(‘Invoice ‘+invNum+’ saved!’);
+}
 
-  async function loadSettings() {
-    var emailEl = document.getElementById('settEmail');
-    if (emailEl && currentUser) emailEl.value = currentUser.email || '';
-    try {
-      var res = await db.from('garages').select('*').limit(1).single();
-      if (!res.error && res.data) {
-        var g = res.data;
-        var nm = document.getElementById('settGarageName'); if(nm) nm.value = g.name || '';
-        var ad = document.getElementById('settAddress'); if(ad) ad.value = g.address || '';
-        var ph = document.getElementById('settPhone'); if(ph) ph.value = g.phone || '';
-        if (emailEl && g.email) emailEl.value = g.email;
-      }
-    } catch(e) { console.log('No garage record yet'); }
-  }
+async function saveAndSendNewInvoice() {
+var customer=(document.getElementById(‘ci_customer’)||{}).value||‘Customer’;
+var email=(document.getElementById(‘ci_email’)||{}).value||’’;
+var reg=((document.getElementById(‘ci_reg’)||{}).value||‘REG’).toUpperCase();
+var service=(document.getElementById(‘ci_service’)||{}).value||‘Service’;
+var date=(document.getElementById(‘ci_date’)||{}).value||new Date().toISOString().split(‘T’)[0];
+var subtotal=((document.getElementById(‘ci_subtotal’)||{}).textContent||‘0’).replace(String.fromCharCode(163),’’).trim();
+var vat=((document.getElementById(‘ci_vat’)||{}).textContent||‘0’).replace(String.fromCharCode(163),’’).trim();
+var total=((document.getElementById(‘ci_total’)||{}).textContent||‘0’).replace(String.fromCharCode(163),’’).trim();
+var invNum=‘INV-’+String(invoiceCounter++).padStart(4,‘0’);
+await saveInvoiceToDb(invNum,customer,reg,service,subtotal,vat,total,‘Pending’,date,’’);
+closeModal(‘createInvoiceModal’); sendInvoice(invNum,customer,email);
+}
 
-  async function loadTeam() {
-    var tbody=document.getElementById('teamTbody');
-    if(!tbody||!currentUser) return;
-    var name=(currentUser.user_metadata||{}).full_name||currentUser.email;
-    var role=(currentUser.user_metadata||{}).role||'User';
-    var ini=name.split(' ').map(function(w){return w[0]||'';}).join('').toUpperCase().slice(0,2);
-    tbody.innerHTML='<tr><td><div style="display:flex;align-items:center;gap:8px;"><div class="user-avatar" style="width:28px;height:28px;font-size:10px;">'+ini+'</div>'+name+'</div></td><td>'+role+'</td><td>'+currentUser.email+'</td><td>Now</td><td><span class="badge badge-success">Active</span></td><td></td></tr>';
-  }
+async function loadReports() {
+var res=await db.from(‘invoices’).select(‘total,status,service’);
+if(res.error||!res.data) return;
+var total=0; res.data.forEach(function(i){total+=parseFloat(i.total)||0;});
+var e=document.getElementById(‘rptRevenue’); if(e) e.innerHTML=’£’+total.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g,’,’);
+e=document.getElementById(‘rptAvgJob’); if(e) e.innerHTML=res.data.length>0?’£’+(total/res.data.length).toFixed(2):’£0.00’;
+e=document.getElementById(‘rptMotPass’); if(e) e.textContent=‘N/A’;
+}
 
-  async function saveGarageSettings() {
-    var name = (document.getElementById('settGarageName')||{}).value||'';
-    var address = (document.getElementById('settAddress')||{}).value||'';
-    var phone = (document.getElementById('settPhone')||{}).value||'';
-    var email = (document.getElementById('settEmail')||{}).value||'';
-    if (!name) { showToast('Please enter a garage name.'); return; }
-    var res = await db.from('garages').upsert([{ name: name, address: address, phone: phone, email: email }], { onConflict: 'id' });
-    if (res.error) {
-      var res2 = await db.from('garages').insert([{ name: name, address: address, phone: phone, email: email }]);
-      if (res2.error) { showToast('Saved locally.'); return; }
-    }
-    showToast('Garage settings saved!');
-  }
+async function loadSettings() {
+var emailEl = document.getElementById(‘settEmail’);
+if (emailEl && currentUser) emailEl.value = currentUser.email || ‘’;
+try {
+var res = await db.from(‘garages’).select(’*’).limit(1).single();
+if (!res.error && res.data) {
+var g = res.data;
+var nm = document.getElementById(‘settGarageName’); if(nm) nm.value = g.name || ‘’;
+var ad = document.getElementById(‘settAddress’); if(ad) ad.value = g.address || ‘’;
+var ph = document.getElementById(‘settPhone’); if(ph) ph.value = g.phone || ‘’;
+if (emailEl && g.email) emailEl.value = g.email;
+}
+} catch(e) { console.log(‘No garage record yet’); }
+}
 
-  function changeWeek(dir) { scheduleWeekOffset += dir; buildSchedule(); }
+async function loadTeam() {
+var tbody=document.getElementById(‘teamTbody’);
+if(!tbody||!currentUser) return;
+var name=(currentUser.user_metadata||{}).full_name||currentUser.email;
+var role=(currentUser.user_metadata||{}).role||‘User’;
+var ini=name.split(’ ‘).map(function(w){return w[0]||’’;}).join(’’).toUpperCase().slice(0,2);
+tbody.innerHTML=’<tr><td><div style="display:flex;align-items:center;gap:8px;"><div class="user-avatar" style="width:28px;height:28px;font-size:10px;">’+ini+’</div>’+name+’</div></td><td>’+role+’</td><td>’+currentUser.email+’</td><td>Now</td><td><span class="badge badge-success">Active</span></td><td></td></tr>’;
+}
 
-  function buildSchedule() {
-    var months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-    var days=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
-    var today=new Date(); var dow=today.getDay(); var off=dow===0?-6:1-dow;
-    var monday=new Date(today); monday.setDate(today.getDate()+off+(scheduleWeekOffset*7));
-    var sunday=new Date(monday); sunday.setDate(monday.getDate()+6);
-    var sub=document.getElementById('scheduleSubtitle');
-    if(sub){
-      sub.textContent=monday.getDate()+' '+months[monday.getMonth()]+' - '+sunday.getDate()+' '+months[sunday.getMonth()]+' '+sunday.getFullYear();
-    }
-    for(var i=0;i<7;i++){
-      var d=new Date(monday); d.setDate(monday.getDate()+i);
-      var isToday=d.toDateString()===today.toDateString();
-      var hdr=document.getElementById('schHdr'+i); var cell=document.getElementById('schCell'+i); var dateEl=document.getElementById('schDate'+i);
-      if(hdr) hdr.textContent=days[i]+' '+d.getDate()+' '+months[d.getMonth()];
-      if(cell){ cell.className='schedule-cell'+(isToday?' today':''); cell.querySelectorAll('.schedule-event').forEach(function(ev){ev.remove();}); }
-      if(dateEl) dateEl.textContent=d.getDate()+' '+months[d.getMonth()]+(isToday?' \u25CF':'');
-    }
-    loadScheduleBookings();
-  }
+async function saveGarageSettings() {
+var name = (document.getElementById(‘settGarageName’)||{}).value||’’;
+var address = (document.getElementById(‘settAddress’)||{}).value||’’;
+var phone = (document.getElementById(‘settPhone’)||{}).value||’’;
+var email = (document.getElementById(‘settEmail’)||{}).value||’’;
+if (!name) { showToast(‘Please enter a garage name.’); return; }
+var res = await db.from(‘garages’).upsert([{ name: name, address: address, phone: phone, email: email }], { onConflict: ‘id’ });
+if (res.error) {
+var res2 = await db.from(‘garages’).insert([{ name: name, address: address, phone: phone, email: email }]);
+if (res2.error) { showToast(‘Saved locally.’); return; }
+}
+showToast(‘Garage settings saved!’);
+}
 
-  async function loadScheduleBookings() {
-    var today=new Date(); var dow=today.getDay(); var off=dow===0?-6:1-dow;
-    var mon=new Date(today); mon.setDate(today.getDate()+off+(scheduleWeekOffset*7));
-    var sun=new Date(mon); sun.setDate(mon.getDate()+6);
-    var res=await db.from('bookings').select('*').gte('booking_date',mon.toISOString().split('T')[0]).lte('booking_date',sun.toISOString().split('T')[0]).order('booking_time');
-    if(res.error||!res.data) return;
-    res.data.forEach(function(bk){
-      var bd=new Date(bk.booking_date); var idx=bd.getDay()===0?6:bd.getDay()-1;
-      var cell=document.getElementById('schCell'+idx); if(!cell) return;
-      var evt=document.createElement('div');
-      var sl=(bk.service||'').toLowerCase(); var cls=sl.indexOf('mot')>=0?'mot':sl.indexOf('service')>=0?'service':sl.indexOf('tyre')>=0||sl.indexOf('brake')>=0?'repair':'service';
-      evt.className='schedule-event '+cls; evt.textContent=(bk.booking_time||'')+' '+(bk.customer_name||'');
-      cell.appendChild(evt);
-    });
-  }
+function changeWeek(dir) { scheduleWeekOffset += dir; buildSchedule(); }
 
-  function buildInvoiceHTML(invNum,customer,reg,service,subtotal,vat,total,status,date,notes) {
-    var sc=status==='Paid'?'#22c55e':status==='Overdue'?'#ef4444':'#f59e0b';
-    return '<!DOCTYPE html><html><head><meta charset="UTF-8" /><title>Invoice '+invNum+'</title><style>body{font-family:Arial,sans-serif;margin:0;padding:32px;color:#111;background:#fff;font-size:14px;}.header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:32px;padding-bottom:20px;border-bottom:3px solid #e8570a;}.brand{font-size:26px;font-weight:900;letter-spacing:2px;text-transform:uppercase;color:#111;}.brand span{color:#e8570a;}.inv-title{font-size:28px;font-weight:900;color:#e8570a;text-transform:uppercase;}.reg{display:inline-block;background:#FFD800;color:#000;font-weight:900;padding:3px 10px;border-radius:4px;letter-spacing:2px;font-size:13px;border:1px solid #E5C200;}table{width:100%;border-collapse:collapse;margin-bottom:20px;}thead th{background:#f4f4f4;padding:10px 12px;text-align:left;font-size:11px;text-transform:uppercase;color:#555;border-bottom:2px solid #e8570a;}tbody td{padding:10px 12px;border-bottom:1px solid #eee;}.totals{margin-left:auto;width:260px;}.total-row{display:flex;justify-content:space-between;padding:6px 0;font-size:14px;}.grand{border-top:2px solid #e8570a;padding-top:10px;font-size:16px;font-weight:700;color:#e8570a;}.footer{margin-top:40px;padding-top:16px;border-top:1px solid #eee;font-size:12px;color:#888;text-align:center;}@media print{body{padding:16px;}}</style></head><body><div class="header"><div><div class="brand">COMPARE <span>AUTOMOTIVE</span></div><div style="font-size:11px;color:#888;margin-top:4px;text-transform:uppercase;">Garage Management</div></div><div style="text-align:right;"><div class="inv-title">Invoice</div><div style="font-size:13px;color:#555;margin-top:4px;"><strong>'+invNum+'</strong></div><div style="font-size:13px;color:#555;">Date: '+date+'</div><div style="margin-top:8px;display:inline-block;padding:4px 12px;border-radius:4px;font-size:12px;font-weight:700;text-transform:uppercase;background:'+sc+'22;color:'+sc+';border:1px solid '+sc+'44;">'+status+'</div></div></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:28px;"><div><h3 style="font-size:11px;text-transform:uppercase;color:#888;margin-bottom:8px;">Bill To</h3><strong>'+customer+'</strong></div><div><h3 style="font-size:11px;text-transform:uppercase;color:#888;margin-bottom:8px;">Vehicle</h3><span class="reg">'+reg+'</span></div></div><table><thead><tr><th>Description</th><th>Qty</th><th style="text-align:right;">Unit Price</th><th style="text-align:right;">Amount</th></tr></thead><tbody><tr><td>'+service+'</td><td>1</td><td style="text-align:right;">&#163;'+subtotal+'</td><td style="text-align:right;">&#163;'+subtotal+'</td></tr></tbody></table><div class="totals"><div class="total-row"><span>Subtotal (ex VAT)</span><span>&#163;'+subtotal+'</span></div><div class="total-row"><span>VAT (20%)</span><span>&#163;'+vat+'</span></div><div class="total-row grand"><span>Total</span><span>&#163;'+total+'</span></div></div>'+(notes?'<div style="margin-top:20px;padding:12px;background:#f9f9f9;border-left:3px solid #e8570a;font-size:13px;"><strong>Notes:</strong> '+notes+'</div>':'')+'<div style="margin-top:24px;padding:12px;background:#fff8f0;border:1px solid #ffd0a0;border-radius:6px;font-size:13px;">Payment Terms: 14 days from invoice date</div><div class="footer">Generated by Compare Automotive</div></body></html>';
+function buildSchedule() {
+var months=[‘Jan’,‘Feb’,‘Mar’,‘Apr’,‘May’,‘Jun’,‘Jul’,‘Aug’,‘Sep’,‘Oct’,‘Nov’,‘Dec’];
+var days=[‘Mon’,‘Tue’,‘Wed’,‘Thu’,‘Fri’,‘Sat’,‘Sun’];
+var today=new Date(); var dow=today.getDay(); var off=dow===0?-6:1-dow;
+var monday=new Date(today); monday.setDate(today.getDate()+off+(scheduleWeekOffset*7));
+var sunday=new Date(monday); sunday.setDate(monday.getDate()+6);
+var sub=document.getElementById(‘scheduleSubtitle’);
+if(sub){
+sub.textContent=monday.getDate()+’ ‘+months[monday.getMonth()]+’ - ‘+sunday.getDate()+’ ‘+months[sunday.getMonth()]+’ ‘+sunday.getFullYear();
+}
+for(var i=0;i<7;i++){
+var d=new Date(monday); d.setDate(monday.getDate()+i);
+var isToday=d.toDateString()===today.toDateString();
+var hdr=document.getElementById(‘schHdr’+i); var cell=document.getElementById(‘schCell’+i); var dateEl=document.getElementById(‘schDate’+i);
+if(hdr) hdr.textContent=days[i]+’ ‘+d.getDate()+’ ‘+months[d.getMonth()];
+if(cell){ cell.className=‘schedule-cell’+(isToday?’ today’:’’); cell.querySelectorAll(’.schedule-event’).forEach(function(ev){ev.remove();}); }
+if(dateEl) dateEl.textContent=d.getDate()+’ ‘+months[d.getMonth()]+(isToday?’ \u25CF’:’’);
+}
+loadScheduleBookings();
+}
 
+async function loadScheduleBookings() {
+var today=new Date(); var dow=today.getDay(); var off=dow===0?-6:1-dow;
+var mon=new Date(today); mon.setDate(today.getDate()+off+(scheduleWeekOffset*7));
+var sun=new Date(mon); sun.setDate(mon.getDate()+6);
+var res=await db.from(‘bookings’).select(’*’).gte(‘booking_date’,mon.toISOString().split(‘T’)[0]).lte(‘booking_date’,sun.toISOString().split(‘T’)[0]).order(‘booking_time’);
+if(res.error||!res.data) return;
+res.data.forEach(function(bk){
+var bd=new Date(bk.booking_date); var idx=bd.getDay()===0?6:bd.getDay()-1;
+var cell=document.getElementById(‘schCell’+idx); if(!cell) return;
+var evt=document.createElement(‘div’);
+var sl=(bk.service||’’).toLowerCase(); var cls=sl.indexOf(‘mot’)>=0?‘mot’:sl.indexOf(‘service’)>=0?‘service’:sl.indexOf(‘tyre’)>=0||sl.indexOf(‘brake’)>=0?‘repair’:‘service’;
+evt.className=‘schedule-event ‘+cls; evt.textContent=(bk.booking_time||’’)+’ ‘+(bk.customer_name||’’);
+cell.appendChild(evt);
+});
+}
+
+function buildInvoiceHTML(invNum,customer,reg,service,subtotal,vat,total,status,date,notes) {
+var sc=status===‘Paid’?’#22c55e’:status===‘Overdue’?’#ef4444’:’#f59e0b’;
+return ‘<!DOCTYPE html><html><head><meta charset="UTF-8" /><title>Invoice ‘+invNum+’</title><style>body{font-family:Arial,sans-serif;margin:0;padding:32px;color:#111;background:#fff;font-size:14px;}.header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:32px;padding-bottom:20px;border-bottom:3px solid #e8570a;}.brand{font-size:26px;font-weight:900;letter-spacing:2px;text-transform:uppercase;color:#111;}.brand span{color:#e8570a;}.inv-title{font-size:28px;font-weight:900;color:#e8570a;text-transform:uppercase;}.reg{display:inline-block;background:#FFD800;color:#000;font-weight:900;padding:3px 10px;border-radius:4px;letter-spacing:2px;font-size:13px;border:1px solid #E5C200;}table{width:100%;border-collapse:collapse;margin-bottom:20px;}thead th{background:#f4f4f4;padding:10px 12px;text-align:left;font-size:11px;text-transform:uppercase;color:#555;border-bottom:2px solid #e8570a;}tbody td{padding:10px 12px;border-bottom:1px solid #eee;}.totals{margin-left:auto;width:260px;}.total-row{display:flex;justify-content:space-between;padding:6px 0;font-size:14px;}.grand{border-top:2px solid #e8570a;padding-top:10px;font-size:16px;font-weight:700;color:#e8570a;}.footer{margin-top:40px;padding-top:16px;border-top:1px solid #eee;font-size:12px;color:#888;text-align:center;}@media print{body{padding:16px;}}</style></head><body><div class="header"><div><div class="brand">COMPARE <span>AUTOMOTIVE</span></div><div style="font-size:11px;color:#888;margin-top:4px;text-transform:uppercase;">Garage Management</div></div><div style="text-align:right;"><div class="inv-title">Invoice</div><div style="font-size:13px;color:#555;margin-top:4px;"><strong>’+invNum+’</strong></div><div style="font-size:13px;color:#555;">Date: ‘+date+’</div><div style="margin-top:8px;display:inline-block;padding:4px 12px;border-radius:4px;font-size:12px;font-weight:700;text-transform:uppercase;background:'+sc+'22;color:'+sc+';border:1px solid '+sc+'44;">’+status+’</div></div></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:28px;"><div><h3 style="font-size:11px;text-transform:uppercase;color:#888;margin-bottom:8px;">Bill To</h3><strong>’+customer+’</strong></div><div><h3 style="font-size:11px;text-transform:uppercase;color:#888;margin-bottom:8px;">Vehicle</h3><span class="reg">’+reg+’</span></div></div><table><thead><tr><th>Description</th><th>Qty</th><th style="text-align:right;">Unit Price</th><th style="text-align:right;">Amount</th></tr></thead><tbody><tr><td>’+service+’</td><td>1</td><td style="text-align:right;">£’+subtotal+’</td><td style="text-align:right;">£’+subtotal+’</td></tr></tbody></table><div class="totals"><div class="total-row"><span>Subtotal (ex VAT)</span><span>£’+subtotal+’</span></div><div class="total-row"><span>VAT (20%)</span><span>£’+vat+’</span></div><div class="total-row grand"><span>Total</span><span>£’+total+’</span></div></div>’+(notes?’<div style="margin-top:20px;padding:12px;background:#f9f9f9;border-left:3px solid #e8570a;font-size:13px;"><strong>Notes:</strong> ‘+notes+’</div>’:’’)+’<div style="margin-top:24px;padding:12px;background:#fff8f0;border:1px solid #ffd0a0;border-radius:6px;font-size:13px;">Payment Terms: 14 days from invoice date</div><div class="footer">Generated by Compare Automotive</div></body></html>’;
 }
 
 function printInvoice(invNum,customer,reg,service,subtotal,vat,total,status,date) {
